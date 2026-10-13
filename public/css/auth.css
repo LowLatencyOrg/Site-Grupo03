@@ -352,17 +352,17 @@ a {
 
 .opcoes {
   position: absolute;
-  top: calc(100% + 5px); /* Dá um espaçamento de 5px embaixo do input */
+  top: calc(100% + 5px);
   left: 0;
   width: 100%;
-  background: var(--cartao); /* Cor sólida para não bugar texto vazando por baixo */
+  background: var(--cartao); 
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   margin: 0;
   padding: 5px 0;
   list-style: none;
-  display: none; /* Começa escondido */
-  z-index: 100; /* Fica acima dos outros campos */
+  display: none;
+  z-index: 100;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
