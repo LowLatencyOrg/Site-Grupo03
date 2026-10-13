@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar Conta — lowlatency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+
+<body>
+
+  <div class="cadastro-maquina">
+    <div class="parte-cadastro"></div>
+    <div class="parte-cadastro">
+        <div class="card-cadastro">
+        <a href="dashboard/dashboard.html" class="voltar-inicio">Voltar para a dashboard</a>
+
+        <!-- Cabeçalho -->
+        <div class="cabecalho-auth">
+            <h1 class="titulo-auth">Cadastrar servidor</h1>
+        </div>
+
+        <!-- Formulário de Cadastro -->
+        <form class="formulario-cadastro">
+
+            <div class="grupo-campo">
+            <label class="rotulo-campo">Hostname</label>
+            <input class="campo-nome" id="hostname_input" type="text"/>
+            </div>
+
+            <div class="grupo-campo">
+            <label class="rotulo-campo">MacAddress</label>
+            <input class="campo-email" id="macaddress_input" type="email"/>
+            </div>
+
+            <div class="grupo-campo">
+              <label class="rotulo-campo">Sistema Operacional</label>
+              <input type="hidden" id="so_input" value="linux" />
+              <div class="select-diferente">
+                <div class="campo-empresa select">Linux</div>
+                <ul class="opcoes">
+                  <li data-value="linux">Linux</li>
+                  <li data-value="windows">Windows</li>
+                  <li data-value="mac_os">MacOS</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="grupo-campo">
+              <label class="rotulo-campo">Status</label>
+              <input type="hidden" id="status_input" value="ativo" />
+              <div class="select-diferente">
+                <div class="campo-cnpj select">Ativo</div>
+                <ul class="opcoes">
+                  <li data-value="ativo">Ativo</li>
+                  <li data-value="inativo">Inativo</li>
+                  <li data-value="manutencao">Em Manutenção</li>
+                </ul>
+              </div>
+            </div>
+
+
+            <button type="button" class="botao-cadastrar" onclick="cadastrar()">Concluir Cadastro</button>
+
+        </form>
+
+        <div class="rodape-auth">
+            Já cadastrou uma máquina? <a href="cadastro-componente.html">Cadastrar componente</a>
+        </div>
+
+        <div id="cardErro" class="mensagem-alerta">
+            <p id="mensagem_erro"></p>
+        </div>
+    </div>
+    </div>
+    <!-- Lado Esquerdo: Imagem de Telemetria -->
+    <div class="parte-cadastro"></div>
+
+    <!-- Lado Direito: Painel de Cadastro -->
+    
+  </div>
+
+  
+
+</body>
+</html>
+<script>
+    function cadastrar() {
+      console.log("Entrei no cadastrar")
+      //var idEmpresaVar = sessionStorage.getItem("ID_EMPRESA")
+      var idEmpresaVar = 1
+      var hostnameVar = hostname_input.value;
+      var macAddressVar = macaddress_input.value;
+      var soVar = so_input.value;
+      var statusVar = status_input.value;
+    
+      if (hostnameVar == "" || macAddressVar == "") {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Preencha todos os campos em branco para prosseguir!";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+      }
+
+      if (soVar == "linux") {
+        soVar = 1
+      } else if (soVar == "windows") {
+        soVar = 2
+      } else {
+        soVar = 3
+      }
+
+      if (statusVar == "ativo") {
+        statusVar = 1
+      } else if (statusVar == "inativo") {
+        statusVar = 2
+      } else {
+        statusVar = 3
+      }
+
+      fetch("/maquinas/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idEmpresaServer: idEmpresaVar,
+                hostnameServer: hostnameVar,
+                macAddressServer: macAddressVar,
+                soServer: soVar,
+                statusServer: statusVar
+            })
+        })
+            .then(function (resposta) {
+                console.log("Resposta: ", resposta);
+
+                if (resposta.ok) {
+                    cardErro.style.display = "block";
+
+                    mensagem_erro.innerHTML =
+                        "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+
+                    setTimeout(() => {
+                        window.location = "login.html";
+                    }, "2000");
+
+                    //limparFormulario();
+                    //finalizarAguardar();
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+                //finalizarAguardar();
+            });
+
+      return false;
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const selects = document.querySelectorAll('.select-diferente');
+      selects.forEach(selects => {
+        const select = selects.querySelector('.select');
+        const listaOpcoes = selects.querySelector('.opcoes');
+        const opcoes = selects.querySelectorAll('.opcoes li');
+        const hiddenInput = selects.parentElement.querySelector('input[type="hidden"]');
+
+        select.addEventListener('click', function() {        
+          document.querySelectorAll('.opcoes').forEach(list => {
+            if (list !== listaOpcoes) list.classList.remove('open');
+          });
+          document.querySelectorAll('.select').forEach(select => {
+            if (select !== select) select.classList.remove('open');
+          });
+          listaOpcoes.classList.toggle('open');
+          select.classList.toggle('open');
+        });
+
+        opcoes.forEach(option => {
+          option.addEventListener('click', function() {
+            select.textContent = this.textContent;
+            if (hiddenInput) {
+              hiddenInput.value = this.getAttribute('data-value');
+            }
+            listaOpcoes.classList.remove('open');
+            select.classList.remove('open');
+          });
+        });
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.select-diferente')) {
+          document.querySelectorAll('.opcoes').forEach(list => list.classList.remove('open'));
+          document.querySelectorAll('.select').forEach(select => select.classList.remove('open'));
+        }
+      });
+    });
+
+    function trocaTela(){
+      window.location = "manutencao.html"
+    }
+    function sumirMensagem() {
+      cardErro.style.display = "none";
+    }
+</script>
