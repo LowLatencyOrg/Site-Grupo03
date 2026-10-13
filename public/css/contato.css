@@ -1,0 +1,228 @@
+:root {
+  --primaria: #2c3a5a;
+  --destaque: #68dda8;
+  --fundo: #090d16;
+  --cartao: #111a2d;
+  --texto: #f1f5f9;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  background: none;
+  font: inherit;
+}
+
+.conteiner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+
+.btn-green:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--texto);
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-outline:hover {
+  border-color: var(--destaque);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Barra de Navegação */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  background: rgba(9, 13, 22, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+  background-color: transparent;
+}
+
+.navbar.scrolled {
+  background: rgba(9, 13, 22, 0.98);
+  border-bottom-color: var(--primaria);
+}
+
+.navbar .conteiner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-left: 120px;
+}
+
+.logo-imagem {
+  display: flex;
+  align-items: center;
+}
+
+.logo-imagem img {
+  height: 54px;
+  width: auto;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-link {
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: var(--destaque);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+
+.box-contato {
+    display: flex;
+    height: 650px;
+    width: 500px;
+    background: #070c15;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 20px;
+    border: 1px solid rgb(9, 9, 9);
+    margin-top: 190px;
+}
+
+.voltar-inicio {
+  display: inline-block;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 28px;
+  /*background-color: aqua;*/
+  height: 40px;
+  padding-left: 20px;
+  padding-top: 12px;
+  text-decoration: none;
+  font-family: 'inter', sans-serif;
+}
+
+.voltar-inicio:hover {
+  color:rgb(27, 180, 119);;
+}
+
+.titulo-contato {
+    display: flex;
+    justify-content: center;
+    height: 70px;
+    align-items: center;
+    font-family: "Rajdhani", sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    /*margin-top: 30px;*/
+    padding-bottom: 30px;
+}
+
+.formulario-contato {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    height: 80%;
+    padding-left: 10%;
+    font-family: "inter", sans-serif;
+    color: #94a3b8;
+}
+
+.formulario-contato input {
+    height: 40px;
+    width: 400px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.04);
+    color: white;
+    padding-left: 10px;
+}
+
+
+input:focus {
+  outline: none;
+  border-color: rgb(27, 180, 119); 
+}
+
+.botao-contato {
+    /*background-color: aqua;*/
+    height: 200px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 15px;
+}
+
+.botao-salvar {
+  width: 89%;
+  padding: 11px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #050811;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 8px;
+  background-color:rgb(27, 180, 119);
+  height: 45px;
+}
+
+.botao-salvar:hover {
+  filter: brightness(1.15);
+}
