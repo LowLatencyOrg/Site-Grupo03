@@ -307,3 +307,79 @@ a {
 .botao-voltar-login:hover {
   background: rgba(16, 185, 129, 0.2);
 }
+
+.cadastro-maquina { 
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.parte-cadastro {
+  padding-top: 5%;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 33%;
+}
+
+.card-cadastro {  
+  width: 80%;
+  height: 80%;
+  padding-top: 10%;
+}
+
+/* --- ESTILOS DO SELECT CUSTOMIZADO --- */
+.select-diferente {
+  position: relative;
+  width: 100%;
+}
+
+.select {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.select::after {
+  content: '▼';
+  font-size: 10px;
+  color: #94a3b8;
+  transition: transform 0.3s ease;
+}
+
+.opcoes {
+  position: absolute;
+  top: calc(100% + 5px); /* Dá um espaçamento de 5px embaixo do input */
+  left: 0;
+  width: 100%;
+  background: var(--cartao); /* Cor sólida para não bugar texto vazando por baixo */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin: 0;
+  padding: 5px 0;
+  list-style: none;
+  display: none; /* Começa escondido */
+  z-index: 100; /* Fica acima dos outros campos */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.opcoes.open {
+  display: block;
+}
+
+.opcoes li {
+  padding: 11px 13px;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.opcoes li:hover {
+  background: rgba(16, 185, 129, 0.15); 
+  color: var(--destaque);
+}
