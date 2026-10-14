@@ -66,8 +66,7 @@ section {
     min-height: 78px;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 100px;
+    justify-content: space-between
 }
 
 
@@ -81,6 +80,7 @@ section {
     font-weight: 700;
     letter-spacing: -0.7px;
     white-space: nowrap;
+    margin-left: 50px;
 }
 
 .logo-imagem {
@@ -99,6 +99,7 @@ section {
     display: flex;
     align-items: center;
     gap: 34px;
+    margin-left: 80px;
 }
 
 .menu a {
@@ -112,6 +113,13 @@ section {
     color: var(--destaque);
 }
 
+.botoes-nav {
+    display: flex;
+    /*background-color: aqua;*/
+    width: 400px;
+    justify-content: flex-end;
+    gap: 20px;
+}
 .botao-nav {
     display: inline-flex;
     align-items: center;
