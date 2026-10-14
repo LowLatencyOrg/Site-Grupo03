@@ -27,7 +27,6 @@ body {
     color: var(--texto);
     background: var(--fundo);
     line-height: 1.7;
-   
 }
 
 a {
@@ -52,6 +51,7 @@ section {
     scroll-margin-top: 78px;
 }
 
+/* ===== Navegação ===== */
 
 .navbar {
     position: sticky;
@@ -138,6 +138,7 @@ section {
     color: var(--destaque);
 }
 
+/* ===== Botões (estavam faltando) ===== */
 
 .botao {
     display: inline-flex;
@@ -150,8 +151,7 @@ section {
     border-radius: 4px;
     font-size: 12px;
     font-weight: 700;
-    
-}
+    }
 
 .botao:hover {
     transform: translateY(-2px);
@@ -177,6 +177,7 @@ section {
     border-color: var(--destaque);
 }
 
+/* ===== Banner ===== */
 
 /*.banner {
     position: relative;
@@ -234,7 +235,7 @@ section {
     outline-offset: 3px;
 }
 
-
+/* ===== Estrutura das seções (estava faltando) ===== */
 
 .secao {
     padding: 90px 0;
@@ -260,7 +261,7 @@ section {
     color: var(--texto);
 }
 
-
+/* ===== Quem somos ===== */
 
 .grade-sobre {
     display: grid;
@@ -313,7 +314,7 @@ section {
     object-fit: cover;
 }
 
-
+/* ===== Soluções ===== */
 
 .grade-solucoes {
     display: grid;
@@ -376,7 +377,7 @@ section {
     flex-shrink: 0;
 }
 
-
+/* ===== Diferenciais ===== */
 
 .grade-diferenciais {
     display: grid;
@@ -404,13 +405,14 @@ section {
     color: #94a3b8;
 }
 
+/* corrigido: antes era ".grade-diferenciais :hover", que pegava até o texto */
 .caixa-diferencial:hover {
     border-color: rgba(16, 185, 129, 0.45);
     transform: translateY(-2px);
     box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.8), 0 0 35px -5px rgba(16, 185, 129, 0.25);
 }
 
-
+/* ===== Footer ===== */
 
 .footer {
     background: #060910;
@@ -464,7 +466,6 @@ section {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     text-align: center;
 }
-
 
 
 
