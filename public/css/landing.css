@@ -70,14 +70,15 @@ section {
     gap: 28px;
 }
 
-<<<<<<< Updated upstream
+
 .navbar .conteiner {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-around;
   padding-left: 120px;
-=======
+}
+
 .logo {
     display: inline-flex;
     align-items: center;
@@ -88,7 +89,6 @@ section {
     font-weight: 700;
     letter-spacing: -0.7px;
     white-space: nowrap;
->>>>>>> Stashed changes
 }
 
 .logo-imagem {
@@ -178,7 +178,7 @@ section {
 }
 
 
-.banner {
+/*.banner {
     position: relative;
     display: flex;
     align-items: center;
@@ -187,9 +187,9 @@ section {
     background:
         linear-gradient(90deg, rgba(9, 13, 22, 0.96), rgba(9, 13, 22, 0.78) 42%, rgba(9, 13, 22, 0.25)),
         linear-gradient(0deg, rgba(9, 13, 22, 0.85), transparent 35%),
-        url("../assets/imgs/banner2.png") center / cover no-repeat,
+        url("../assets/imgs/banner.jpg") center / cover no-repeat,
         var(--fundo);
-}
+}*/
 
 .banner-conteudo {
     padding: 80px 0;

@@ -226,3 +226,29 @@ input:focus {
 .botao-salvar:hover {
   filter: brightness(1.15);
 }
+
+#cardErro {
+  display: none;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid var(--destaque);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-top: 18px;
+  text-align: center;
+}
+
+#cardErro.erro {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: var(--erro);
+}
+
+#mensagem_erro {
+  font-size: 14px;
+  color: var(--destaque);
+  font-weight: 500;
+  margin: 0;
+}
+
+#cardErro.erro #mensagem_erro {
+  color: #fca5a5;
+}
