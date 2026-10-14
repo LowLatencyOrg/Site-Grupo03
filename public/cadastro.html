@@ -17,63 +17,65 @@
 <body>
 
   <div class="layout-auth">
-    <!-- Lado Esquerdo: Imagem de Telemetria -->
     <div class="lado-imagem">
-      <img src="assets/imgs/img-cad-log.jpg" alt="Telemetria Financeira" class="img-cad-log">
+      <img src="assets/imgs/banner.jpg" alt="Telemetria Financeira" class="img-cad-log">
     </div>
 
-    <!-- Lado Direito: Painel de Cadastro -->
     <div class="lado-formulario">
-      <a href="landing.html" class="voltar-inicio">Voltar para o início</a>
+      <a href="index.html" class="voltar-inicio">Voltar para o início</a>
 
-      <!-- Cabeçalho -->
       <div class="cabecalho-auth">
-        <h1 class="titulo-auth">Criar Conta na LowLatency</h1>
+        <h1 class="titulo-auth">Cadastre um novo profissional</h1>
       </div>
 
-      <!-- Formulário de Cadastro -->
       <form class="formulario-cadastro">
 
         <div class="grupo-campo">
           <label class="rotulo-campo">Nome completo *</label>
-          <input class="campo-nome" id="nome_input" type="text" value="João da Silva"
-            placeholder="Ex: Roberto Silva" required />
+          <input class="campo-nome" id="nome_input" type="text" placeholder="Ex: Roberto Silva" required />
         </div>
 
         <div class="grupo-campo">
           <label class="rotulo-campo">Email corporativo *</label>
-          <input class="campo-email" id="email_input" type="email" value="admin@lowlatency.com.br"
-            placeholder="roberto@empresa.com.br" required />
+          <input class="campo-email" id="email_input" type="email" placeholder="roberto@empresa.com.br" required />
         </div>
 
         <div class="grupo-campo">
-          <label class="rotulo-campo">Empresa / Instituição *</label>
-          <input class="campo-empresa" id="empresa_input" type="text" value="Instituição Financeira S/A"
-            placeholder="Ex: Banco Alpha S/A" required />
+          <label class="rotulo-campo">CPF *</label>
+          <input class="campo-cpf" id="cpf_input" type="text" placeholder="Apenas números" maxlength="11" required />
         </div>
 
         <div class="grupo-campo">
-          <label class="rotulo-campo">CNPJ *</label>
-          <input class="campo-cnpj" id="cnpj_input" type="text" value="12.345.678/0001-90"
-            placeholder="00.000.000/0000-00" required />
+          <label class="rotulo-campo">Cargo *</label>
+          <select class="campo-cargo" id="cargo_input" required>
+            <option value="" disabled selected>Selecione o cargo do colaborador</option>
+            <option value="1">Gestor</option>
+            <option value="2">Analista de Infraestrutura</option>
+          </select>
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Tipo de telefone:</label>
+          <select class="campo-tipo-contato" id="tipo_contato_input">
+            <option value="1">Celular</option>
+            <option value="2">Telefone Fixo</option>
+          </select>
         </div>
 
         <div class="grupo-campo">
           <label class="rotulo-campo">Telefone *</label>
-          <input class="campo-telefone" id="telefone_input" type="tel" value="(11) 98765-4321"
-            placeholder="(00) 00000-0000" required />
+          <input class="campo-telefone" id="telefone_input" type="tel" placeholder="(00) 00000-0000" required />
         </div>
 
         <div class="grupo-campo">
           <label class="rotulo-campo">Senha de acesso *</label>
-          <input class="campo-senha" id="senha_input" type="password" value="123456" placeholder="Mínimo 6 caracteres"
-            required />
+          <input class="campo-senha" id="senha_input" type="password" placeholder="Mínimo 6 caracteres" required />
         </div>
 
         <div class="grupo-campo">
           <label class="rotulo-campo">Confirmar senha *</label>
-          <input class="campo-confirmar-senha" id="confirmacao_senha_input" type="password" value="123456"
-            placeholder="Repita a senha" required />
+          <input class="campo-confirmar-senha" id="confirmacao_senha_input" type="password" placeholder="Repita a senha"
+            required />
         </div>
 
         <button type="button" class="botao-cadastrar" onclick="cadastrar()">Concluir Cadastro</button>
@@ -94,13 +96,41 @@
     function cadastrar() {
       var nomeVar = nome_input.value;
       var emailVar = email_input.value;
-      var empresaVar = empresa_input.value;
-      var cnpjVar = cnpj_input.value;
+      var cpfVar = cpf_input.value;
+      var cargoVar = cargo_input.value;
       var telefoneVar = telefone_input.value;
+      var tipoContatoVar = tipo_contato_input.value;
       var senhaVar = senha_input.value;
       var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
-      if (nomeVar == "" || emailVar == "" || empresaVar == "" || cnpjVar == "" || telefoneVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
+      var fkEmpresaVar = sessionStorage.FK_EMPRESA;
+      var fkCargoSessao = sessionStorage.FK_CARGO;
+
+    if (fkEmpresaVar == undefined) {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Erro: Empresa não identificada. Faça login novamente.";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+    }
+
+    if (fkCargoSessao != 1) {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Acesso Negado: Apenas Gestores podem cadastrar novos analistas.";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+    }
+
+      if (fkEmpresaVar == undefined) {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Erro: Empresa não identificada. Faça login como Gestor novamente.";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+      }
+
+      if (nomeVar == "" || emailVar == "" || cpfVar == "" || cargoVar == "" || telefoneVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
         cardErro.style.display = "block";
         cardErro.className = "mensagem-alerta erro";
         mensagem_erro.innerHTML = "Preencha todos os campos em branco para prosseguir!";
@@ -116,25 +146,39 @@
         return false;
       }
 
-      if (emailVar == "admin@lowlatency.com.br" && senhaVar == "123456" && cnpjVar == "12.345.678/0001-90") {
-        cardErro.style.display = "block";
-        cardErro.className = "mensagem-alerta";
-        mensagem_erro.innerHTML = "Cadastro realizado com sucesso! Redirecionando...";
-        setTimeout(sumirMensagem, 5000);
-        setTimeout(trocaTela, 2500)
-      } else {
-        cardErro.style.display = "block";
-        cardErro.className = "mensagem-alerta erro";
-        mensagem_erro.innerHTML = "Utilize o e-mail e senha corporativos pré-setados!";
-        setTimeout(sumirMensagem, 5000);
-      }
+      fetch("/usuarios/cadastrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nomeServer: nomeVar,
+          cpfServer: cpfVar,
+          emailServer: emailVar,
+          senhaServer: senhaVar,
+          fkEmpresaServer: fkEmpresaVar,
+          fkCargoServer: cargoVar,
+          telefoneServer: telefoneVar,
+          tipoContatoServer: tipoContatoVar 
+        })
+      }).then(function (resposta) {
+        if (resposta.ok) {
+          cardErro.style.display = "block";
+          cardErro.className = "mensagem-alerta";
+          mensagem_erro.innerHTML = "Cadastro realizado com sucesso! Redirecionando...";
+          setTimeout(() => {
+            window.location = "login.html";
+          }, 2000);
+        } else {
+          throw "Houve um erro ao tentar realizar o cadastro!";
+        }
+      }).catch(function (erro) {
+        console.log(`#ERRO: ${erro}`);
+      });
 
       return false;
     }
 
-    function trocaTela(){
-      window.location = "manutencao.html"
-    }
     function sumirMensagem() {
       cardErro.style.display = "none";
     }

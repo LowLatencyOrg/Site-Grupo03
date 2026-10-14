@@ -176,7 +176,10 @@ a {
 .campo-senha,
 .campo-nome,
 .campo-empresa,
-.campo-cnpj,
+.campo-cpf,
+.campo-cargo,
+.campo-cargo option,
+.campo-tipo-contato,
 .campo-telefone,
 .campo-confirmar-senha, .data-nasc {
   width: 100%;
@@ -188,6 +191,19 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
   outline: none;
+}
+
+.campo-tipo-contato option {
+   background-color: #1a1a2e; 
+  color: #ffffff; 
+  font-size: 16px;
+}
+
+
+.campo-cargo option {
+  background-color: #1a1a2e; 
+  color: #ffffff; 
+  font-size: 16px;
 }
 
 .data-nasc::-webkit-calendar-picker-indicator {
