@@ -93,6 +93,7 @@ ul {
     display: flex;
     align-items: center;
     gap: 34px;
+    margin-left: 80px;
 }
 
 .menu a {
