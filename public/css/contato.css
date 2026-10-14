@@ -1,133 +1,134 @@
+
 :root {
-  --primaria: #2c3a5a;
-  --destaque: #68dda8;
-  --fundo: #090d16;
-  --cartao: #111a2d;
-  --texto: #f1f5f9;
+    --primaria: #2c3a5a;
+    --destaque: #68dda8;
+    --fundo: #090d16;
+    --fundo-alt: #0d1422;
+    --cartao: #111a2d;
+    --texto: #f1f5f9;
+    --texto-secundario: #a5b1c4;
+    --borda: #26334a;
+    --azul-claro: #829bc2;
+    --largura: 1180px;
 }
 
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
 
 body {
-  background: var(--fundo);
-  color: var(--texto);
-  font-family: 'Inter', sans-serif;
-  line-height: 1.6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    font-family: 'Inter', sans-serif;
+    color: var(--texto);
+    background: var(--fundo);
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start ;
+    align-items: center;
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.2s ease;
+    color: inherit;
+    text-decoration: none;
 }
 
-button {
-  border: none;
-  cursor: pointer;
-  background: none;
-  font: inherit;
+ul {
+    list-style: none;
 }
+
 
 .conteiner {
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 0 20px;
+    width: min(var(--largura), calc(100% - 64px));
+    margin: 0 auto;
 }
 
-
-.btn-green:hover {
-  filter: brightness(1.15);
-  transform: translateY(-1px);
-}
-
-.btn-outline {
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--texto);
-  padding: 10px 22px;
-  border-radius: 50px;
-  font-weight: 500;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-outline:hover {
-  border-color: var(--destaque);
-  background: rgba(255, 255, 255, 0.05);
-}
 
 /* Barra de Navegação */
 .navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  background: rgba(9, 13, 22, 0.88);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.2s ease;
-  background-color: transparent;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(9, 13, 22, 0.96);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+    backdrop-filter: blur(14px);
 }
 
-.navbar.scrolled {
-  background: rgba(9, 13, 22, 0.98);
-  border-bottom-color: var(--primaria);
+.navbar-conteudo {
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 100px;
 }
 
-.navbar .conteiner {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding-left: 120px;
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    color: var(--texto);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    white-space: nowrap;
 }
 
 .logo-imagem {
-  display: flex;
-  align-items: center;
+    display: block;
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
-.logo-imagem img {
-  height: 54px;
-  width: auto;
-  display: block;
+.logo-destaque {
+    color: var(--destaque);
 }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 28px;
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 34px;
 }
 
-.nav-link {
-  color: #94a3b8;
-  font-size: 14px;
-  font-weight: 500;
+.menu a {
+    color: var(--texto-secundario);
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 0.2s ease;
 }
 
-.nav-link:hover {
-  color: var(--destaque);
+.menu a:hover {
+    color: var(--destaque);
 }
 
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.botao-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 15px;
+    border: 1px solid #394862;
+    border-radius: 4px;
+    color: var(--texto);
+    font-size: 12px;
+    font-weight: 600;
+    transition: border-color 0.2s, color 0.2s;
 }
 
+.botao-nav:hover {
+    border-color: var(--destaque);
+    color: var(--destaque);
+}
+
+/*Formulário contato*/
 
 .box-contato {
     display: flex;
@@ -138,7 +139,7 @@ button {
     justify-content: center;
     border-radius: 20px;
     border: 1px solid rgb(9, 9, 9);
-    margin-top: 190px;
+    margin-top: 110px;
 }
 
 .voltar-inicio {
