@@ -7,5 +7,9 @@ router.post("/cadastrar", function (req, res) {
     maquinaController.cadastrar(req, res);
 })
 
+router.get("/buscarServidores/:idEmpresa", function (req, res) {
+    maquinaController.buscarServidores(req, res);
+})
+
 
 module.exports = router;
