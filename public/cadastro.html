@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar Conta — lowlatency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+
+<body>
+
+  <div class="layout-auth">
+    <div class="lado-imagem">
+      <img src="assets/imgs/banner.jpg" alt="Telemetria Financeira" class="img-cad-log">
+    </div>
+
+    <div class="lado-formulario">
+      <a href="index.html" class="voltar-inicio">Voltar para o início</a>
+
+      <div class="cabecalho-auth">
+        <h1 class="titulo-auth">Cadastre um novo profissional</h1>
+      </div>
+
+      <form class="formulario-cadastro">
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Nome completo *</label>
+          <input class="campo-nome" id="nome_input" type="text" placeholder="Ex: Roberto Silva" required />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Email corporativo *</label>
+          <input class="campo-email" id="email_input" type="email" placeholder="roberto@empresa.com.br" required />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">CPF *</label>
+          <input class="campo-cpf" id="cpf_input" type="text" placeholder="Apenas números" maxlength="11" required />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Cargo *</label>
+          <select class="campo-cargo" id="cargo_input" required>
+            <option value="" disabled selected>Selecione o cargo do colaborador</option>
+            <option value="1">Gestor</option>
+            <option value="2">Analista de Infraestrutura</option>
+          </select>
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Tipo de telefone:</label>
+          <select class="campo-tipo-contato" id="tipo_contato_input">
+            <option value="1">Celular</option>
+            <option value="2">Telefone Fixo</option>
+          </select>
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Telefone *</label>
+          <input class="campo-telefone" id="telefone_input" type="tel" placeholder="(00) 00000-0000" required />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Senha de acesso *</label>
+          <input class="campo-senha" id="senha_input" type="password" placeholder="Mínimo 6 caracteres" required />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Confirmar senha *</label>
+          <input class="campo-confirmar-senha" id="confirmacao_senha_input" type="password" placeholder="Repita a senha"
+            required />
+        </div>
+
+        <button type="button" class="botao-cadastrar" onclick="cadastrar()">Concluir Cadastro</button>
+
+      </form>
+
+      <div class="rodape-auth">
+        Já possui uma conta? <a href="login.html">Fazer login</a>
+      </div>
+
+      <div id="cardErro" class="mensagem-alerta">
+        <p id="mensagem_erro"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function cadastrar() {
+      var nomeVar = nome_input.value;
+      var emailVar = email_input.value;
+      var cpfVar = cpf_input.value;
+      var cargoVar = cargo_input.value;
+      var telefoneVar = telefone_input.value;
+      var tipoContatoVar = tipo_contato_input.value;
+      var senhaVar = senha_input.value;
+      var confirmacaoSenhaVar = confirmacao_senha_input.value;
+
+      var fkEmpresaVar = sessionStorage.FK_EMPRESA;
+      var fkCargoSessao = sessionStorage.FK_CARGO;
+
+    if (fkEmpresaVar == undefined) {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Erro: Empresa não identificada. Faça login novamente.";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+    }
+
+    if (fkCargoSessao != 1) {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Acesso Negado: Apenas Gestores podem cadastrar novos analistas.";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+    }
+
+      if (fkEmpresaVar == undefined) {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Erro: Empresa não identificada. Faça login como Gestor novamente.";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+      }
+
+      if (nomeVar == "" || emailVar == "" || cpfVar == "" || cargoVar == "" || telefoneVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Preencha todos os campos em branco para prosseguir!";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+      }
+
+      if (senhaVar != confirmacaoSenhaVar) {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "As senhas digitadas não coincidem!";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+      }
+
+      fetch("/usuarios/cadastrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nomeServer: nomeVar,
+          cpfServer: cpfVar,
+          emailServer: emailVar,
+          senhaServer: senhaVar,
+          fkEmpresaServer: fkEmpresaVar,
+          fkCargoServer: cargoVar,
+          telefoneServer: telefoneVar,
+          tipoContatoServer: tipoContatoVar 
+        })
+      }).then(function (resposta) {
+        if (resposta.ok) {
+          cardErro.style.display = "block";
+          cardErro.className = "mensagem-alerta";
+          mensagem_erro.innerHTML = "Cadastro realizado com sucesso! Redirecionando...";
+          setTimeout(() => {
+            window.location = "login.html";
+          }, 2000);
+        } else {
+          throw "Houve um erro ao tentar realizar o cadastro!";
+        }
+      }).catch(function (erro) {
+        console.log(`#ERRO: ${erro}`);
+      });
+
+      return false;
+    }
+
+    function sumirMensagem() {
+      cardErro.style.display = "none";
+    }
+  </script>
+
+</body>
+
+</html>

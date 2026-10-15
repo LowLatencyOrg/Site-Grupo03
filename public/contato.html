@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lowlatency — Contate-nos</title>
+    <meta name="description" content="Telemetria em tempo real para servidores de Order Routing e Matching Engine." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/contato.css">
+</head>
+<body>
+  <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="index.html#inicio" class="logo" aria-label="LowLatency - início">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+
+            <nav class="menu">
+                <a href="index.html">Início</a>
+                <a href="sobre-nos.html">Sobre nós</a>
+                <a href="sobre-solucao.html">Sobre a solução</a>
+            </nav>
+
+            <div class="botoes-nav">
+              <a href="dashboard/dashboard-principal.html" class="botao-nav">
+                Acessar dashboard
+                <span aria-hidden="true">↗</span>
+            </a>
+
+            <a href="contato.html" class="botao-nav">
+               contate-nos
+                <span aria-hidden="true">↗</span>
+            </a>
+            </div>
+
+        </div>
+    </header>
+
+  <div class="box-contato">
+      <a href="index.html" class="voltar-inicio">Voltar para o início</a>
+      <div class="titulo-contato">
+          Entre em contato conosco
+      </div>
+      <div class="formulario-contato">
+          nome<input type="text" placeholder="seuNome" id="nome_input">
+          e-mail<input type="text" placeholder="sua@empresa.com" id="email_input">
+          telefone <input type="text" placeholder="(xx) xxxxx-xxxx" id="telefone_input">
+          empresa <input type="text" placeholder="suaEmpresa" id="empresa_input">
+      </div>
+      <div class="botao-contato">
+          <button type="button" class="botao-salvar" onclick="validarContato()">Salvar Informações</button>
+      </div>
+      <div id="cardErro" class="mensagem-alerta">
+          <p id="mensagem_erro"></p>
+      </div>
+  </div>
+
+  <script>
+    function validarContato() {
+      var cardErro = document.getElementById("cardErro");
+      var mensagem_erro = document.getElementById("mensagem_erro");
+
+      var nomeVar = nome_input.value;
+      var emailVar = email_input.value;
+      var telefoneVar = telefone_input.value;
+      var empresaVar = empresa_input.value;
+
+      if (nomeVar == "" || emailVar == "" || telefoneVar == "" || empresaVar == "") {
+        cardErro.style.display = "block";
+        cardErro.classList.add("erro");
+        mensagem_erro.innerHTML = "Preencha todos os campos em branco para prosseguir!";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+      }
+
+      if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".") == -1) {
+        cardErro.style.display = "block";
+        cardErro.classList.add("erro");
+        mensagem_erro.innerHTML = "Por favor, insira um e-mail válido!";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+      }
+
+      if (telefoneVar.length < 10) {
+        cardErro.style.display = "block";
+        cardErro.classList.add("erro");
+        mensagem_erro.innerHTML = "O telefone deve ter pelo menos 10 dígitos (DDD + Número)!";
+        setTimeout(sumirMensagem, 5000);
+        return false;
+      }
+
+      fetch("/contato/cadastrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nomeServer: nomeVar,
+          emailServer: emailVar,
+          telefoneServer: telefoneVar,
+          empresaServer: empresaVar,
+        }),
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            cardErro.style.display = "block";
+            cardErro.classList.remove("erro");
+            mensagem_erro.innerHTML = "Mensagem enviada com sucesso! Entraremos em contato.";
+            setTimeout(sumirMensagem, 5000);
+
+            nome_input.value = "";
+            email_input.value = "";
+            telefone_input.value = "";
+            empresa_input.value = "";
+          } else {
+            throw new Error("Houve um erro ao tentar enviar o formulário!");
+          }
+        })
+        .catch(function (resposta) {
+          cardErro.style.display = "block";
+          cardErro.classList.add("erro");
+          mensagem_erro.innerHTML = "Erro ao enviar a mensagem. Tente novamente mais tarde.";
+          setTimeout(sumirMensagem, 5000);
+        });
+
+      return false;
+    }
+
+    function sumirMensagem() {
+      document.getElementById("cardErro").style.display = "none";
+    }
+  </script>
+</body>
+</html>

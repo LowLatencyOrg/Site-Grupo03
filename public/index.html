@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LowLatency | Página Inicial</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/landing.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="#inicio" class="logo" aria-label="LowLatency - início">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+
+            <nav class="menu">
+                <a href="index.html">Início</a>
+                <a href="sobre-nos.html">Sobre nós</a>
+                <a href="sobre-solucao.html">Sobre a solução</a>
+            </nav>
+            <div class="botoes-nav">
+                <a href="login.html" class="botao-nav">
+                Acessar dashboard
+                <span aria-hidden="true">↗</span>
+            </a>
+
+            <a href="contato.html" class="botao-nav">
+               contate-nos
+                <span aria-hidden="true">↗</span>
+            </a>
+            </div>
+
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Banner -->
+        <section class="banner" id="inicio">
+            <div class="conteiner banner-conteudo">
+                <h1>Monitore sua infraestrutura. Antecipe problemas antes que eles afetem o matching engine.</h1>
+
+                <div class="banner-botoes">
+                    <a href="sobre-solucao.html" class="botao botao-secundario">Sobre a solução</a>
+                    <a href="login.html" class="botao botao-primario">Começar agora</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Quem Somos -->
+        <section class="secao" id="sobre">
+            <div class="conteiner">
+                <div class="grade-sobre">
+                    <div class="texto-sobre">
+                        <h3>Visibilidade total sobre a infraestrutura que sustenta o pregão</h3>
+                        <p>
+                            A <strong>LowLatency</strong> é uma empresa de tecnologia especializada em monitoramento contínuo de telemetria e integridade de infraestrutura para servidores de alta frequência aplicados a bolsas de valores.
+                        </p>
+                        <p>
+                            Nosso foco crítico são as camadas de <strong>Roteamento de Ordens (Order Routing / SOR)</strong> e <strong>Casamento de Ofertas (Matching Engine)</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Soluções -->
+        <section class="secao secao-alternada" id="solucoes">
+            <div class="conteiner">
+                <div class="cabecalho-secao">
+                    <h2 class="titulo-secao">Telemetria Especializada para Infraestrutura de Pregão</h2>
+                </div>
+
+                <div class="grade-solucoes">
+
+                    <article class="cartao-solucao">
+                        <img src="assets/icon/cpu.png" alt="Monitoramento de CPU" class="img-solucao">
+                        <h3>Monitoramento de CPU</h3>
+                        <p>Telemetria detalhada de núcleos e threads para o processamento do sistema, com monitoramento contínuo, para prevenção de gargalos em horários de abertura e fechamento do pregão.</p>
+                        <ul class="lista-recursos-solucao">
+                            <li>Uso percentual em tempo real por core e thread do Matching Engine</li>
+                            <li>Detecção de picos de carga nos horários críticos de pregão</li>
+                            <li>Monitoramento de trocas de contexto e interrupções do sistema</li>
+                        </ul>
+                    </article>
+
+                    <article class="cartao-solucao">
+                        <img src="assets/icon/ram.png" alt="Monitoramento de Memória RAM" class="img-solucao">
+                        <h3>Monitoramento de Memória RAM</h3>
+                        <p>Visibilidade sobre o consumo de memória dos processos do livro de ofertas (Order Book) e filas de roteamento, com alerta imediato contra ativação de swap.</p>
+                        <ul class="lista-recursos-solucao">
+                            <li>Consumo contínuo de RAM por Order Book e filas de mensagens</li>
+                            <li>Acompanhamento da alocação de memória em cache e buffers temporários</li>
+                            <li>Prevenção de uso de swap — que degradaria o tempo de resposta</li>
+                        </ul>
+                    </article>
+
+                    <article class="cartao-solucao">
+                        <img src="assets/icon/ssd.png" alt="Monitoramento de Disco" class="img-solucao">
+                        <h3>Monitoramento de Disco</h3>
+                        <p>Vazão de I/O e integridade de persistência das trilhas de transações e logs de execução — sem reter o ciclo do motor de casamento.</p>
+                        <ul class="lista-recursos-solucao">
+                            <li>Taxa de leitura/escrita e IOPS em tempo real</li>
+                            <li>Monitoramento da capacidade de armazenamento e uso das partições</li>
+                            <li>Acompanhamento dos tempos de espera e processamento em operações de disco</li>
+                        </ul>
+                    </article>
+
+                    <article class="cartao-solucao">
+                        <img src="assets/icon/rede.png" alt="Velocidade e Tráfego de Rede" class="img-solucao">
+                        <h3>Velocidade e Tráfego de Rede</h3>
+                        <p>Acompanhamento em tempo real da taxa de tráfego de rede e volume de pacotes na interface para evitar gargalos no fluxo de negociação.</p>
+                        <ul class="lista-recursos-solucao">
+                            <li>Latência ponta-a-ponta entre gateways de roteamento</li>
+                            <li>Velocidade de processamento de mensagens e volume de compras/vendas por segundo</li>
+                            <li>Detecção de perda de pacotes e variação na camada de transporte</li>
+                        </ul>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Diferenciais -->
+        <section class="secao" id="diferenciais">
+            <div class="conteiner">
+                <div class="cabecalho-secao">
+                    <h2 class="titulo-secao">Engenharia de Monitoramento para Ambientes de Microsegundos</h2>
+                </div>
+
+                <div class="grade-diferenciais">
+                    <article class="caixa-diferencial">
+                        <h4>Impacto Mínimo no Host</h4>
+                        <p>Agentes de coleta otimizados que consomem menos de 5% de CPU e não competem por memória com o Matching Engine.</p>
+                    </article>
+
+                    <article class="caixa-diferencial">
+                        <h4>Telemetria em Tempo Real</h4>
+                        <p>Leitura de métricas de uso de CPU, memória e rede atualizada a cada segundo via APIs do sistema operacional.</p>
+                    </article>
+
+                    <article class="caixa-diferencial">
+                        <h4>Priorização de Ativos</h4>
+                        <p>Monitore apenas o que importa. Filtre máquinas críticas em tempo real para tomada de decisão ágil sem distrações na tela.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="conteiner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">LowLatency</h3>
+                    <p class="footer-desc">Telemetria de alta precisão para infraestrutura de servidores de bolsas de valores.</p>
+                </div>
+
+                <nav class="footer-nav" aria-label="Links da empresa">
+                    <h4 class="footer-links-title">EMPRESA</h4>
+                    <ul class="footer-links">
+                        <li><a href="#sobre">Sobre Nós</a></li>
+                        <li><a href="#solucoes">Soluções</a></li>
+                        <li><a href="#diferenciais">Inovações</a></li>
+                    </ul>
+                </nav>
+
+                <nav class="footer-nav" aria-label="Links da plataforma">
+                    <h4 class="footer-links-title">PLATAFORMA</h4>
+                    <ul class="footer-links">
+                        <li><a href="login.html">Acessar Painel</a></li>
+                        <li><a href="cadastro.html">Criar Nova Conta</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 lowlatency. Projeto Acadêmico SPTech</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

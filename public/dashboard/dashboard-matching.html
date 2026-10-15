@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LowLatency | Dashboard Matching Engine</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/dashboards.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!--Menu-->
+    <header class="navbar">
+        <div class="conteiner">
+            <div class="logo-imagem">
+                <span class="logo">
+                    LowLatency 
+                </span>
+            </div>
+
+            <nav class="nav-links">
+                <a href="#" class="nav-link">Voltar</a>
+            </nav>
+        </div>
+    </header>
+
+    <!--Dashboard -->
+    <main class="dashboard">
+
+        <!--Parte das Kpis -->
+        <section class="kpis">
+
+            <!-- Kpi Io Wait -->
+            <button class="kpi-geral ativo">
+                <div class="servidor-cabecalho">
+                    <h3> CPU Ociosa (%)</h3>
+                    
+                </div>
+
+                <div class="servidor-corpo">
+                    <div class="servidor-info">
+                        <b>40%</b>
+                    </div>
+                </div>
+
+        
+            </button>
+
+            <!-- KPi IOPS do disco -->
+            <button class="kpi-geral">
+                <div class="servidor-cabecalho">
+                    <h3>IOPS do Disco</h3>
+                    
+                </div>
+
+                <div class="servidor-corpo">
+                    <div class="servidor-info">
+                        
+                        <b>100.856</b>
+                    </div>
+                </div>
+
+            </button>
+
+            <!-- Servidor Da Central Depositária 
+            <button class="kpi-geral alerta-card">
+                <div class="servidor-cabecalho">
+                    <h3>Central Depositária</h3>
+                    <span class="status alerta">
+                        <i></i> Atenção
+                    </span>
+                </div>
+
+                <div class="servidor-corpo">
+                    <div class="servidor-info">
+                        <span>Uso de RAM</span>
+                        <b>80%</b>
+                    </div>
+                </div>
+
+               
+            </button> -->
+
+        </section>
+
+        <!-- Parte do gráfico -->
+<section class="area-grafico">
+
+    <!-- Parte de cima do gráfico -->
+    <div class="cabecalho-grafico">
+        <div>
+            <h2> Histórico do Uso da Memória Ram e SWAP</h2>
+        </div>
+
+      
+    </div>
+
+
+
+    <!-- Canvas do gráfico-->
+    <div class="grafico">
+        <canvas id="graficoAlertas"></canvas>
+    </div>
+
+</section>
+
+  
+</body>
+
+</html>
+
+
+
+
+    <script src="../js/dashboard.js"></script>
+
+</body>
+
+
+</html>
+
+<script>
+
+        // Indica pro navegador onde e como ele tem que desenhar o gráfico
+        const ctx = document.getElementById('graficoUsoRAMeSwap').getContext('2d');
+        
+    
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = "#94a3b8"; 
+
+        const grafico = new Chart(ctx, {
+            type: 'line', 
+            data: {
+                labels: ['1,2,3,4,5,6,7,8,9,1,10,11,12,13,14,15'],
+
+                datasets: [
+                    {
+                    label:  'Uso da memória RAM',
+                    data: [60,62,64,59,58,64,66,70,72,60,55,52,50,45,51],
+                    backgroundColor: '#68dda8',
+                    tension: 0.3
+            }
+        
+        ,
+            
+            {
+                label: 'Uso da SWAP',
+                data: [65,68,54,59,52,65,76,70,72,40,55,52,50,45,51],
+                backgroundColor: '#ffffff',
+                tension:0.3
+            }
+        ]
+        
+        },
+        options:{ 
+        maintainAspectRatio: false, 
+        plugins: { 
+            legend: { 
+                display: true 
+        }, 
+        scales: { 
+            y: { 
+                beginAtZero: true, 
+                grid: { 
+                    color: 'rgba(148, 163, 184, 0.1)' 
+                } 
+            }, 
+            x: { 
+                grid: { 
+                    display: false 
+                } 
+            } 
+        } 
+    } 
+}
+     ),};
+
+
+          
+        </script>

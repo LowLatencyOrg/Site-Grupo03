@@ -30,9 +30,9 @@
             </div>
 
             <nav class="nav-links">
-                <a href="#" class="nav-link">Visão Geral</a>
-                <a href="#" class="nav-link">Servidores</a>
-                <a href="#" class="nav-link">Relatórios</a>
+                <a href="#" class="nav-link"></a>
+                <a href="#" class="nav-link"></a>
+                <a href="#" class="nav-link"></a>
             </nav>
         </div>
     </header>
@@ -44,7 +44,7 @@
         <section class="kpis">
 
             <!-- Kpi Matching Engine -->
-            <button class="kpi-geral ativo">
+            <button class="kpi-geral ativo" onclick="abrirDashboardMatching()">
                 <div class="servidor-cabecalho">
                     <h3>Matching Engine</h3>
                     
@@ -63,7 +63,7 @@
             </button>
 
             <!-- Servidor Market Data (Mensageria) -->
-            <button class="kpi-geral">
+            <button class="kpi-geral" onclick="abrirDashboardMarketData()">
                 <div class="servidor-cabecalho">
                     <h3>Market Data</h3>
                     
@@ -82,7 +82,7 @@
             </button>
 
             <!-- Servidor Da Central Depositária  -->
-            <button class="kpi-geral alerta-card">
+            <button class="kpi-geral alerta-card" onclick="abrirDashboardCentralDepositaria()">
                 <div class="servidor-cabecalho">
                     <h3>Central Depositária</h3>
                     <span class="status alerta">
@@ -164,6 +164,18 @@
 </html>
 
 <script>
+
+    function abrirDashboardMatching(){
+        window.location.href = "dashboard-matching.html"
+    }
+
+    function abrirDashboardMarketData(){
+        window.location.href = "dashboard-marketdata.html"
+    }
+    
+    function abrirDashboardCentralDepositaria(){
+        window.location.href = "dashboard-centraldepositaria.html"
+    }
 
         // Indica pro navegador onde e como ele tem que desenhar o gráfico
         const ctx = document.getElementById('graficoAlertas').getContext('2d');
