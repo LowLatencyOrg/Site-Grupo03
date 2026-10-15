@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="css/auth.css" />
 </head>
 
-<body>
+<body onload="buscarServidores()">
 
   <div class="cadastro-maquina">
     <div class="parte-cadastro"></div>
@@ -24,55 +24,62 @@
 
         <!-- Cabeçalho -->
         <div class="cabecalho-auth">
-            <h1 class="titulo-auth">Cadastrar servidor</h1>
+            <h1 class="titulo-auth">Cadastrar componente</h1>
         </div>
 
         <!-- Formulário de Cadastro -->
         <form class="formulario-cadastro">
 
             <div class="grupo-campo">
-            <label class="rotulo-campo">Hostname</label>
-            <input class="campo-nome" id="hostname_input" type="text"/>
-            </div>
-
-            <div class="grupo-campo">
-            <label class="rotulo-campo">MacAddress</label>
-            <input class="campo-email" id="macaddress_input" type="email"/>
-            </div>
-
-            <div class="grupo-campo">
-              <label class="rotulo-campo">Sistema Operacional</label>
-              <input type="hidden" id="so_input" value="linux" />
+              <label class="rotulo-campo">Servidor</label>
+              <input type="hidden" id="servidor_input" value="" />
               <div class="select-diferente">
-                <div class="campo-empresa select">Linux</div>
-                <ul class="opcoes">
-                  <li data-value="linux">Linux</li>
-                  <li data-value="windows">Windows</li>
-                  <li data-value="mac_os">MacOS</li>
+                <div class="campo-empresa select" id="display_servidor">Selecione um servidor</div>
+                <ul class="opcoes" id="lista_servidores">
                 </ul>
               </div>
             </div>
 
             <div class="grupo-campo">
-              <label class="rotulo-campo">Status</label>
-              <input type="hidden" id="status_input" value="ativo" />
+              <label class="rotulo-campo">Componente</label>
+              <input type="hidden" id="componente_input" value="1" />
               <div class="select-diferente">
-                <div class="campo-cnpj select">Ativo</div>
+                <div class="campo-empresa select">CPU</div>
                 <ul class="opcoes">
-                  <li data-value="ativo">Ativo</li>
-                  <li data-value="inativo">Inativo</li>
-                  <li data-value="manutencao">Em Manutenção</li>
+                  <li data-value="1">CPU</li>
+                  <li data-value="2">RAM</li>
+                  <li data-value="3">Disco</li>
+                  <li data-value="4">Rede</li>
                 </ul>
               </div>
             </div>
 
+            <div class="grupo-campo">
+              <label class="rotulo-campo">Tipo de medida</label>
+              <input type="hidden" id="medida_input" value="" />
+              <div class="select-diferente">
+                <div class="campo-cnpj select" id="display_medida">Selecione o componente primeiro</div>
+                <ul class="opcoes" id="lista_medidas">
+                </ul>
+              </div>
+            </div>
+
+            <div class="grupo-campo">
+            <label class="rotulo-campo">Valor alerta</label>
+            <input class="campo-nome" id="alerta_input" type="text"/>
+            </div>
+
+            <div class="grupo-campo">
+            <label class="rotulo-campo">Valor crítico</label>
+            <input class="campo-email" id="critico_input" type="email"/>
+            </div>
 
             <button type="button" class="botao-cadastrar" onclick="cadastrar()">Concluir Cadastro</button>
 
         </form>
 
         <div class="rodape-auth">
-            Já cadastrou uma máquina? <a href="cadastro-componente.html">Cadastrar componente</a>
+            Ainda não cadastrou um servidor? <a href="cadastro-maquina.html">Cadastrar servidor</a>
         </div>
 
         <div id="cardErro" class="mensagem-alerta">
@@ -86,131 +93,206 @@
     <!-- Lado Direito: Painel de Cadastro -->
     
   </div>
-
-  <script>
-    function cadastrar() {
-      var idEmpresaVar = sessionStorage.getItem("ID_EMPRESA")
-      var hostnameVar = hostname_input.value;
-      var macAddressVar = macaddress_input.value;
-      var soVar = so_input.value;
-      var statusVar = status_input.value;
-
-      if (hostnameVar == "" || macAddressVar == "" || soVar == "" || statusVar == "") {
-        cardErro.style.display = "block";
-        cardErro.className = "mensagem-alerta erro";
-        mensagem_erro.innerHTML = "Preencha todos os campos em branco para prosseguir!";
-        setTimeout(sumirMensagem, 5000);
-        return false;
-      }
-
-      if (macAddressVar == "admin@lowlatency.com.br" && senhaVar == "123456" && statusVar == "12.345.678/0001-90") {
-        cardErro.style.display = "block";
-        cardErro.className = "mensagem-alerta";
-        mensagem_erro.innerHTML = "Cadastro realizado com sucesso! Redirecionando...";
-        setTimeout(sumirMensagem, 5000);
-        setTimeout(trocaTela, 2500)
-      } else {
-        cardErro.style.display = "block";
-        cardErro.className = "mensagem-alerta erro";
-        mensagem_erro.innerHTML = "Utilize o e-mail e senha corporativos pré-setados!";
-        setTimeout(sumirMensagem, 5000);
-      }
-
-      fetch("../src/routes/maquinas/cadastrar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                idEmpresaServer: idEmpresaVar,
-                hostnameServer: hostnameVar,
-                macAddressServer: macAddressVar,
-                soServer: soVar,
-                statusServer: statusVar
-            })
-        })
-            .then(function (resposta) {
-                console.log("Resposta: ", resposta);
-
-                if (resposta.ok) {
-                    cardErro.style.display = "block";
-
-                    mensagem_erro.innerHTML =
-                        "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
-                    setTimeout(() => {
-                        window.location = "login.html";
-                    }, "2000");
-
-                    limparFormulario();
-                    finalizarAguardar();
-                } else {
-                    throw "Houve um erro ao tentar realizar o cadastro!";
-                }
-            })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
-                finalizarAguardar();
-            });
-
-      return false;
-    }
-
-    function trocaTela(){
-      window.location = "manutencao.html"
-    }
-    function sumirMensagem() {
-      cardErro.style.display = "none";
-    }
-  </script>
-
 </body>
-
 </html>
 
 <script>
+  let lista_servidores = []
 
-    function cadastrar() {
+  let medidasPorComponente = {
+      "1": [
+        { valor: "1", texto: "Uso em %" },
+        { valor: "2", texto: "Frequência (GHz)" },
+        { valor: "3", texto: "Temperatura (°C)" }
+      ],
+      "2": [
+        { valor: "1", texto: "Uso em %" },
+        { valor: "4", texto: "Quantidade Livre (GB)" },
+        { valor: "5", texto: "Uso em % da Swap" }
+      ],
+      "3": [
+        { valor: "1", texto: "Uso em %" },
+        { valor: "6", texto: "Espaço Livre (GB)" },
+        { valor: "7", texto: "Leitura e Gravação (MB/s)" }
+      ],
+      "4": [
+        { valor: "8", texto: "Pacotes Perdidos (%)" },
+        { valor: "9", texto: "Latência (ms)" },
+        { valor: "10", texto: "Banda Utilizada (Mbps)" }
+      ]
+    };
+
+  function buscarServidores() {
+    //var idEmpresa = sessionStorage.getItem("ID_EMPRESA")
+    var idEmpresa = 1
+    fetch(`/maquinas/buscarServidores/${idEmpresa}`)
+      .then(function (resposta) {
+        if (resposta.ok) {
+          resposta.json().then(function (respostaEmp) {
+            console.log(`Dados recebidos: ${JSON.stringify(respostaEmp)}`);
+            preencherServidores(respostaEmp)
+          });
+        }else {
+          console.error('Nenhum dado encontrado ou erro na API');
+        }
+      }).catch(function (error) {
+          console.error(`Erro na obtenção dos servidores: ${error.message}`);
+        });
         
+  }    
+
+  function preencherServidores(listaServidores) {
+    let listaHtml = document.getElementById('lista_servidores') 
+    let displayHtml = document.getElementById('display_servidor')
+    let hiddenInput = document.getElementById('servidor_input')
+    listaHtml.innerHTML = ''
+
+    if (!listaServidores || listaServidores.length == 0) {
+      displayHtml.textContent = "Nenhum servidor encontrado"
+      hiddenInput.value = ''
+      return
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    listaServidores.forEach(servidor => {
+      let li =document.createElement('li')
+      li.setAttribute('data-value', servidor.id_servidor)
+      li.textContent = servidor.hostname
+      listaHtml.appendChild(li)
+    })
+  }
+
+  function preencherMedidas(selecionado) {
+    let listaHtml = document.getElementById('lista_medidas') 
+    let displayHtml = document.getElementById('display_medida')
+    let hiddenInput = document.getElementById('medida_input')
+    listaHtml.innerHTML = ''
+    hiddenInput.value = ''
+
+    let medidas = medidasPorComponente[selecionado]
+    if (!medidas || medidas.length === 0) {
+      displayHtml.textContent = 'Selecione o componente primeiro';
+      return;
+    }
+    displayHtml.textContent = 'Selecione a medida';
+
+    medidas.forEach(medida => {
+      let li = document.createElement('li');
+      li.setAttribute('data-value', medida.valor);
+      li.textContent = medida.texto;
+      
+      listaHtml.appendChild(li);
+    });
+
+  }
+
+  function cadastrar() {
+    var idServidorVar = servidor_input.value
+    var idComponenteVar = componente_input.value
+    //var idEmpresaVar = sessionStorage.getItem("ID_EMPRESA")
+    var idEmpresaVar = 1
+    var idMetricaVar = medida_input.value;
+    var valorLimite1Var = alerta_input.value;
+    var valorLimite2Var = critico_input.value;
+    
+    if (idServidorVar == "" || idComponenteVar == "" || idMetricaVar == "" || valorLimite1Var == "" || valorLimite2Var == "") {
+      cardErro.style.display = "block";
+      cardErro.className = "mensagem-alerta erro";
+      mensagem_erro.innerHTML = "Preencha todos os campos em branco para prosseguir!";
+      setTimeout(sumirMensagem, 5000);
+      return false;
+    }
+
+    fetch("/componentes/cadastrar", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              idServidorServer: idServidorVar,
+              idComponenteServer: idComponenteVar,
+              idEmpresaServer: idEmpresaVar,
+              idMetricaServer: idMetricaVar,
+              valorLimite1Server: valorLimite1Var,
+              valorLimite2Server: valorLimite2Var
+          })
+      })
+          .then(function (resposta) {
+              console.log("Resposta: ", resposta);
+
+              if (resposta.ok) {
+                  cardErro.style.display = "block";
+
+                  mensagem_erro.innerHTML =
+                      "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+
+                  setTimeout(() => {
+                      window.location = "login.html";
+                  }, "2000");
+              } else {
+                  throw "Houve um erro ao tentar realizar o cadastro!";
+              }
+          })
+          .catch(function (resposta) {
+              console.log(`#ERRO: ${resposta}`);
+          });
+
+    return false;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
     const selects = document.querySelectorAll('.select-diferente');
-      selects.forEach(selects => {
-        const select = selects.querySelector('.select');
-        const listaOpcoes = selects.querySelector('.opcoes');
-        const opcoes = selects.querySelectorAll('.opcoes li');
-        const hiddenInput = selects.parentElement.querySelector('input[type="hidden"]');
+    selects.forEach(sele => {
+      const select = sele.querySelector('.select');
+      const listaOpcoes = sele.querySelector('.opcoes');
+      const hiddenInput = sele.parentElement.querySelector('input[type="hidden"]');
 
-        select.addEventListener('click', function() {        
-          document.querySelectorAll('.opcoes').forEach(list => {
-            if (list !== listaOpcoes) list.classList.remove('open');
-          });
-          document.querySelectorAll('.select').forEach(select => {
-            if (select !== select) select.classList.remove('open');
-          });
-          listaOpcoes.classList.toggle('open');
-          select.classList.toggle('open');
+      select.addEventListener('click', function() {        
+        document.querySelectorAll('.opcoes').forEach(list => {
+          if (list !== listaOpcoes) list.classList.remove('open');
         });
-
-        opcoes.forEach(option => {
-          option.addEventListener('click', function() {
-            select.textContent = this.textContent;
-            if (hiddenInput) {
-              hiddenInput.value = this.getAttribute('data-value');
-            }
-            listaOpcoes.classList.remove('open');
-            select.classList.remove('open');
-          });
+        document.querySelectorAll('.select').forEach(box => {
+          if (box !== select) box.classList.remove('open');
         });
+        listaOpcoes.classList.toggle('open');
+        select.classList.toggle('open');
       });
 
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.select-diferente')) {
-          document.querySelectorAll('.opcoes').forEach(list => list.classList.remove('open'));
-          document.querySelectorAll('.select').forEach(select => select.classList.remove('open'));
+      listaOpcoes.addEventListener('click', function(e) {
+        let liClicada = e.target.closest('li');
+        
+        if (liClicada) {
+          select.textContent = liClicada.textContent;
+          
+          if (hiddenInput) {
+            hiddenInput.value = liClicada.getAttribute('data-value');
+            if (hiddenInput.id === 'componente_input') {
+              preencherMedidas(hiddenInput.value);
+            }
+          }
+
+          listaOpcoes.classList.remove('open');
+          select.classList.remove('open');
         }
       });
     });
 
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.select-diferente')) {
+          document.querySelectorAll('.opcoes').forEach(list => list.classList.remove('open'));
+          document.querySelectorAll('.select').forEach(box => box.classList.remove('open'));
+        }
+      });
+
+      let componenteInicial = document.getElementById('componente_input').value;
+      if (componenteInicial) {
+        preencherMedidas(componenteInicial);
+      }
+  });
+
+  function trocaTela(){
+    window.location = "manutencao.html"
+  }
+  function sumirMensagem() {
+    cardErro.style.display = "none";
+  }
 </script>
