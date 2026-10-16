@@ -19,20 +19,9 @@
                 <span>Low<span class="logo-destaque">Latency</span></span>
             </a>
 
-            <nav class="menu">
-                <a href="index.html">Início</a>
-                <a href="sobre-nos.html">Sobre nós</a>
-                <a href="sobre-solucao.html">Sobre a solução</a>
-            </nav>
-
-            <div class="botoes-nav">
-              <a href="dashboard/dashboard-principal.html" class="botao-nav">
-                Acessar dashboard
-                <span aria-hidden="true">↗</span>
-            </a>
-
-            <a href="contato.html" class="botao-nav">
-               contate-nos
+    
+            <a href="index.html" class="botao-nav">
+               Voltar ao Início
                 <span aria-hidden="true">↗</span>
             </a>
             </div>
@@ -46,11 +35,26 @@
           Entre em contato conosco
       </div>
       <div class="formulario-contato">
-          nome<input type="text" placeholder="seuNome" id="nome_input">
-          e-mail<input type="text" placeholder="sua@empresa.com" id="email_input">
-          telefone <input type="text" placeholder="(xx) xxxxx-xxxx" id="telefone_input">
-          empresa <input type="text" placeholder="suaEmpresa" id="empresa_input">
-      </div>
+    <label class="campo-grupo">
+        Nome
+        <input type="text" placeholder="seuNome" id="nome_input">
+    </label>
+
+    <label class="campo-grupo">
+        E-mail
+        <input type="text" placeholder="sua@empresa.com" id="email_input">
+    </label>
+
+    <label class="campo-grupo">
+        Telefone
+        <input type="text" placeholder="(xx) xxxxx-xxxx" id="telefone_input">
+    </label>
+
+    <label class="campo-grupo">
+        Nome da Empresa
+        <input type="text" placeholder="suaEmpresa" id="empresa_input">
+    </label>
+</div>
       <div class="botao-contato">
           <button type="button" class="botao-salvar" onclick="validarContato()">Salvar Informações</button>
       </div>
