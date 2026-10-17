@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -7,185 +8,227 @@
 
     <title>LowLatency | Dashboard Matching Engine</title>
 
+    <link rel="stylesheet" href="../css/dashboard-matching.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
-        rel="stylesheet">
-
-    <link rel="stylesheet" href="../css/dashboards.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-    <!--Menu-->
     <header class="navbar">
-        <div class="conteiner">
-            <div class="logo-imagem">
-                <span class="logo">
-                    LowLatency 
-                </span>
-            </div>
 
-            <nav class="nav-links">
-                <a href="#" class="nav-link">Voltar</a>
-            </nav>
-        </div>
+        <a href="../index.html" class="logo">
+            <img src="../assets/icon/logobranca.png" alt="LowLatency">
+            <span>Low<span class="logo-destaque">Latency</span></span>
+        </a>
+
+        <nav class="menu">
+            <a href="../cadastro-maquina.html">Cadastro de Máquina</a>
+            <a href="../cadastro-componente.html">Cadastro de Componente</a>
+            <a href="dashboard-principal.html">Voltar para Dashboard Principal</a>
+        </nav>
+
     </header>
 
-    <!--Dashboard -->
     <main class="dashboard">
 
-        <!--Parte das Kpis -->
+        <!-- KPIs -->
         <section class="kpis">
 
-            <!-- Kpi Io Wait -->
-            <button class="kpi-geral ativo">
-                <div class="servidor-cabecalho">
-                    <h3> CPU Ociosa (%)</h3>
-                    
-                </div>
+            <article class="kpi">
+                <span class="kpi-titulo">Uso da CPU</span>
+                <h2 id="usoCPU">60%</h2>
+                <span class="kpi-descricao">Processamento</span>
+            </article>
 
-                <div class="servidor-corpo">
-                    <div class="servidor-info">
-                        <b>40%</b>
-                    </div>
-                </div>
+            <article class="kpi">
+                <span class="kpi-titulo">Uso da RAM</span>
+                <h2 id="usoRAM">55%</h2>
+                <span class="kpi-descricao">Memória utilizada</span>
+            </article>
 
-        
-            </button>
+            <article class="kpi">
+                <span class="kpi-titulo">Uso do Disco</span>
+                <h2 id="usoDisco">58%</h2>
+                <span class="kpi-descricao">Armazenamento</span>
+            </article>
 
-            <!-- KPi IOPS do disco -->
-            <button class="kpi-geral">
-                <div class="servidor-cabecalho">
-                    <h3>IOPS do Disco</h3>
-                    
-                </div>
-
-                <div class="servidor-corpo">
-                    <div class="servidor-info">
-                        
-                        <b>100.856</b>
-                    </div>
-                </div>
-
-            </button>
-
-            <!-- Servidor Da Central Depositária 
-            <button class="kpi-geral alerta-card">
-                <div class="servidor-cabecalho">
-                    <h3>Central Depositária</h3>
-                    <span class="status alerta">
-                        <i></i> Atenção
-                    </span>
-                </div>
-
-                <div class="servidor-corpo">
-                    <div class="servidor-info">
-                        <span>Uso de RAM</span>
-                        <b>80%</b>
-                    </div>
-                </div>
-
-               
-            </button> -->
+            <article class="kpi">
+                <span class="kpi-titulo">IOPS do Disco</span>
+                <h2 id="iopsDisco">100.566</h2>
+                <span class="kpi-descricao">Operações por segundo</span>
+            </article>
 
         </section>
 
-        <!-- Parte do gráfico -->
-<section class="area-grafico">
-
-    <!-- Parte de cima do gráfico -->
-    <div class="cabecalho-grafico">
-        <div>
-            <h2> Histórico do Uso da Memória Ram e SWAP</h2>
-        </div>
-
-      
-    </div>
-
-
-
-    <!-- Canvas do gráfico-->
-    <div class="grafico">
-        <canvas id="graficoAlertas"></canvas>
-    </div>
-
-</section>
-
-  
-</body>
-
-</html>
-
-
-
-
-    <script src="../js/dashboard.js"></script>
-
-</body>
-
-
-</html>
-
-<script>
-
-        // Indica pro navegador onde e como ele tem que desenhar o gráfico
-        const ctx = document.getElementById('graficoUsoRAMeSwap').getContext('2d');
         
-    
-        Chart.defaults.font.family = "'Inter', sans-serif";
-        Chart.defaults.color = "#94a3b8"; 
+        <section class="area-grafico">
 
-        const grafico = new Chart(ctx, {
-            type: 'line', 
+            <div class="cabecalho-grafico">
+                <div>
+                    <span class="identificador-grafico">
+                        MONITORAMENTO DE SERVIDORES
+                    </span>
+
+                    <h1>Matching Engine</h1>
+
+                    <p>Uso da memória RAM e SWAP</p>
+                </div>
+                
+
+            
+            </div>
+
+            <div class="grafico">
+                <canvas id="graficoUsoRAMeSwap"></canvas>
+            </div>
+
+            <div class="legenda-inferior">
+                <span>
+                    <i class="ponto legenda-ram"></i>
+                    Memória RAM
+                </span>
+
+                <span>
+                    <i class="ponto legenda-swap"></i>
+                    Memória SWAP
+                </span>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const elementoGrafico = document.getElementById(
+            "graficoUsoRAMeSwap"
+        );
+
+        const contexto = elementoGrafico.getContext("2d");
+
+        const labels = [
+            "10:00", "10:05", "10:10", "10:15", "10:20",
+            "10:25", "10:30", "10:35", "10:40", "10:45",
+            "10:50", "10:55", "11:00", "11:05", "11:10"
+        ];
+
+        new Chart(contexto, {
+            type: "line",
+
             data: {
-                labels: ['1,2,3,4,5,6,7,8,9,1,10,11,12,13,14,15'],
+                labels: labels,
 
                 datasets: [
                     {
-                    label:  'Uso da memória RAM',
-                    data: [60,62,64,59,58,64,66,70,72,60,55,52,50,45,51],
-                    backgroundColor: '#68dda8',
-                    tension: 0.3
-            }
-        
-        ,
-            
-            {
-                label: 'Uso da SWAP',
-                data: [65,68,54,59,52,65,76,70,72,40,55,52,50,45,51],
-                backgroundColor: '#ffffff',
-                tension:0.3
-            }
-        ]
-        
-        },
-        options:{ 
-        maintainAspectRatio: false, 
-        plugins: { 
-            legend: { 
-                display: true 
-        }, 
-        scales: { 
-            y: { 
-                beginAtZero: true, 
-                grid: { 
-                    color: 'rgba(148, 163, 184, 0.1)' 
-                } 
-            }, 
-            x: { 
-                grid: { 
-                    display: false 
-                } 
-            } 
-        } 
-    } 
-}
-     ),};
+                        label: "RAM",
+                        data: [
+                            60, 62, 64, 59, 58,
+                            64, 66, 70, 72, 60,
+                            55, 52, 50, 45, 51
+                        ],
 
+                        borderColor: "#68dda8",
+                        backgroundColor: "rgba(104, 221, 168, 0.10)",
+                        borderWidth: 2,
+                        pointRadius: 2,
+                        pointHoverRadius: 5,
+                        tension: 0.35,
+                        fill: true
+                    },
 
-          
-        </script>
+                    {
+                        label: "SWAP",
+                        data: [
+                            65, 68, 54, 59, 52,
+                            65, 76, 70, 72, 40,
+                            55, 52, 50, 45, 51
+                        ],
+
+                        borderColor: "#ffffff",
+                        backgroundColor: "rgba(255, 255, 255, 0.03)",
+                        borderWidth: 2,
+                        pointRadius: 2,
+                        pointHoverRadius: 5,
+                        tension: 0.35,
+                        fill: false
+                    }
+                ]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                interaction: {
+                    intersect: false,
+                    mode: "index"
+                },
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    tooltip: {
+                        backgroundColor: "#111a2d",
+                        titleColor: "#ffffff",
+                        bodyColor: "#dce4f1",
+                        borderColor: "#26334b",
+                        borderWidth: 1,
+                        padding: 12
+                    }
+                },
+
+                scales: {
+                    x: {
+                        grid: {
+                            color: "rgba(255, 255, 255, 0.05)"
+                        },
+
+                        ticks: {
+                            color: "#8d9ab1",
+                            maxRotation: 0,
+                            autoSkip: true
+                        },
+
+                        border: {
+                            display: false
+                        }
+                    },
+
+                    y: {
+                        min: 0,
+                        max: 100,
+
+                        ticks: {
+                            color: "#8d9ab1",
+                            stepSize: 20,
+                            callback: function (valor) {
+                                return valor + "%";
+                            }
+                        },
+
+                        grid: {
+                            color: "rgba(255, 255, 255, 0.07)"
+                        },
+
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+

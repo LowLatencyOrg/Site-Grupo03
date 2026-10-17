@@ -10,8 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
-        rel="stylesheet">
+     <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
 
     <link rel="stylesheet" href="../css/dashboards.css">
 
@@ -20,22 +21,42 @@
 
 <body>
 
-    <!--Menu-->
-    <header class="navbar">
-        <div class="conteiner">
-            <div class="logo-imagem">
-                <span class="logo">
-                    LowLatency 
-                </span>
-            </div>
 
-            <nav class="nav-links">
-                <a href="#" class="nav-link"></a>
-                <a href="#" class="nav-link"></a>
-                <a href="#" class="nav-link"></a>
-            </nav>
+<header class="navbar">
+    <div class="conteiner navbar-conteudo">
+
+        
+        <a href="../index.html" class="logo">
+            <img
+                src="../assets/icon/logobranca.png"
+                class="logo-imagem"
+                alt=""
+            >
+            <span>Low<span class="logo-destaque">Latency</span></span>
+        </a>
+
+       
+        <div class="botoes-cadastro">
+            <a href="../cadastro-maquina.html" class="botao-nav">
+                Cadastro de Máquina
+            </a>
+
+            <a href="../cadastro-componente.html" class="botao-nav">
+                Cadastro de Componente
+            </a>
         </div>
-    </header>
+
+        <div class="botoes-nav">
+            <a href="../index.html" class="botao-nav">
+                Voltar ao Início
+                <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+
+    </div>
+</header>
+
+
 
     <!--Dashboard -->
     <main class="dashboard">
@@ -129,7 +150,7 @@
         </div>
         <div class="kpi">
             <span>Servidor Crítico</span>
-            <b style="color: #fbbf24;">Depositária</b>
+            <b>Depositária</b>
         </div>
         <div class="kpi">
             <span>Última Ocorrência</span>
@@ -137,7 +158,7 @@
         </div>
         <div class="kpi">
             <span>Status Geral</span>
-            <b style="color: #68dda8;">Estável</b>
+            <b>Estável</b>
         </div>
     </div>
 
@@ -191,7 +212,7 @@
                 datasets: [{
                     label: 'Quantidade de Alertas',
                     data: [14,6,4],
-                    backgroundColor: ['#fbbf24', '#3b82f6', '#68dda8'],
+                    backgroundColor: ['#829bc2', '#3b82f6', '#68dda8'],
                     borderWidth: 0,
                     borderRadius: 4, 
                     barPercentage: 0.5 
