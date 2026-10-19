@@ -63,7 +63,7 @@ section {
 }
 
 .navbar-conteudo {
-    min-height: 78px;
+    min-height: 55px;
     display: flex;
     align-items: center;
     justify-content: space-between
@@ -183,7 +183,7 @@ section {
     position: relative;
     display: flex;
     align-items: center;
-    min-height: clamp(200px, 20vh, 300px);
+    min-height: clamp(40px, 10vh, 100px);  
     border-bottom: 1px solid var(--borda);
     background:
        
@@ -198,14 +198,14 @@ section {
 }
 
 .banner-conteudo {
-    padding: 80px 0;
+    padding: 45px 0;
 }
 
 .banner h1 {
     max-width: 680px;
     margin-bottom: 36px;
     font-family: 'Rajdhani', sans-serif;
-    font-size: clamp(38px, 5.2vw, 66px);
+    font-size: clamp(15px, 5.2vw, 62px);
     font-weight: 700;
     line-height: 1.06;
     letter-spacing: -1.2px;
