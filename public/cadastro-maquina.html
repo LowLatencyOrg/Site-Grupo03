@@ -57,7 +57,7 @@
               <label class="rotulo-campo">Status</label>
               <input type="hidden" id="status_input" value="ativo" />
               <div class="select-diferente">
-                <div class="campo-cnpj select">Ativo</div>
+                <div class="campo-empresa select">Ativo</div>
                 <ul class="opcoes">
                   <li data-value="ativo">Ativo</li>
                   <li data-value="inativo">Inativo</li>
@@ -94,8 +94,7 @@
 <script>
     function cadastrar() {
       console.log("Entrei no cadastrar")
-      //var idEmpresaVar = sessionStorage.getItem("ID_EMPRESA")
-      var idEmpresaVar = 1
+      var idEmpresaVar = sessionStorage.getItem("FK_EMPRESA")
       var hostnameVar = hostname_input.value;
       var macAddressVar = macaddress_input.value;
       var soVar = so_input.value;

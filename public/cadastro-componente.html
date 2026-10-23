@@ -58,7 +58,7 @@
               <label class="rotulo-campo">Tipo de medida</label>
               <input type="hidden" id="medida_input" value="" />
               <div class="select-diferente">
-                <div class="campo-cnpj select" id="display_medida">Selecione o componente primeiro</div>
+                <div class="campo-empresa select" id="display_medida">Selecione o componente primeiro</div>
                 <ul class="opcoes" id="lista_medidas">
                 </ul>
               </div>
@@ -123,8 +123,7 @@
     };
 
   function buscarServidores() {
-    //var idEmpresa = sessionStorage.getItem("ID_EMPRESA")
-    var idEmpresa = 1
+    var idEmpresa = sessionStorage.getItem("FK_EMPRESA")
     fetch(`/maquinas/buscarServidores/${idEmpresa}`)
       .then(function (resposta) {
         if (resposta.ok) {
