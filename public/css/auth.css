@@ -399,3 +399,40 @@ a {
   background: rgba(16, 185, 129, 0.15); 
   color: var(--destaque);
 }
+
+/*tornando responsivo*/
+
+@media (max-width: 768px) {
+    .layout-auth {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .lado-imagem {
+        display: none; 
+    }
+
+    .lado-formulario {
+        width: 100%;
+        max-width: 100%;
+        padding: 90px 24px 40px 24px; 
+    }
+
+    .cadastro-maquina {
+        flex-direction: column;
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .parte-cadastro {
+        width: 100%;
+        padding-top: 20px;
+    }
+
+    .card-cadastro {
+        width: 90%;
+        padding-top: 50px; 
+        margin: 20px auto 40px auto;
+    }
+}

@@ -365,6 +365,95 @@ body {
     max-width: 100%;
 }
 
+/* Tornando responsivo */
+@media (max-width: 768px) {
+
+    .dashboard {
+        flex-direction: column;
+        padding: 20px 15px;
+    }
+
+    .kpis {
+        width: 100%;
+        flex-direction: row !important;
+        overflow-x: auto;
+        padding-bottom: 15px;
+        gap: 15px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .kpi-geral {
+        min-width: 280px;
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+    }
+
+    .kpis::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    .kpis::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+    
+    .kpis::-webkit-scrollbar-thumb {
+        background: #394862;
+        border-radius: 10px;
+    }   
+
+    .kpis-detalhes {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    
+    .kpi {
+        padding: 12px;
+    }
+    
+    .kpi b {
+        font-size: 18px;
+    }
+
+    .cabecalho-grafico {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .navbar-conteudo {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .botoes-nav {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .botoes-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .botao-nav {
+        flex: 1;
+        padding: 8px 10px;
+        font-size: 11px;
+        text-align: center;
+    }
+}
+
 
 
 

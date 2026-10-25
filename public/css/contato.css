@@ -251,3 +251,24 @@ ul {
 #cardErro.erro #mensagem_erro {
     color: #fca5a5;
 }
+
+/* tornando responsivo */
+@media (max-width: 768px) {
+    .navbar-conteudo {
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px 0;
+    }
+
+    .box-contato {
+        margin: 30px auto;
+        padding: 24px 20px;
+        width: calc(100% - 24px);
+    }
+    
+    .titulo-contato {
+        font-size: 24px;
+        text-align: center;
+        justify-content: center;
+    }
+}

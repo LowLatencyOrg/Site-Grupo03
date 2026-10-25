@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="css/landing.css">
@@ -25,21 +27,21 @@
                 <span>Low<span class="logo-destaque">Latency</span></span>
             </a>
 
+            <button class="menu-hamburguer" aria-label="Abrir menu">☰</button>
+
             <nav class="menu">
                 <a href="index.html">Início</a>
                 <a href="#sobre">Sobre nós</a>
                 <a href="#solucoes">Sobre a solução</a>
             </nav>
+
             <div class="botoes-nav">
                 <a href="login.html" class="botao-nav">
-                Acessar dashboard
-                <span aria-hidden="true">↗</span>
-            </a>
-
-            <a href="contato.html" class="botao-nav">
-            Área de Contato
-                <span aria-hidden="true">↗</span>
-            </a>
+                    Acessar dashboard <span aria-hidden="true">↗</span>
+                </a>
+                <a href="contato.html" class="botao-nav">
+                    Área de Contato <span aria-hidden="true">↗</span>
+                </a>
             </div>
 
         </div>
@@ -59,30 +61,34 @@
             </div>
         </section>
 
-    <section class="secao" id="sobre">
-    <div class="conteiner">
-        <div class="grade-sobre">
-            
-            <div class="texto-sobre">
-                <h3>Visibilidade total sobre a infraestrutura que sustenta o pregão</h3>
-                <p>
-                    A <strong>LowLatency</strong> é uma empresa de tecnologia especializada em monitoramento contínuo de telemetria e integridade de infraestrutura para servidores de alta frequência aplicados a bolsas de valores.
-                </p>
-                <p>
-                    Nosso foco crítico são as camadas de <strong>Roteamento de Ordens (Order Routing / SOR)</strong> e <strong>Casamento de Ofertas (Matching Engine)</strong>.
-                </p>
-            </div>
+        <section class="secao" id="sobre">
+            <div class="conteiner">
+                <div class="grade-sobre">
 
-            
-            <div class="card-contato-sobre">
-                <h4>Teve interesse na solução?</h4>
-                <p>Fale com a nossa equipa e descubra como monitorizar a telemetria e a integridade da sua infraestrutura de execução.</p>
-                <a href="contato.html" class="botao-contato">Entrar em contato</a>
+                    <div class="texto-sobre">
+                        <h3>Visibilidade total sobre a infraestrutura que sustenta o pregão</h3>
+                        <p>
+                            A <strong>LowLatency</strong> é uma empresa de tecnologia especializada em monitoramento
+                            contínuo de telemetria e integridade de infraestrutura para servidores de alta frequência
+                            aplicados a bolsas de valores.
+                        </p>
+                        <p>
+                            Nosso foco crítico são as camadas de <strong>Roteamento de Ordens (Order Routing /
+                                SOR)</strong> e <strong>Casamento de Ofertas (Matching Engine)</strong>.
+                        </p>
+                    </div>
+
+
+                    <div class="card-contato-sobre">
+                        <h4>Teve interesse na solução?</h4>
+                        <p>Fale com a nossa equipa e descubra como monitorizar a telemetria e a integridade da sua
+                            infraestrutura de execução.</p>
+                        <a href="contato.html" class="botao-contato">Entrar em contato</a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-      
+        </section>
+
 
         <!-- Seção Soluções -->
         <section class="secao secao-alternada" id="solucoes">
@@ -96,7 +102,8 @@
                     <article class="cartao-solucao">
                         <img src="assets/icon/cpu.png" alt="Monitoramento de CPU" class="img-solucao">
                         <h3>Monitoramento de CPU</h3>
-                        <p>Telemetria detalhada de núcleos e threads para o processamento do sistema, com monitoramento contínuo, para prevenção de gargalos em horários de abertura e fechamento do pregão.</p>
+                        <p>Telemetria detalhada de núcleos e threads para o processamento do sistema, com monitoramento
+                            contínuo, para prevenção de gargalos em horários de abertura e fechamento do pregão.</p>
                         <ul class="lista-recursos-solucao">
                             <li>Uso percentual em tempo real por core e thread do Matching Engine</li>
                             <li>Detecção de picos de carga nos horários críticos de pregão</li>
@@ -107,7 +114,8 @@
                     <article class="cartao-solucao">
                         <img src="assets/icon/ram.png" alt="Monitoramento de Memória RAM" class="img-solucao">
                         <h3>Monitoramento de Memória RAM</h3>
-                        <p>Visibilidade sobre o consumo de memória dos processos do livro de ofertas (Order Book) e filas de roteamento, com alerta imediato contra ativação de swap.</p>
+                        <p>Visibilidade sobre o consumo de memória dos processos do livro de ofertas (Order Book) e
+                            filas de roteamento, com alerta imediato contra ativação de swap.</p>
                         <ul class="lista-recursos-solucao">
                             <li>Consumo contínuo de RAM por Order Book e filas de mensagens</li>
                             <li>Acompanhamento da alocação de memória em cache e buffers temporários</li>
@@ -118,7 +126,8 @@
                     <article class="cartao-solucao">
                         <img src="assets/icon/ssd.png" alt="Monitoramento de Disco" class="img-solucao">
                         <h3>Monitoramento de Disco</h3>
-                        <p>Vazão de I/O e integridade de persistência das trilhas de transações e logs de execução — sem reter o ciclo do motor de casamento.</p>
+                        <p>Vazão de I/O e integridade de persistência das trilhas de transações e logs de execução — sem
+                            reter o ciclo do motor de casamento.</p>
                         <ul class="lista-recursos-solucao">
                             <li>Taxa de leitura/escrita e IOPS em tempo real</li>
                             <li>Monitoramento da capacidade de armazenamento e uso das partições</li>
@@ -129,7 +138,8 @@
                     <article class="cartao-solucao">
                         <img src="assets/icon/rede.png" alt="Velocidade e Tráfego de Rede" class="img-solucao">
                         <h3>Velocidade e Tráfego de Rede</h3>
-                        <p>Acompanhamento em tempo real da taxa de tráfego de rede e volume de pacotes na interface para evitar gargalos no fluxo de negociação.</p>
+                        <p>Acompanhamento em tempo real da taxa de tráfego de rede e volume de pacotes na interface para
+                            evitar gargalos no fluxo de negociação.</p>
                         <ul class="lista-recursos-solucao">
                             <li>Latência ponta-a-ponta entre gateways de roteamento</li>
                             <li>Velocidade de processamento de mensagens e volume de compras/vendas por segundo</li>
@@ -151,17 +161,20 @@
                 <div class="grade-diferenciais">
                     <article class="caixa-diferencial">
                         <h4>Impacto Mínimo no Host</h4>
-                        <p>Agentes de coleta otimizados que consomem menos de 5% de CPU e não competem por memória com o Matching Engine.</p>
+                        <p>Agentes de coleta otimizados que consomem menos de 5% de CPU e não competem por memória com o
+                            Matching Engine.</p>
                     </article>
 
                     <article class="caixa-diferencial">
                         <h4>Telemetria em Tempo Real</h4>
-                        <p>Leitura de métricas de uso de CPU, memória e rede atualizada a cada segundo via APIs do sistema operacional.</p>
+                        <p>Leitura de métricas de uso de CPU, memória e rede atualizada a cada segundo via APIs do
+                            sistema operacional.</p>
                     </article>
 
                     <article class="caixa-diferencial">
                         <h4>Priorização de Ativos</h4>
-                        <p>Monitore apenas o que importa. Filtre máquinas críticas em tempo real para tomada de decisão ágil sem distrações na tela.</p>
+                        <p>Monitore apenas o que importa. Filtre máquinas críticas em tempo real para tomada de decisão
+                            ágil sem distrações na tela.</p>
                     </article>
                 </div>
             </div>
@@ -175,7 +188,8 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <h3 class="footer-logo">LowLatency</h3>
-                    <p class="footer-desc">Telemetria de alta precisão para infraestrutura de servidores de bolsas de valores.</p>
+                    <p class="footer-desc">Telemetria de alta precisão para infraestrutura de servidores de bolsas de
+                        valores.</p>
                 </div>
 
                 <nav class="footer-nav" aria-label="Links da empresa">
@@ -202,5 +216,15 @@
         </div>
     </footer>
 
+    <script>
+        const btnHamburguer = document.querySelector('.menu-hamburguer');
+        const menu = document.querySelector('.menu');
+
+        btnHamburguer.addEventListener('click', () => {
+            menu.classList.toggle('ativo');
+        });
+    </script>
+
 </body>
+
 </html>
