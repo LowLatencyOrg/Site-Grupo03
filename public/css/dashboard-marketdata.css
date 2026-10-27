@@ -1,0 +1,246 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --fundo: #090d16;
+    --card: #111a2d;
+    --borda: #1e293b;
+    --texto: #f1f5f9;
+    --texto-secundario: #94a3b8;
+    --destaque: #68dda8;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: 'Inter', sans-serif;
+}
+
+
+
+.navbar {
+    width: 100%;
+    min-height: 92px;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: rgba(9, 13, 22, 0.97);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--texto);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.logo img {
+    display: block;
+    width: 42px;
+    height: 42px;
+    max-width: 42px;
+    max-height: 42px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.logo-destaque {
+    color: var(--destaque);
+}
+
+
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+}
+
+.menu a {
+    padding: 12px 15px;
+    border: 1px solid #334155;
+    border-radius: 5px;
+    color: var(--texto);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.menu a:hover {
+    color: var(--destaque);
+    border-color: var(--destaque);
+}
+
+
+
+.dashboard {
+    width: 100%;
+    max-width: 1800px;
+    min-height: calc(100vh - 92px);
+    margin: 0 auto;
+    padding: 22px 28px;
+    display: grid;
+    grid-template-columns: minmax(260px, 0.8fr) minmax(0, 2.2fr);
+    align-items: start;
+    gap: 22px;
+}
+
+
+
+.kpis {
+    width: 100%;
+    min-width: 0;
+    margin-top: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    transform: translateY(60px);
+}
+
+.kpi {
+    width: 100%;
+    min-width: 0;
+    min-height: 105px;
+    padding: 14px 18px;
+    overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+}
+
+.kpi-titulo {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--texto-secundario);
+    font-size: 13px;
+}
+
+.kpi h2 {
+    margin-bottom: 5px;
+    color: #fff;
+    font-size: 27px;
+}
+
+.kpi-descricao {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
+
+
+.area-grafico {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+
+.cabecalho-grafico {
+    width: 100%;
+    min-height: 140px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+}
+
+.identificador-grafico {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--destaque);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.cabecalho-grafico h1 {
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: 28px;
+}
+
+.cabecalho-grafico p {
+    color: var(--texto-secundario);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+
+
+.graficos-linha {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 16px;
+}
+
+
+.grafico-card {
+    width: 100%;
+    min-width: 0;
+    height: 350px;
+    padding: 18px;
+    overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+}
+
+.grafico-titulo {
+    margin-bottom: 14px;
+    color: var(--texto);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.grafico {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 30px);
+    min-width: 0;
+}
+
+.grafico canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+
+
+
+
+
+

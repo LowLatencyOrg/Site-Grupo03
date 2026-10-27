@@ -44,6 +44,11 @@
             <a href="../cadastro-componente.html" class="botao-nav">
                 Cadastro de Componente
             </a>
+
+          <a href="../cadastro.html" class="botao-nav">
+                Cadastro de Usuários
+            </a>
+
         </div>
 
         <div class="botoes-nav">
@@ -92,37 +97,17 @@
 
                 <div class="servidor-corpo">
                     <div class="servidor-info">
-                        <span>Uso de RAM</span>
-                        <b>60%</b>
+                        <span>Uso de CPU</span>
+                        <b>70%</b>
                     </div>
                 </div>
 
-                <div class="barra-ram">
-                    <div class="progresso-ram" style="width: 60%;"></div>
+                <div class="barra-cpu">
+                    <div class="progresso-cpu" style="width: 60%;"></div>
                 </div>
             </button>
 
-            <!-- Servidor Da Central Depositária  -->
-            <button class="kpi-geral alerta-card" onclick="abrirDashboardCentralDepositaria()">
-                <div class="servidor-cabecalho">
-                    <h3>Central Depositária</h3>
-                    <span class="status alerta">
-                        <i></i> Atenção
-                    </span>
-                </div>
-
-                <div class="servidor-corpo">
-                    <div class="servidor-info">
-                        <span>Uso de RAM</span>
-                        <b>80%</b>
-                    </div>
-                </div>
-
-                <div class="barra-ram">
-                    <div class="progresso-ram" style="width: 80%;"></div>
-                </div>
-            </button>
-
+        
         </section>
 
         <!-- Parte do gráfico -->
@@ -146,11 +131,11 @@
     <div class="kpis-detalhes">
         <div class="kpi">
             <span>Total de Alertas</span>
-            <b>24</b>
+            <b>20</b>
         </div>
         <div class="kpi">
             <span>Servidor Crítico</span>
-            <b>Depositária</b>
+            <b>Market Data</b>
         </div>
         <div class="kpi">
             <span>Última Ocorrência</span>
@@ -158,7 +143,7 @@
         </div>
         <div class="kpi">
             <span>Status Geral</span>
-            <b>Estável</b>
+            <b>Atenção</b>
         </div>
     </div>
 
@@ -208,14 +193,14 @@
         const grafico = new Chart(ctx, {
             type: 'bar', 
             data: {
-                labels: ['Central Depositária', 'Market Data', 'Matching Engine'],
+                labels: [ 'Market Data', 'Matching Engine'],
                 datasets: [{
                     label: 'Quantidade de Alertas',
-                    data: [14,6,4],
-                    backgroundColor: ['#829bc2', '#3b82f6', '#68dda8'],
+                    data: [14,6],
+                    backgroundColor: [ '#ffc222', '#68dda8'],
                     borderWidth: 0,
                     borderRadius: 4, 
-                    barPercentage: 0.5 
+                    barPercentage: 0.3 
                 }]
             },
             options: {
