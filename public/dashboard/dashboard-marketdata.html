@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LowLatency | Market Data</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+     <link rel="stylesheet" href="../css/dashboard-marketdata.css">
+</head>
+
+<body>
+
+   
+    <nav class="navbar">
+         <a href="../index.html" class="logo">
+            <img src="../assets/icon/logobranca.png" alt="LowLatency">
+            <span>Low<span class="logo-destaque">Latency</span></span>
+        </a>
+
+        <div class="menu">
+            <a href="dashboard-principal.html">Voltar para Dashboard Principal</a>
+        </div>
+    </nav>
+
+    
+   
+<main class="dashboard">
+
+    
+    <section class="kpis">
+        <div class="kpi">
+            <span class="kpi-titulo">Uso de CPU</span>
+            <h2 id="kpiCpu">45%</h2>
+            <span class="kpi-descricao">Processamento do servidor</span>
+        </div>
+
+        <div class="kpi">
+            <span class="kpi-titulo">Uso de RAM</span>
+            <h2 id="kpiRam">60%</h2>
+            <span class="kpi-descricao">Memória utilizada</span>
+        </div>
+
+        <div class="kpi">
+            <span class="kpi-titulo">Uso de disco</span>
+            <h2 id="kpiDisco">55%</h2>
+            <span class="kpi-descricao">Espaço ocupado</span>
+        </div>
+
+    </section>
+
+    
+    <section class="area-grafico">
+
+        <div class="cabecalho-grafico">
+            <div>
+                <span class="identificador-grafico">MONITORAMENTO</span>
+                <h1>Market Data</h1>
+                <p>Acompanhamento dos recursos do servidor</p>
+            </div>
+
+        </div>
+
+       
+        <div class="graficos-linha">
+
+            <div class="grafico-card">
+                <h2 class="grafico-titulo">Uso de CPU e RAM</h2>
+                <div class="grafico">
+                    <canvas id="graficoCpuRam"></canvas>
+                </div>
+            </div>
+
+            <div class="grafico-card">
+                <h2 class="grafico-titulo">Operações de disco (IOPS)</h2>
+                <div class="grafico">
+                    <canvas id="graficoIOPS"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+    
+    <script>
+        const graficoCpuRam =
+            document.getElementById("graficoCpuRam");
+
+        new Chart(graficoCpuRam, {
+            type: "line",
+            data: {
+                labels: ["10:00", "10:01", "10:02", "10:03", "10:04"],
+                datasets: [
+                    {
+                        label: "CPU (%)",
+                        data: [35, 42, 55, 48, 60],
+                        borderColor: "#68dda8",
+                        backgroundColor: "rgba(104, 221, 168, 0.1)",
+                        tension: 0.3
+                    },
+                    {
+                        label: "RAM (%)",
+                        data: [45, 47, 46, 52, 55],
+                        borderColor: "#ffffff",
+                        backgroundColor: "rgba(255, 255, 255, 0.1)",
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: "#94a3b8" },
+                        grid: { color: "#1e293b" }
+                    },
+                    x: {
+                        ticks: { color: "#94a3b8" },
+                        grid: { color: "#1e293b" }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: "#f1f5f9" }
+                    }
+                }
+            }
+        });
+
+       
+const graficoIOPS = document.getElementById("graficoIOPS");
+
+new Chart(graficoIOPS, {
+    type: "line",
+
+    data: {
+        labels: ["10:00", "10:01", "10:02", "10:03", "10:04"],
+
+        datasets: [{
+            label: "IOPS (milhares de operações/s)",
+            data: [120000, 180000, 250000, 210000, 320000].map(valor => valor / 1000),
+            borderColor: "#68dda8",
+            backgroundColor: "rgba(104, 221, 168, 0.1)",
+            pointBackgroundColor: "#68dda8",
+            pointRadius: 3,
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.3
+        }]
+    },
+
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+            legend: {
+                labels: {
+                    color: "#f1f5f9"
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.dataset.label + ": " +
+                            context.parsed.y.toLocaleString("pt-BR");
+                    }
+                }
+            }
+        },
+
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "Milhares de operações por segundo",
+                    color: "#94a3b8"
+                },
+                ticks: {
+                    color: "#94a3b8",
+                    callback: function(valor) {
+                        return valor.toLocaleString("pt-BR");
+                    }
+                },
+                grid: {
+                    color: "#1e293b"
+                }
+            },
+
+            x: {
+                ticks: {
+                    color: "#94a3b8"
+                },
+                grid: {
+                    color: "#1e293b"
+                }
+            }
+        }
+    }
+});
+
+    </script>
+    
+
+</body>
+</html>
