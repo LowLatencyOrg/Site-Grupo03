@@ -10,7 +10,7 @@ function autenticar(email, senha) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrar(nome, cpf, email, senha, fkEmpresa, fkCargo) {
+function cadastrar(nome, cpf, email, fkEmpresa, fkCargo) {
     var instrucaoSql = `
         INSERT INTO usuario (nome, cpf, email, senha, fk_empresa, fk_cargo) 
         VALUES ('${nome}', '${cpf}', '${email}', '${senha}', ${fkEmpresa}, ${fkCargo});
