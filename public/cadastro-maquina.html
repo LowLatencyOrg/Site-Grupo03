@@ -20,7 +20,7 @@
     <div class="parte-cadastro"></div>
     <div class="parte-cadastro">
         <div class="card-cadastro">
-        <a href="dashboard/dashboard.html" class="voltar-inicio">Voltar para a dashboard</a>
+        <a href="dashboard/dashboard-principal.html" class="voltar-inicio">Voltar para a dashboard</a>
 
         <!-- Cabeçalho -->
         <div class="cabecalho-auth">
@@ -144,10 +144,10 @@
                     cardErro.style.display = "block";
 
                     mensagem_erro.innerHTML =
-                        "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+                        "Cadastro realizado com sucesso! Redirecionando para dashboard";
 
                     setTimeout(() => {
-                        window.location = "login.html";
+                        window.location = "../dashboard/dashboard-principal.html";
                     }, "2000");
 
                     //limparFormulario();

@@ -118,7 +118,7 @@ body {
     width: 100%;
     min-width: 0;
     min-height: 105px;
-    padding: 14px 18px;
+    padding: 25px 25px;
     overflow: hidden;
     background: var(--card);
     border: 1px solid var(--borda);

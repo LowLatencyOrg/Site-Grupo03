@@ -99,7 +99,6 @@ body {
     max-width: 1500px;
     margin: 0 auto;
     padding: 26px 28px;
-
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 2.45fr);
     align-items: start;
@@ -110,17 +109,17 @@ body {
 .kpis {
     width: 100%;
     min-width: 0;
-    margin-top: 15px;
+    margin-top: 0;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    transform: translateY(-25px);
+    grid-template-columns: 1fr;
+    gap: 14px;
+    transform: translateY(40px);
 }
 
 .kpi {
     min-width: 0;
     min-height: 80px;
-    padding: 12px 20px;
+    padding: 20px 25px;
     overflow: hidden;
 
     background: var(--card);
