@@ -101,24 +101,21 @@
 
   let medidasPorComponente = {
       "1": [
-        { valor: "1", texto: "Uso em %" },
-        { valor: "2", texto: "Frequência (GHz)" },
-        { valor: "3", texto: "Temperatura (°C)" }
+        { valor: "1", texto: "Uso (%)" },
+        { valor: "2", texto: "Interrupções do Software (%)" },
+        { valor: "3", texto: "IOWait" }
       ],
       "2": [
-        { valor: "1", texto: "Uso em %" },
-        { valor: "4", texto: "Quantidade Livre (GB)" },
-        { valor: "5", texto: "Uso em % da Swap" }
+        { valor: "1", texto: "Uso (%)" },
+        { valor: "4", texto: "Uso da Swap (%)" }
       ],
       "3": [
-        { valor: "1", texto: "Uso em %" },
-        { valor: "6", texto: "Espaço Livre (GB)" },
-        { valor: "7", texto: "Leitura e Gravação (MB/s)" }
+        { valor: "1", texto: "Uso (%)" },
+        { valor: "5", texto: "Leitura e Gravação (MB/s)" }
       ],
       "4": [
-        { valor: "8", texto: "Pacotes Perdidos (%)" },
-        { valor: "9", texto: "Latência (ms)" },
-        { valor: "10", texto: "Banda Utilizada (Mbps)" }
+        { valor: "6", texto: "Pacotes Enviados (KB)" },
+        { valor: "7", texto: "Pacotes Recebidos (KB)" }
       ]
     };
 
@@ -187,8 +184,7 @@
   function cadastrar() {
     var idServidorVar = servidor_input.value
     var idComponenteVar = componente_input.value
-    //var idEmpresaVar = sessionStorage.getItem("ID_EMPRESA")
-    var idEmpresaVar = 1
+    var idEmpresaVar = sessionStorage.getItem("FK_EMPRESA")
     var idMetricaVar = medida_input.value;
     var valorLimite1Var = alerta_input.value;
     var valorLimite2Var = critico_input.value;
