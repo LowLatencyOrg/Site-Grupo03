@@ -9,224 +9,388 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-     <link
-    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="../css/dashboards.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 
-<body>
+<body class="tela">
 
+    <header class="navbar">
+        <div class="conteiner navbar-conteudo">
 
-<header class="navbar">
-    <div class="conteiner navbar-conteudo">
+            <a href="../index.html" class="logo">
+                <img src="../assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
 
-        
-        <a href="../index.html" class="logo">
-            <img
-                src="../assets/icon/logobranca.png"
-                class="logo-imagem"
-                alt=""
-            >
-            <span>Low<span class="logo-destaque">Latency</span></span>
-        </a>
+            <div class="botoes-cadastro">
+                <a href="../cadastro-maquina.html" class="botao-nav">Cadastro de Máquina</a>
+                <a href="../cadastro-componente.html" class="botao-nav">Cadastro de Componente</a>
+                <a href="../cadastro.html" class="botao-nav">Cadastro de Usuários</a>
+            </div>
+
+            <div class="botoes-nav">
+                <a href="../index.html" class="botao-nav">
+                    Voltar ao Início
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="pagina-topo">
+            <h1>Visão geral do sistema</h1>
+            <div class="atualizacao">
+                <i aria-hidden="true"></i>
+                <span>Atualizado em <time id="ultimaAtualizacao">--</time></span>
+            </div>
+        </div>
 
        
-        <div class="botoes-cadastro">
-            <a href="../cadastro-maquina.html" class="botao-nav">
-                Cadastro de Máquina
-            </a>
+        <section class="kpis-detalhes" aria-label="Resumo">
+            <div class="kpi">
+                <span>Total de alertas</span>
+                <b id="kpiTotal">20</b>
+            </div>
+            <div class="kpi">
+                <span>Servidor com mais alertas</span>
+                <b id="kpiCritico">Market Data</b>
+            </div>
+            <div class="kpi">
+                <span>Última ocorrência</span>
+                <b>10:45</b>
+            </div>
+            <div class="kpi">
+                <span>Status geral</span>
+                <b><i class="atencao" aria-hidden="true"></i>Atenção</b>
+            </div>
+        </section>
 
-            <a href="../cadastro-componente.html" class="botao-nav">
-                Cadastro de Componente
-            </a>
+        <div class="conteudo">
 
-          <a href="../cadastro.html" class="botao-nav">
-                Cadastro de Usuários
-            </a>
+          
+            <section class="kpis" aria-label="Servidores">
 
-        </div>
+                <a href="dashboard-matching.html" class="kpi-geral" data-valor="50">
+                    <div class="servidor-cabecalho">
+                        <h3>Matching Engine</h3>
+                    </div>
 
-        <div class="botoes-nav">
-            <a href="../index.html" class="botao-nav">
-                Voltar ao Início
-                <span aria-hidden="true">↗</span>
-            </a>
-        </div>
-
-    </div>
-</header>
-
-
-
-    <!--Dashboard -->
-    <main class="dashboard">
-
-        <!--Parte das Kpis -->
-        <section class="kpis">
-
-            <!-- Kpi Matching Engine -->
-            <button class="kpi-geral ativo" onclick="abrirDashboardMatching()">
-                <div class="servidor-cabecalho">
-                    <h3>Matching Engine</h3>
-                    
-                </div>
-
-                <div class="servidor-corpo">
                     <div class="servidor-info">
                         <span>Uso de RAM</span>
                         <b>50%</b>
                     </div>
-                </div>
 
-                <div class="barra-ram">
-                    <div class="progresso-ram" style="width: 50%;"></div>
-                </div>
-            </button>
+                    <div class="barra">
+                        <div class="progresso" style="width: 50%;"></div>
+                    </div>
+                </a>
 
-            <!-- Servidor Market Data (Mensageria) -->
-            <button class="kpi-geral" onclick="abrirDashboardMarketData()">
-                <div class="servidor-cabecalho">
-                    <h3>Market Data</h3>
-                    
-                </div>
+                <a href="dashboard-marketdata.html" class="kpi-geral" data-valor="70">
+                    <div class="servidor-cabecalho">
+                        <h3>Market Data</h3>
+                    </div>
 
-                <div class="servidor-corpo">
                     <div class="servidor-info">
                         <span>Uso de CPU</span>
                         <b>70%</b>
                     </div>
+
+                    <div class="barra">
+                        <div class="progresso alerta" style="width: 70%;"></div>
+                    </div>
+                </a>
+
+            </section>
+
+            <!-- Gráfico -->
+            <section class="area-grafico">
+                <div class="cabecalho-grafico">
+                    <div>
+                        <h2>Total de alertas por servidor</h2>
+                        <p id="subtituloGrafico"></p>
+                        <div class="legenda">
+                            <span><i style="background:#ffc222"></i>Alerta</span>
+                            <span><i style="background:#f87171"></i>Crítico</span>
+                        </div>
+                    </div>
+
+                    <div class="periodos" role="group" aria-label="Período">
+                        <button data-p="hoje" aria-pressed="true">Hoje</button>
+                        <button data-p="7d" aria-pressed="false">7 dias</button>
+                        <button data-p="30d" aria-pressed="false">30 dias</button>
+                    </div>
                 </div>
 
-                <div class="barra-cpu">
-                    <div class="progresso-cpu" style="width: 60%;"></div>
+                <div class="grafico">
+                    <canvas id="graficoAlertas" role="img"
+                        aria-label="Total de alertas por servidor, separados por severidade"></canvas>
                 </div>
-            </button>
+            </section>
 
-        
-        </section>
-
-        <!-- Parte do gráfico -->
-<section class="area-grafico">
-
-    <!-- Parte de cima do gráfico -->
-    <div class="cabecalho-grafico">
-        <div>
-            <span class="etiqueta">Visão Geral do Sistema</span>
-            <h2>Total de Alertas por Servidor</h2>
         </div>
+    </main>
 
-        <select id="filtro">
-            <option value="hoje">Hoje</option>
-            <option value="7d">Últimos 7 dias</option>
-            <option value="30d">Últimos 30 dias</option>
-        </select>
-    </div>
+    <script>
 
-    <!-- Cards com um resumo rápido do sistema -->
-    <div class="kpis-detalhes">
-        <div class="kpi">
-            <span>Total de Alertas</span>
-            <b>20</b>
-        </div>
-        <div class="kpi">
-            <span>Servidor Crítico</span>
-            <b>Market Data</b>
-        </div>
-        <div class="kpi">
-            <span>Última Ocorrência</span>
-            <b>10:45</b>
-        </div>
-        <div class="kpi">
-            <span>Status Geral</span>
-            <b>Atenção</b>
-        </div>
-    </div>
+// Atualização da data e horário
 
-    <!-- Canvas do gráfico-->
-    <div class="grafico">
-        <canvas id="graficoAlertas"></canvas>
-    </div>
+let data = new Date();
 
-</section>
-
-  
-</body>
-
-</html>
+document.getElementById('ultimaAtualizacao').textContent =
+    data.toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        day: '2-digit',
+        month: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }) + ' (BRT)';
 
 
+// Dados dos servidores
+
+let servidores = ['Matching Engine', 'Market Data'];
 
 
-    <script src="../js/dashboard.js"></script>
+// Dados de dos alertas
 
-</body>
+let dadosHoje = [[6, 0], [9, 5]];
+let dados7Dias = [[31, 4], [48, 19]];
+let dados30Dias = [[96, 12], [170, 46]];
 
 
-</html>
+// Configuração do gráfico
 
-<script>
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.animation = false;
 
-    function abrirDashboardMatching(){
-        window.location.href = "dashboard-matching.html"
-    }
+let grafico = new Chart(document.getElementById('graficoAlertas'), {
 
-    function abrirDashboardMarketData(){
-        window.location.href = "dashboard-marketdata.html"
-    }
-    
-    function abrirDashboardCentralDepositaria(){
-        window.location.href = "dashboard-centraldepositaria.html"
-    }
+    type: 'bar',
 
-        // Indica pro navegador onde e como ele tem que desenhar o gráfico
-        const ctx = document.getElementById('graficoAlertas').getContext('2d');
-        
-    
-        Chart.defaults.font.family = "'Inter', sans-serif";
-        Chart.defaults.color = "#94a3b8"; 
+    data: {
+        labels: servidores,
 
-        const grafico = new Chart(ctx, {
-            type: 'bar', 
-            data: {
-                labels: [ 'Market Data', 'Matching Engine'],
-                datasets: [{
-                    label: 'Quantidade de Alertas',
-                    data: [14,6],
-                    backgroundColor: [ '#ffc222', '#68dda8'],
-                    borderWidth: 0,
-                    borderRadius: 4, 
-                    barPercentage: 0.3 
-                }]
+        datasets: [
+            {
+                label: 'Alerta',
+                data: [0, 0],
+                backgroundColor: '#ffc222',
+                borderRadius: 2,
+                 maxBarThickness: 100,
             },
-            options: {
-                maintainAspectRatio: false, // Evita que o gráfico estoure o tamanho do container
-                plugins: {
-                    legend: {
-                        display: false // Para não duplicar a legenda
-                    }
+            {
+                label: 'Crítico',
+                data: [0, 0],
+                backgroundColor: '#f87171',
+                borderRadius: 2,
+                 maxBarThickness: 100,
+            }
+        ]
+    },
+
+    options: {
+        maintainAspectRatio: false,
+
+        plugins: {
+            legend: {
+                display: false
+            },
+
+            tooltip: {
+                mode: 'index',
+                intersect: false,
+                backgroundColor: '#0b111e',
+                borderColor: '#394862',
+                borderWidth: 1,
+                padding: 10
+            }
+        },
+
+        scales: {
+            x: {
+                stacked: true,
+                grid: {
+                    display: false
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true, // Contagem a partir do 0 
-                        grid: { // Linhas horizontais no fundo para uma melhor visualização
-                            color: 'rgba(148, 163, 184, 0.1)' 
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false // Remove as linhas verticais, pra ficar mais bonitinho
-                        }
-                    }
+                border: {
+                    display: false
+                }
+            },
+
+            y: {
+                stacked: true,
+                beginAtZero: true,
+                grace: '12%',
+                border: {
+                    display: false
+                },
+                grid: {
+                    color: 'rgba(148,163,184,.08)'
+                },
+                ticks: {
+                    display: false
                 }
             }
-        });
+        }
+    }
 
-        </script>
+});
+
+
+// Atualiza os dados do gráfico
+
+function atualizarGrafico(periodo) {
+
+    let dados;
+    let texto;
+
+    if (periodo == 'hoje') {
+
+        dados = dadosHoje;
+        texto = 'de hoje';
+
+    } else if (periodo == '7d') {
+
+        dados = dados7Dias;
+        texto = 'dos últimos 7 dias';
+
+    } else {
+
+        dados = dados30Dias;
+        texto = 'dos últimos 30 dias';
+
+    }
+
+
+    // Separa os alertas de cada servidor
+
+    let alerta1 = dados[0][0];
+    let critico1 = dados[0][1];
+
+    let alerta2 = dados[1][0];
+    let critico2 = dados[1][1];
+
+
+    // Soma os alertas
+
+    let total1 = alerta1 + critico1;
+    let total2 = alerta2 + critico2;
+
+
+    // Identifica o servidor com mais alertas
+
+    let nome1 = servidores[0];
+    let nome2 = servidores[1];
+
+    if (total2 > total1) {
+
+        let aux = total1;
+        total1 = total2;
+        total2 = aux;
+
+        aux = nome1;
+        nome1 = nome2;
+        nome2 = aux;
+
+        aux = alerta1;
+        alerta1 = alerta2;
+        alerta2 = aux;
+
+        aux = critico1;
+        critico1 = critico2;
+        critico2 = aux;
+
+    }
+
+
+    // Calcula o total de alertas
+
+    let totalGeral = total1 + total2;
+    let porcentagem = 0;
+
+    if (totalGeral > 0) {
+        porcentagem = Math.round((total1 / totalGeral) * 100);
+    }
+
+
+    // Atualiza o gráfico
+
+    grafico.data.labels = [nome1, nome2];
+
+    grafico.data.datasets[0].data = [alerta1, alerta2];
+    grafico.data.datasets[1].data = [critico1, critico2];
+
+    grafico.update();
+
+
+    // Atualiza as informações da tela
+
+    document.getElementById('subtituloGrafico').textContent =
+        nome1 + ' concentra ' + porcentagem + '% dos alertas ' + texto;
+
+    document.getElementById('kpiTotal').textContent =
+        totalGeral.toLocaleString('pt-BR');
+
+    document.getElementById('kpiCritico').textContent = nome1;
+
+
+    // Atualiza o botão selecionado
+
+    let botoes = document.querySelectorAll('.periodos button');
+
+    for (let i = 0; i < botoes.length; i++) {
+
+        if (botoes[i].getAttribute('data-p') == periodo) {
+
+            botoes[i].setAttribute('aria-pressed', 'true');
+
+        } else {
+
+            botoes[i].setAttribute('aria-pressed', 'false');
+
+        }
+
+    }
+
+}
+
+
+// Ação dos botões
+
+let botoes = document.querySelectorAll('.periodos button');
+
+for (let i = 0; i < botoes.length; i++) {
+
+    botoes[i].addEventListener('click', function() {
+
+        let periodo = botoes[i].getAttribute('data-p');
+
+        atualizarGrafico(periodo);
+
+    });
+
+}
+
+
+// Mostra os dados de hoje ao abrir a página
+
+atualizarGrafico('hoje');
+
+</script>
+
+</body>
+</html>
     
 
     <!-- b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
