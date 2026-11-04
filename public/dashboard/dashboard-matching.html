@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -8,225 +7,459 @@
 
     <title>LowLatency | Dashboard Matching Engine</title>
 
-    <link rel="stylesheet" href="../css/dashboard-matching.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/dashboards.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 
-<body>
+<body class="tela">
 
     <header class="navbar">
+        <div class="conteiner navbar-conteudo">
 
-        <a href="../index.html" class="logo">
-            <img src="../assets/icon/logobranca.png" alt="LowLatency">
-            <span>Low<span class="logo-destaque">Latency</span></span>
-        </a>
+            <a href="../index.html" class="logo">
+                <img src="../assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
 
-        <nav class="menu">
-            <a href="dashboard-principal.html">Voltar para Dashboard Principal</a>
-        </nav>
+            <div class="botoes-cadastro">
+                <a href="../cadastro-maquina.html" class="botao-nav">Cadastro de Máquina</a>
+                <a href="../cadastro-componente.html" class="botao-nav">Cadastro de Componente</a>
+                <a href="../cadastro.html" class="botao-nav">Cadastro de Usuários</a>
+            </div>
 
+            <div class="botoes-nav">
+                <a href="dashboard-principal.html" class="botao-nav">
+                    Voltar para Dashboard Principal
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
     </header>
 
     <main class="dashboard">
+        <div class="pagina-topo">
+            <h1>Matching Engine</h1>
+            <div class="atualizacao">
 
-        <!-- KPIs -->
-        <section class="kpis">
+                <i aria-hidden="true"></i>
+                <span>Atualizado em <time id="ultimaAtualizacao">--</time></span>
+            </div>
+        </div>
 
-            <article class="kpi">
-                <span class="kpi-titulo">Uso da CPU</span>
-                <h2 id="usoCPU">60%</h2>
-                <span class="kpi-descricao">Processamento</span>
-            </article>
-
-            <article class="kpi">
-                <span class="kpi-titulo">Uso da RAM</span>
-                <h2 id="usoRAM">55%</h2>
-                <span class="kpi-descricao">Memória utilizada</span>
-            </article>
-
-            <article class="kpi">
-                <span class="kpi-titulo">Uso do Disco</span>
-                <h2 id="usoDisco">58%</h2>
-                <span class="kpi-descricao">Armazenamento</span>
-            </article>
-
-            <article class="kpi">
-                <span class="kpi-titulo">IOPS do Disco</span>
-                <h2 id="iopsDisco">100.566</h2>
-                <span class="kpi-descricao">Operações por segundo</span>
-            </article>
-
+        <section class="kpis-detalhes" aria-label="Resumo">
+            <div class="kpi">
+                <span>Uso da CPU</span>
+                <b id="kpiCPU"></b>
+            </div>
+            <div class="kpi">
+                <span>Uso da RAM</span>
+                <b id="kpiRAM"></b>
+            </div>
+            <div class="kpi">
+                <span>Uso da SWAP</span>
+                <b id="kpiSWAP"></b>
+            </div>
+            <div class="kpi">
+                <span>Uso do disco</span>
+                <b id="kpiDisco"></b>
+            </div>
         </section>
 
-        
-        <section class="area-grafico">
+        <div class="conteudo">
 
-            <div class="cabecalho-grafico">
-                <div>
-                    <span class="identificador-grafico">
-                        MONITORAMENTO DE SERVIDORES
-                    </span>
+            <section class="kpis" aria-label="Rede e interrupções">
 
-                    <h1>Matching Engine</h1>
+                <div class="kpi-geral">
+                    <div class="servidor-cabecalho">
+                        <h3>Tráfego de rede</h3>
+                    </div>
 
-                    <p>Uso da memória RAM e SWAP</p>
+                    <div class="servidor-info">
+                        <span>Dados recebidos</span>
+                        <b id="redeRecebida"></b>
+                    </div>
+
+                    <div class="motivo" id="redeEnviada"></div>
                 </div>
-                
 
-            
-            </div>
+                <div class="kpi-geral">
+                    <div class="servidor-cabecalho">
+                        <h3>Softirq</h3>
+                    </div>
 
-            <div class="grafico">
-                <canvas id="graficoUsoRAMeSwap"></canvas>
-            </div>
+                    <div class="servidor-info">
+                        <span>Interrupções de software</span>
+                        <b id="softirq"></b>
+                    </div>
 
-            <div class="legenda-inferior">
-                <span>
-                    <i class="ponto legenda-ram"></i>
-                    Memória RAM
-                </span>
+                    <div class="barra">
+                        <div class="progresso" id="barraSoftirq" style="width: 0%;"></div>
+                    </div>
+                </div>
 
-                <span>
-                    <i class="ponto legenda-swap"></i>
-                    Memória SWAP
-                </span>
-            </div>
+            </section>
 
-        </section>
+            <section class="area-grafico">
+                <div class="cabecalho-grafico">
+                    <div>
+                        <h2 id="tituloGrafico"></h2>
+                        <p id="subtituloGrafico"></p>
+                        <div class="legenda" id="legendaGrafico"></div>
+                    </div>
 
+                    <div class="periodos" role="group" aria-label="Métrica">
+                        <button data-p="cpu" aria-pressed="true">CPU</button>
+                        <button data-p="memoria" aria-pressed="false">Memória</button>
+                        <button data-p="rede" aria-pressed="false">Rede</button>
+                    </div>
+                </div>
+
+                <div class="grafico">
+                    <canvas id="graficoMatching" role="img"
+                        aria-label="Gráfico da métrica escolhida nos últimos 30 minutos"></canvas>
+                </div>
+            </section>
+
+        </div>
     </main>
 
     <script>
-        const elementoGrafico = document.getElementById(
-            "graficoUsoRAMeSwap"
-        );
 
-        const contexto = elementoGrafico.getContext("2d");
+// Atualização da data e horário
 
-        const labels = [
-            "10:00", "10:05", "10:10", "10:15", "10:20",
-            "10:25", "10:30", "10:35", "10:40", "10:45",
-            "10:50", "10:55", "11:00", "11:05", "11:10"
-        ];
+let data = new Date();
 
-        new Chart(contexto, {
-            type: "line",
+document.getElementById('ultimaAtualizacao').textContent =
+    data.toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        day: '2-digit',
+        month: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }) + ' (BRT)';
 
-            data: {
-                labels: labels,
 
-                datasets: [
-                    {
-                        label: "RAM",
-                        data: [
-                            60, 62, 64, 59, 58,
-                            64, 66, 70, 72, 60,
-                            55, 52, 50, 45, 51
-                        ],
+// Horários das leituras mockados
 
-                        borderColor: "#68dda8",
-                        backgroundColor: "rgba(104, 221, 168, 0.10)",
-                        borderWidth: 2,
-                        pointRadius: 2,
-                        pointHoverRadius: 5,
-                        tension: 0.35,
-                        fill: true
-                    },
+let rotulos = [
+    '10:25', '10:30', '10:35', '10:40', '10:45', '10:50',
+    '10:55', '11:00', '11:05', '11:10', '11:15', '11:20'
+];
 
-                    {
-                        label: "SWAP",
-                        data: [
-                            65, 68, 54, 59, 52,
-                            65, 76, 70, 72, 40,
-                            55, 52, 50, 45, 51
-                        ],
 
-                        borderColor: "#ffffff",
-                        backgroundColor: "rgba(255, 255, 255, 0.03)",
-                        borderWidth: 2,
-                        pointRadius: 2,
-                        pointHoverRadius: 5,
-                        tension: 0.35,
-                        fill: false
-                    }
-                ]
+// Dados das leituras mockados
+
+let dadosCPU = [38, 41, 36, 44, 52, 57, 49, 43, 39, 36, 35, 34];
+let dadosRAM = [55, 54, 56, 57, 55, 53, 54, 55, 53, 52, 52, 52];
+let dadosSwap = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+let dadosRedeRecebida = [380, 410, 395, 450, 520, 470, 430, 415, 440, 425, 418, 430];
+let dadosRedeEnviada = [250, 262, 255, 290, 330, 300, 270, 260, 280, 268, 272, 276];
+
+let atualDisco = 28;
+let atualSoftirq = 0;
+
+
+// 1 = normal, 2 = alerta, 3 = crítico
+
+let nivelAtual = {
+    cpu: 1,
+    ram: 2,
+    swap: 1,
+    disco: 1,
+    softirq: 1
+};
+
+
+// Pega a leitura mais recente de uma lista
+
+function ultimo(lista) {
+
+    return lista[lista.length - 1];
+
+}
+
+let atual = {
+    cpu: ultimo(dadosCPU),
+    ram: ultimo(dadosRAM),
+    swap: ultimo(dadosSwap),
+    disco: atualDisco,
+    softirq: atualSoftirq
+};
+
+
+// Nome de cada nível no gráfico
+
+let nomesNivel = ['Sem status', 'Normal', 'Atenção', 'Crítico'];
+
+function nivel(componente) {
+
+    if (nivelAtual[componente] == undefined) {
+        return 0;
+    }
+
+    return nivelAtual[componente];
+
+}
+
+function situacao(componente) {
+
+    let n = nivel(componente);
+
+    if (n == 0) {
+        return 'sem status';
+    }
+
+    return nomesNivel[n].toLowerCase();
+
+}
+
+
+// Cards e KPIs
+
+document.getElementById('kpiCPU').textContent = atual.cpu + '%';
+document.getElementById('kpiRAM').textContent = atual.ram + '%';
+document.getElementById('kpiSWAP').textContent = atual.swap + '%';
+document.getElementById('kpiDisco').textContent = atual.disco + '%';
+
+document.getElementById('softirq').textContent = atual.softirq + '%';
+
+let larguraSoftirq = Math.min(100, atual.softirq);
+
+document.getElementById('barraSoftirq').style.width = larguraSoftirq + '%';
+
+document.getElementById('redeRecebida').textContent =
+    ultimo(dadosRedeRecebida).toLocaleString('pt-BR') + ' KB/s';
+
+document.getElementById('redeEnviada').textContent =
+    'Dados enviados: ' + ultimo(dadosRedeEnviada).toLocaleString('pt-BR') + ' KB/s';
+
+
+// linhas do gráfico
+
+function criarLinha(nome, valores, cor) {
+
+    return {
+        label: nome,
+        data: valores,
+        borderColor: cor,
+        backgroundColor: cor,
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 2,
+        pointHoverRadius: 4
+    };
+
+}
+
+let unidade = '%';
+
+
+// Configuração do gráfico
+
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.animation = false;
+
+let grafico = new Chart(document.getElementById('graficoMatching'), {
+
+    type: 'line',
+
+    data: {
+        labels: rotulos,
+        datasets: []
+    },
+
+    options: {
+        maintainAspectRatio: false,
+
+        interaction: {
+            mode: 'index',
+            intersect: false
+        },
+
+        plugins: {
+            legend: {
+                display: false
             },
 
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
+            tooltip: {
+                backgroundColor: '#0b111e',
+                borderColor: '#394862',
+                borderWidth: 1,
+                padding: 10,
 
-                interaction: {
-                    intersect: false,
-                    mode: "index"
-                },
-
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-
-                    tooltip: {
-                        backgroundColor: "#111a2d",
-                        titleColor: "#ffffff",
-                        bodyColor: "#dce4f1",
-                        borderColor: "#26334b",
-                        borderWidth: 1,
-                        padding: 12
-                    }
-                },
-
-                scales: {
-                    x: {
-                        grid: {
-                            color: "rgba(255, 255, 255, 0.05)"
-                        },
-
-                        ticks: {
-                            color: "#8d9ab1",
-                            maxRotation: 0,
-                            autoSkip: true
-                        },
-
-                        border: {
-                            display: false
-                        }
-                    },
-
-                    y: {
-                        min: 0,
-                        max: 100,
-
-                        ticks: {
-                            color: "#8d9ab1",
-                            stepSize: 20,
-                            callback: function (valor) {
-                                return valor + "%";
-                            }
-                        },
-
-                        grid: {
-                            color: "rgba(255, 255, 255, 0.07)"
-                        },
-
-                        border: {
-                            display: false
-                        }
+                callbacks: {
+                    label: function (c) {
+                        return ' ' + c.dataset.label + ': ' + c.parsed.y.toLocaleString('pt-BR') + unidade;
                     }
                 }
             }
-        });
+        },
+
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                },
+                border: {
+                    display: false
+                }
+            },
+
+            y: {
+                min: 0,
+                max: 100,
+                border: {
+                    display: false
+                },
+                grid: {
+                    color: 'rgba(148,163,184,.08)'
+                },
+                ticks: {
+                    stepSize: 25,
+                    callback: function (v) {
+                        return v.toLocaleString('pt-BR') + unidade;
+                    }
+                }
+            }
+        }
+    }
+
+});
+
+
+// Atualiza os dados do gráfico
+
+function atualizarGrafico(metrica) {
+
+    let titulo;
+    let texto;
+    let max;
+    let passo;
+    let linhas = [];
+
+
+    if (metrica == 'cpu') {
+
+        titulo = 'Uso de CPU';
+        texto = 'CPU em ' + atual.cpu + '% (' + situacao('cpu') + ')';
+        unidade = '%';
+        max = 100;
+        passo = 25;
+
+        linhas.push(criarLinha('CPU', dadosCPU, '#829bc2'));
+
+
+    } else if (metrica == 'memoria') {
+
+        titulo = 'Memória RAM e SWAP';
+        texto = 'RAM em ' + atual.ram + '% (' + situacao('ram') + ') · SWAP em ' + atual.swap + '% (' + situacao('swap') + ')';
+        unidade = '%';
+        max = 100;
+        passo = 25;
+
+        linhas.push(criarLinha('RAM', dadosRAM, '#829bc2'));
+        linhas.push(criarLinha('SWAP', dadosSwap, '#68dda8'));
+
+
+    } else {
+
+        titulo = 'Tráfego de rede';
+        texto = 'Última leitura: ' + ultimo(dadosRedeRecebida).toLocaleString('pt-BR') + ' KB/s recebidos e ' +
+                ultimo(dadosRedeEnviada).toLocaleString('pt-BR') + ' KB/s enviados';
+        unidade = ' KB/s';
+        max = 800;
+        passo = 200;
+
+        linhas.push(criarLinha('Dados recebidos', dadosRedeRecebida, '#829bc2'));
+        linhas.push(criarLinha('Dados enviados', dadosRedeEnviada, '#68dda8'));
+
+
+    }
+
+
+    // Atualiza o gráfico
+
+    grafico.options.scales.y.max = max;
+    grafico.options.scales.y.ticks.stepSize = passo;
+
+    grafico.data.datasets = linhas;
+
+    grafico.update();
+
+
+    // Atualiza as informações da tela
+
+    document.getElementById('tituloGrafico').textContent = titulo;
+    document.getElementById('subtituloGrafico').textContent = texto;
+
+
+    // Monta a legenda
+
+    let legenda = '';
+
+    for (let i = 0; i < linhas.length; i++) {
+
+        legenda += '<span><i style="background:' + linhas[i].borderColor + '"></i>' + linhas[i].label + '</span>';
+
+    }
+
+    document.getElementById('legendaGrafico').innerHTML = legenda;
+
+
+    // Atualiza o botão selecionado
+
+    let botoes = document.querySelectorAll('.periodos button');
+
+    for (let i = 0; i < botoes.length; i++) {
+
+        if (botoes[i].getAttribute('data-p') == metrica) {
+
+            botoes[i].setAttribute('aria-pressed', 'true');
+
+        } else {
+
+            botoes[i].setAttribute('aria-pressed', 'false');
+
+        }
+
+    }
+
+}
+
+
+// Ação dos botões
+
+let botoes = document.querySelectorAll('.periodos button');
+
+for (let i = 0; i < botoes.length; i++) {
+
+    botoes[i].addEventListener('click', function() {
+
+        let metrica = botoes[i].getAttribute('data-p');
+
+        atualizarGrafico(metrica);
+
+    });
+
+}
+
+
+// Mostra a CPU ao abrir a página
+
+atualizarGrafico('cpu');
+
     </script>
 
 </body>
 </html>
-
