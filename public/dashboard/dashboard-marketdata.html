@@ -1,218 +1,467 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>LowLatency | Market Data</title>
+    <title>LowLatency | Dashboard Market Data</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/dashboards.css">
 
-     <link rel="stylesheet" href="../css/dashboard-marketdata.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 
-<body>
+<body class="tela">
 
-   
-    <nav class="navbar">
-         <a href="../index.html" class="logo">
-            <img src="../assets/icon/logobranca.png" alt="LowLatency">
-            <span>Low<span class="logo-destaque">Latency</span></span>
-        </a>
+    <header class="navbar">
+        <div class="conteiner navbar-conteudo">
 
-        <div class="menu">
-            <a href="dashboard-principal.html">Voltar para Dashboard Principal</a>
-        </div>
-    </nav>
+            <a href="../index.html" class="logo">
+                <img src="../assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
 
-    
-   
-<main class="dashboard">
+            <div class="botoes-cadastro">
+                <a href="../cadastro-maquina.html" class="botao-nav">Cadastro de Máquina</a>
+                <a href="../cadastro-componente.html" class="botao-nav">Cadastro de Componente</a>
+                <a href="../cadastro.html" class="botao-nav">Cadastro de Usuários</a>
+            </div>
 
-    
-    <section class="kpis">
-        <div class="kpi">
-            <span class="kpi-titulo">Uso de CPU</span>
-            <h2 id="kpiCpu">45%</h2>
-            <span class="kpi-descricao">Processamento do servidor</span>
-        </div>
-
-        <div class="kpi">
-            <span class="kpi-titulo">Uso de RAM</span>
-            <h2 id="kpiRam">60%</h2>
-            <span class="kpi-descricao">Memória utilizada</span>
-        </div>
-
-        <div class="kpi">
-            <span class="kpi-titulo">Uso de disco</span>
-            <h2 id="kpiDisco">55%</h2>
-            <span class="kpi-descricao">Espaço ocupado</span>
-        </div>
-
-    </section>
-
-    
-    <section class="area-grafico">
-
-        <div class="cabecalho-grafico">
-            <div>
-                <span class="identificador-grafico">MONITORAMENTO</span>
-                <h1>Market Data</h1>
-                <p>Acompanhamento dos recursos do servidor</p>
+            <div class="botoes-nav">
+                <a href="dashboard-principal.html" class="botao-nav">
+                    Voltar para Dashboard Principal
+                    <span aria-hidden="true">↗</span>
+                </a>
             </div>
 
         </div>
+    </header>
 
-       
-        <div class="graficos-linha">
+    <main class="dashboard">
+        <div class="pagina-topo">
+            <h1>Market Data</h1>
+            <div class="atualizacao">
+               
+                <i aria-hidden="true"></i>
+                <span>Atualizado em <time id="ultimaAtualizacao">--</time></span>
+            </div>
+        </div>
 
-            <div class="grafico-card">
-                <h2 class="grafico-titulo">Uso de CPU e RAM</h2>
-                <div class="grafico">
-                    <canvas id="graficoCpuRam"></canvas>
+        <section class="kpis-detalhes" aria-label="Resumo">
+            <div class="kpi">
+                <span>Uso da CPU</span>
+                <b id="kpiCPU"></b>
+            </div>
+            <div class="kpi">
+                <span>Uso da RAM</span>
+                <b id="kpiRAM"></b>
+            </div>
+            <div class="kpi">
+                <span>Uso da SWAP</span>
+                <b id="kpiSWAP"></b>
+            </div>
+            <div class="kpi">
+                <span>Uso do disco</span>
+                <b id="kpiDisco"></b>
+            </div>
+        </section>
+
+        <div class="conteudo">
+
+            <section class="kpis" aria-label="Rede e interrupções">
+
+                <div class="kpi-geral">
+                    <div class="servidor-cabecalho">
+                        <h3>Tráfego de rede</h3>
+                    </div>
+
+                    <div class="servidor-info">
+                        <span>Dados recebidos</span>
+                        <b id="redeRecebida"></b>
+                    </div>
+
+                    <div class="motivo" id="redeEnviada"></div>
                 </div>
-            </div>
 
-            <div class="grafico-card">
-                <h2 class="grafico-titulo">Operações de disco (IOPS)</h2>
-                <div class="grafico">
-                    <canvas id="graficoIOPS"></canvas>
+                <div class="kpi-geral">
+                    <div class="servidor-cabecalho">
+                        <h3>Softirq</h3>
+                    </div>
+
+                    <div class="servidor-info">
+                        <span>Interrupções de software</span>
+                        <b id="softirq"></b>
+                    </div>
+
+                    <div class="barra">
+                        <div class="progresso" id="barraSoftirq" style="width: 0%;"></div>
+                    </div>
                 </div>
-            </div>
+
+            </section>
+
+            <section class="area-grafico">
+                <div class="cabecalho-grafico">
+                    <div>
+                        <h2 id="tituloGrafico"></h2>
+                        <p id="subtituloGrafico"></p>
+                        <div class="legenda" id="legendaGrafico"></div>
+                    </div>
+
+                    <div class="periodos" role="group" aria-label="Métrica">
+                        <button data-p="rede" aria-pressed="true">Rede</button>
+                        <button data-p="cpu" aria-pressed="false">CPU</button>
+                        <button data-p="memoria" aria-pressed="false">Memória</button>
+                    </div>
+                </div>
+
+                <div class="grafico">
+                    <canvas id="graficoMarketData" role="img"
+                        aria-label="Gráfico da métrica escolhida nos últimos 30 minutos"></canvas>
+                </div>
+            </section>
 
         </div>
+    </main>
 
-    </section>
-
-</main>
-
-
-    
     <script>
-        const graficoCpuRam =
-            document.getElementById("graficoCpuRam");
 
-        new Chart(graficoCpuRam, {
-            type: "line",
-            data: {
-                labels: ["10:00", "10:01", "10:02", "10:03", "10:04"],
-                datasets: [
-                    {
-                        label: "CPU (%)",
-                        data: [35, 42, 55, 48, 60],
-                        borderColor: "#68dda8",
-                        backgroundColor: "rgba(104, 221, 168, 0.1)",
-                        tension: 0.3
-                    },
-                    {
-                        label: "RAM (%)",
-                        data: [45, 47, 46, 52, 55],
-                        borderColor: "#ffffff",
-                        backgroundColor: "rgba(255, 255, 255, 0.1)",
-                        tension: 0.3
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: { color: "#94a3b8" },
-                        grid: { color: "#1e293b" }
-                    },
-                    x: {
-                        ticks: { color: "#94a3b8" },
-                        grid: { color: "#1e293b" }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        labels: { color: "#f1f5f9" }
-                    }
-                }
-            }
-        });
+// Atualização da data e horário
 
-       
-const graficoIOPS = document.getElementById("graficoIOPS");
+let data = new Date();
 
-new Chart(graficoIOPS, {
-    type: "line",
+document.getElementById('ultimaAtualizacao').textContent =
+    data.toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        day: '2-digit',
+        month: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }) + ' (BRT)';
+
+
+// Horários das leituras 
+
+let rotulos = [
+    '10:25', '10:30', '10:35', '10:40', '10:45', '10:50',
+    '10:55', '11:00', '11:05', '11:10', '11:15', '11:20'
+];
+
+
+// Dados das leituras 
+let dadosCPU = [44, 52, 63, 78, 91, 99, 95, 82, 74, 66, 72, 70];
+let dadosRAM = [78, 79, 79, 80, 81, 82, 82, 81, 80, 80, 79, 80];
+let dadosSwap = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let dadosSoftirq = [15, 19, 24, 32, 38, 42, 40, 34, 30, 26, 29, 28];
+
+let dadosRedeRecebida = [1180, 1240, 1330, 1460, 1640, 1780, 1810, 1620, 1500, 1420, 1480, 1450];
+let dadosRedeEnviada = [2350, 2480, 2650, 2900, 3250, 3530, 3600, 3200, 2980, 2820, 2940, 2890];
+
+let atualDisco = 29;
+
+
+// 1 = normal, 2 = alerta, 3 = crítico
+
+let nivelAtual = {
+    cpu: 2,
+    ram: 3,
+    swap: 1,
+    disco: 1,
+    softirq: 2
+};
+
+
+// Pega a leitura mais recente de uma lista
+
+function ultimo(lista) {
+
+    return lista[lista.length - 1];
+
+}
+
+let atual = {
+    cpu: ultimo(dadosCPU),
+    ram: ultimo(dadosRAM),
+    swap: ultimo(dadosSwap),
+    disco: atualDisco,
+    softirq: ultimo(dadosSoftirq)
+};
+
+
+// Nome de cada nível 
+
+let nomesNivel = ['Sem status', 'Normal', 'Atenção', 'Crítico'];
+
+function nivel(componente) {
+
+    if (nivelAtual[componente] == undefined) {
+        return 0;
+    }
+
+    return nivelAtual[componente];
+
+}
+
+function situacao(componente) {
+
+    let n = nivel(componente);
+
+    if (n == 0) {
+        return 'sem status';
+    }
+
+    return nomesNivel[n].toLowerCase();
+
+}
+
+
+// Cards e KPIs
+
+document.getElementById('kpiCPU').textContent = atual.cpu + '%';
+document.getElementById('kpiRAM').textContent = atual.ram + '%';
+document.getElementById('kpiSWAP').textContent = atual.swap + '%';
+document.getElementById('kpiDisco').textContent = atual.disco + '%';
+
+document.getElementById('softirq').textContent = atual.softirq + '%';
+
+let larguraSoftirq = Math.min(100, atual.softirq);
+
+document.getElementById('barraSoftirq').style.width = larguraSoftirq + '%';
+
+document.getElementById('redeRecebida').textContent =
+    ultimo(dadosRedeRecebida).toLocaleString('pt-BR') + ' KB/s';
+
+document.getElementById('redeEnviada').textContent =
+    'Dados enviados: ' + ultimo(dadosRedeEnviada).toLocaleString('pt-BR') + ' KB/s';
+
+
+// Monta as linhas do gráfico
+
+function criarLinha(nome, valores, cor) {
+
+    return {
+        label: nome,
+        data: valores,
+        borderColor: cor,
+        backgroundColor: cor,
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 2,
+        pointHoverRadius: 4
+    };
+
+}
+
+
+
+let unidade = '%';
+
+
+// Configuração do gráfico
+
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.animation = false;
+
+let grafico = new Chart(document.getElementById('graficoMarketData'), {
+
+    type: 'line',
 
     data: {
-        labels: ["10:00", "10:01", "10:02", "10:03", "10:04"],
-
-        datasets: [{
-            label: "IOPS (milhares de operações/s)",
-            data: [120000, 180000, 250000, 210000, 320000].map(valor => valor / 1000),
-            borderColor: "#68dda8",
-            backgroundColor: "rgba(104, 221, 168, 0.1)",
-            pointBackgroundColor: "#68dda8",
-            pointRadius: 3,
-            borderWidth: 2.5,
-            fill: true,
-            tension: 0.3
-        }]
+        labels: rotulos,
+        datasets: []
     },
 
     options: {
-        responsive: true,
         maintainAspectRatio: false,
+
+        interaction: {
+            mode: 'index',
+            intersect: false
+        },
 
         plugins: {
             legend: {
-                labels: {
-                    color: "#f1f5f9"
-                }
+                display: false
             },
+
             tooltip: {
+                backgroundColor: '#0b111e',
+                borderColor: '#394862',
+                borderWidth: 1,
+                padding: 10,
+
                 callbacks: {
-                    label: function(context) {
-                        return context.dataset.label + ": " +
-                            context.parsed.y.toLocaleString("pt-BR");
+                    label: function (c) {
+                        return ' ' + c.dataset.label + ': ' + c.parsed.y.toLocaleString('pt-BR') + unidade;
                     }
                 }
             }
         },
 
         scales: {
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: "Milhares de operações por segundo",
-                    color: "#94a3b8"
-                },
-                ticks: {
-                    color: "#94a3b8",
-                    callback: function(valor) {
-                        return valor.toLocaleString("pt-BR");
-                    }
-                },
+            x: {
                 grid: {
-                    color: "#1e293b"
+                    display: false
+                },
+                border: {
+                    display: false
                 }
             },
 
-            x: {
-                ticks: {
-                    color: "#94a3b8"
+            y: {
+                min: 0,
+                max: 100,
+                border: {
+                    display: false
                 },
                 grid: {
-                    color: "#1e293b"
+                    color: 'rgba(148,163,184,.08)'
+                },
+                ticks: {
+                    stepSize: 25,
+                    callback: function (v) {
+                        return v.toLocaleString('pt-BR') + unidade;
+                    }
                 }
             }
         }
     }
+
 });
 
+
+// Atualiza os dados do gráfico
+
+function atualizarGrafico(metrica) {
+
+    let titulo;
+    let texto;
+    let max;
+    let passo;
+    let linhas = [];
+
+
+    if (metrica == 'cpu') {
+
+        titulo = 'Uso de CPU e softirq';
+        texto = 'CPU em ' + atual.cpu + '% (' + situacao('cpu') + ') · softirq em ' + atual.softirq + '% (' + situacao('softirq') + ')';
+        unidade = '%';
+        max = 100;
+        passo = 25;
+
+        linhas.push(criarLinha('CPU', dadosCPU, '#829bc2'));
+        linhas.push(criarLinha('Softirq', dadosSoftirq, '#a78bfa'));
+
+
+    } else if (metrica == 'memoria') {
+
+        titulo = 'Memória RAM e SWAP';
+        texto = 'RAM em ' + atual.ram + '% (' + situacao('ram') + ') · SWAP em ' + atual.swap + '% (' + situacao('swap') + ')';
+        unidade = '%';
+        max = 100;
+        passo = 25;
+
+        linhas.push(criarLinha('RAM', dadosRAM, '#829bc2'));
+        linhas.push(criarLinha('SWAP', dadosSwap, '#a78bfa'));
+
+
+    } else {
+
+        titulo = 'Tráfego de rede';
+        texto = 'Última leitura: ' + ultimo(dadosRedeRecebida).toLocaleString('pt-BR') + ' KB/s recebidos e ' +
+                ultimo(dadosRedeEnviada).toLocaleString('pt-BR') + ' KB/s enviados';
+        unidade = ' KB/s';
+        max = 4000;
+        passo = 1000;
+
+        linhas.push(criarLinha('Dados recebidos', dadosRedeRecebida, '#829bc2'));
+        linhas.push(criarLinha('Dados enviados', dadosRedeEnviada, '#a78bfa'));
+
+
+    }
+
+
+    // Atualiza o gráfico
+
+    grafico.options.scales.y.max = max;
+    grafico.options.scales.y.ticks.stepSize = passo;
+
+    grafico.data.datasets = linhas;
+
+    grafico.update();
+
+
+    // Atualiza as informações da tela
+
+    document.getElementById('tituloGrafico').textContent = titulo;
+    document.getElementById('subtituloGrafico').textContent = texto;
+
+
+    // Monta a legenda
+
+    let legenda = '';
+
+    for (let i = 0; i < linhas.length; i++) {
+
+        legenda += '<span><i style="background:' + linhas[i].borderColor + '"></i>' + linhas[i].label + '</span>';
+
+    }
+
+    document.getElementById('legendaGrafico').innerHTML = legenda;
+
+
+    // Atualiza o botão selecionado
+
+    let botoes = document.querySelectorAll('.periodos button');
+
+    for (let i = 0; i < botoes.length; i++) {
+
+        if (botoes[i].getAttribute('data-p') == metrica) {
+
+            botoes[i].setAttribute('aria-pressed', 'true');
+
+        } else {
+
+            botoes[i].setAttribute('aria-pressed', 'false');
+
+        }
+
+    }
+
+}
+
+
+// Ação dos botões
+
+let botoes = document.querySelectorAll('.periodos button');
+
+for (let i = 0; i < botoes.length; i++) {
+
+    botoes[i].addEventListener('click', function() {
+
+        let metrica = botoes[i].getAttribute('data-p');
+
+        atualizarGrafico(metrica);
+
+    });
+
+}
+
+
+
+
+atualizarGrafico('rede');
+
     </script>
-    
 
 </body>
 </html>

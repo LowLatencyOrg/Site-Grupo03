@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -58,7 +58,7 @@
         <section class="kpis-detalhes" aria-label="Resumo">
             <div class="kpi">
                 <span>Total de alertas</span>
-                <b id="kpiTotal">20</b>
+                <b id="kpiTotal">22</b>
             </div>
             <div class="kpi">
                 <span>Servidor com mais alertas</span>
@@ -70,7 +70,7 @@
             </div>
             <div class="kpi">
                 <span>Status geral</span>
-                <b><i class="atencao" aria-hidden="true"></i>Atenção</b>
+                <b><i class="critico" aria-hidden="true"></i>Crítico</b>
             </div>
         </section>
 
@@ -79,18 +79,18 @@
           
             <section class="kpis" aria-label="Servidores">
 
-                <a href="dashboard-matching.html" class="kpi-geral" data-valor="50">
+                <a href="dashboard-matching.html" class="kpi-geral" data-valor="80">
                     <div class="servidor-cabecalho">
                         <h3>Matching Engine</h3>
                     </div>
 
                     <div class="servidor-info">
                         <span>Uso de RAM</span>
-                        <b>50%</b>
+                        <b>80%</b>
                     </div>
 
                     <div class="barra">
-                        <div class="progresso" style="width: 50%;"></div>
+                        <div class="progresso critico" style="width: 80%;"></div>
                     </div>
                 </a>
 
@@ -161,11 +161,11 @@ document.getElementById('ultimaAtualizacao').textContent =
 let servidores = ['Matching Engine', 'Market Data'];
 
 
-// Dados de dos alertas
+// Dados de dos alertas ([alertas, críticos] de cada servidor)
 
-let dadosHoje = [[6, 0], [9, 5]];
-let dados7Dias = [[31, 4], [48, 19]];
-let dados30Dias = [[96, 12], [170, 46]];
+let dadosHoje = [[6, 2], [9, 5]];
+let dados7Dias = [[31, 6], [48, 19]];
+let dados30Dias = [[96, 15], [170, 46]];
 
 
 // Configuração do gráfico
