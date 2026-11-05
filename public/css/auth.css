@@ -66,18 +66,30 @@ a {
   display: block;
 }
 
+/* Área do Formulário Centralizada e sem Scrollbar */
 .lado-formulario {
-  flex: 0.9;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 48px 64px;
+  justify-content: center; /* Centraliza na vertical */
+  align-items: center;     /* Centraliza na horizontal */
+  padding: 32px 24px;
   background: var(--fundo);
-  height: 100%;
-  overflow-y: auto;
-  max-width: 560px;
+  height: 100vh;
+  overflow: hidden;        /* Remove a barra de rolagem */
+  width: 100%;
 }
 
+/* Mantém os elementos internos com uma largura máxima legível */
+.cabecalho-auth,
+.formulario-login,
+.formulario-cadastro,
+.voltar-inicio,
+.area-logo,
+.mensagem-alerta {
+  width: 100%;
+  max-width: 420px;
+}
 
 .voltar-inicio {
   display: inline-block;
@@ -132,7 +144,6 @@ a {
   color: #94a3b8;
 }
 
-
 .mensagem-alerta {
   display: none;
   background: rgba(16, 185, 129, 0.15);
@@ -181,7 +192,8 @@ a {
 .campo-cargo option,
 .campo-tipo-contato,
 .campo-telefone,
-.campo-confirmar-senha, .data-nasc {
+.campo-confirmar-senha, 
+.data-nasc {
   width: 100%;
   padding: 11px 13px;
   border-radius: 8px;
@@ -193,13 +205,7 @@ a {
   outline: none;
 }
 
-.campo-tipo-contato option {
-   background-color: #1a1a2e; 
-  color: #ffffff; 
-  font-size: 16px;
-}
-
-
+.campo-tipo-contato option,
 .campo-cargo option {
   background-color: #1a1a2e; 
   color: #ffffff; 
@@ -214,7 +220,7 @@ a {
 .campo-senha:focus,
 .campo-nome:focus,
 .campo-empresa:focus,
-.campo-cnpj:focus,
+.campo-cpf:focus,
 .campo-telefone:focus,
 .campo-confirmar-senha:focus {
   border-color: var(--destaque);
@@ -302,7 +308,6 @@ a {
 
 .espaco-imagem-ilustracao {
   display: block;
-  width: 100%;
   width: 160px;
   height: 160px;
   margin: 0 auto 24px;
@@ -345,7 +350,6 @@ a {
   padding-top: 10%;
 }
 
-/* --- ESTILOS DO SELECT CUSTOMIZADO --- */
 .select-diferente {
   position: relative;
   width: 100%;
@@ -400,39 +404,41 @@ a {
   color: var(--destaque);
 }
 
-/*tornando responsivo*/
-
+/* Responsivo */
 @media (max-width: 768px) {
-    .layout-auth {
-        flex-direction: column;
-        overflow-y: auto;
-    }
+  .layout-auth {
+    flex-direction: column;
+    overflow-y: auto;
+  }
 
-    .lado-imagem {
-        display: none; 
-    }
+  .lado-imagem {
+    display: none; 
+  }
 
-    .lado-formulario {
-        width: 100%;
-        max-width: 100%;
-        padding: 90px 24px 40px 24px; 
-    }
+  .lado-formulario {
+    width: 100%;
+    max-width: 100%;
+    padding: 40px 24px; 
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
 
-    .cadastro-maquina {
-        flex-direction: column;
-        overflow-y: auto;
-        height: auto;
-        min-height: 100vh;
-    }
+  .cadastro-maquina {
+    flex-direction: column;
+    overflow-y: auto;
+    height: auto;
+    min-height: 100vh;
+  }
 
-    .parte-cadastro {
-        width: 100%;
-        padding-top: 20px;
-    }
+  .parte-cadastro {
+    width: 100%;
+    padding-top: 20px;
+  }
 
-    .card-cadastro {
-        width: 90%;
-        padding-top: 50px; 
-        margin: 20px auto 40px auto;
-    }
+  .card-cadastro {
+    width: 90%;
+    padding-top: 50px; 
+    margin: 20px auto 40px auto;
+  }
 }

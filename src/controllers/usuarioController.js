@@ -51,35 +51,19 @@ function cadastrar(req, res) {
     var senha = req.body.senhaServer;
     var fkEmpresa = req.body.fkEmpresaServer;
     var fkCargo = req.body.fkCargoServer;
-    var telefone = req.body.telefoneServer;
-    var tipoContato = req.body.tipoContatoServer;
 
-    if (nome == undefined || cpf == undefined || email == undefined || senha == undefined || fkEmpresa == undefined || fkCargo == undefined || telefone == undefined) {
+    if (nome == undefined || cpf == undefined || email == undefined || senha == undefined || fkEmpresa == undefined || fkCargo == undefined) {
         res.status(400).send("Existem campos undefined no seu formulário!");
         return;
     }
 
+   
     usuarioModel.cadastrar(nome, cpf, email, senha, fkEmpresa, fkCargo)
         .then(
             function (resultadoUsuario) {
-                var idUsuarioGerado = resultadoUsuario.insertId;
-
-                usuarioModel.cadastrarTelefone(telefone, idUsuarioGerado, tipoContato)
-                    .then(
-                        function (resultadoTelefone) {
-                            // Se ambos derem certo, enviamos a resposta de sucesso ao Front-end
-                            res.json({
-                                usuario: resultadoUsuario,
-                                telefone: resultadoTelefone
-                            });
-                        }
-                    ).catch(
-                        function (erro) {
-                            console.log(erro);
-                            console.log("\nHouve um erro ao cadastrar o telefone! Erro: ", erro.sqlMessage);
-                            res.status(500).json(erro.sqlMessage);
-                        }
-                    );
+                res.json({
+                    usuario: resultadoUsuario
+                });
             }
         ).catch(
             function (erro) {
@@ -89,6 +73,7 @@ function cadastrar(req, res) {
             }
         );
 }
+
 
 module.exports = {
     autenticar,

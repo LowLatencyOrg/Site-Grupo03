@@ -10,7 +10,7 @@ function autenticar(email, senha) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrar(nome, cpf, email, fkEmpresa, fkCargo) {
+function cadastrar(nome, cpf, email, senha, fkEmpresa, fkCargo) {
     var instrucaoSql = `
         INSERT INTO usuario (nome, cpf, email, senha, fk_empresa, fk_cargo) 
         VALUES ('${nome}', '${cpf}', '${email}', '${senha}', ${fkEmpresa}, ${fkCargo});
@@ -19,18 +19,9 @@ function cadastrar(nome, cpf, email, fkEmpresa, fkCargo) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrarTelefone(telefone, idUsuario, idTipoContato) {
-    var instrucaoSql = `
-        INSERT INTO contato (numero, fk_empresa, fk_usuario, fk_tipo_contato) 
-        VALUES ('${telefone}', NULL, ${idUsuario}, ${idTipoContato});
-    `;
-    
-    console.log("Executando a instrução SQL (Contato): \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
-}
 
 module.exports = {
     autenticar,
     cadastrar,
-    cadastrarTelefone
+    
 };
