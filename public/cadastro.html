@@ -54,18 +54,6 @@
           </select>
         </div>
 
-        <div class="grupo-campo">
-          <label class="rotulo-campo">Tipo de telefone:</label>
-          <select class="campo-tipo-contato" id="tipo_contato_input">
-            <option value="1">Celular</option>
-            <option value="2">Telefone Fixo</option>
-          </select>
-        </div>
-
-        <div class="grupo-campo">
-          <label class="rotulo-campo">Telefone *</label>
-          <input class="campo-telefone" id="telefone_input" type="tel" placeholder="(00) 00000-0000" required />
-        </div>
 
         <div class="grupo-campo">
           <label class="rotulo-campo">Senha de acesso *</label>
@@ -98,8 +86,6 @@
       var emailVar = email_input.value;
       var cpfVar = cpf_input.value;
       var cargoVar = cargo_input.value;
-      var telefoneVar = telefone_input.value;
-      var tipoContatoVar = tipo_contato_input.value;
       var senhaVar = senha_input.value;
       var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
@@ -130,7 +116,7 @@
         return false;
       }
 
-      if (nomeVar == "" || emailVar == "" || cpfVar == "" || cargoVar == "" || telefoneVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
+      if (nomeVar == "" || emailVar == "" || cpfVar == "" || cargoVar == "" ||  senhaVar == "" || confirmacaoSenhaVar == "") {
         cardErro.style.display = "block";
         cardErro.className = "mensagem-alerta erro";
         mensagem_erro.innerHTML = "Preencha todos os campos em branco para prosseguir!";
@@ -158,8 +144,7 @@
           senhaServer: senhaVar,
           fkEmpresaServer: fkEmpresaVar,
           fkCargoServer: cargoVar,
-          telefoneServer: telefoneVar,
-          tipoContatoServer: tipoContatoVar 
+        
         })
       }).then(function (resposta) {
         if (resposta.ok) {
