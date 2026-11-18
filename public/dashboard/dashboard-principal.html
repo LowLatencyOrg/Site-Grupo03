@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -58,19 +58,19 @@
         <section class="kpis-detalhes" aria-label="Resumo">
             <div class="kpi">
                 <span>Total de alertas</span>
-                <b id="kpiTotal">22</b>
+                <b id="kpiTotal">--</b>
             </div>
             <div class="kpi">
                 <span>Servidor com mais alertas</span>
-                <b id="kpiCritico">Market Data</b>
+                <b id="kpiCritico">--</b>
             </div>
             <div class="kpi">
                 <span>Última ocorrência</span>
-                <b>10:45</b>
+                <b id="kpiUltima">--:--</b>
             </div>
             <div class="kpi">
                 <span>Status geral</span>
-                <b><i class="critico" aria-hidden="true"></i>Crítico</b>
+                <b id="kpiStatus">--</b>
             </div>
         </section>
 
@@ -141,31 +141,28 @@
 
     <script>
 
+
+let idUsuario = sessionStorage.ID_USUARIO;
+
+let periodoAtual = 'hoje';
+
+
 // Atualização da data e horário
 
-let data = new Date();
+function atualizarHorario() {
 
-document.getElementById('ultimaAtualizacao').textContent =
-    data.toLocaleString('pt-BR', {
-        timeZone: 'America/Sao_Paulo',
-        day: '2-digit',
-        month: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    }) + ' (BRT)';
+    let data = new Date();
 
-
-// Dados dos servidores
-
-let servidores = ['Matching Engine', 'Market Data'];
-
-
-// Dados de dos alertas ([alertas, críticos] de cada servidor)
-
-let dadosHoje = [[6, 2], [9, 5]];
-let dados7Dias = [[31, 6], [48, 19]];
-let dados30Dias = [[96, 15], [170, 46]];
+    document.getElementById('ultimaAtualizacao').textContent =
+        data.toLocaleString('pt-BR', {
+            timeZone: 'America/Sao_Paulo',
+            day: '2-digit',
+            month: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        }) + ' (BRT)';
+}
 
 
 // Configuração do gráfico
@@ -179,22 +176,22 @@ let grafico = new Chart(document.getElementById('graficoAlertas'), {
     type: 'bar',
 
     data: {
-        labels: servidores,
+        labels: [],
 
         datasets: [
             {
                 label: 'Alerta',
-                data: [0, 0],
+                data: [],
                 backgroundColor: '#ffc222',
                 borderRadius: 2,
-                 maxBarThickness: 100,
+                maxBarThickness: 100,
             },
             {
                 label: 'Crítico',
-                data: [0, 0],
+                data: [],
                 backgroundColor: '#f87171',
                 borderRadius: 2,
-                 maxBarThickness: 100,
+                maxBarThickness: 100,
             }
         ]
     },
@@ -248,101 +245,75 @@ let grafico = new Chart(document.getElementById('graficoAlertas'), {
 });
 
 
-// Atualiza os dados do gráfico
+// Busca os KPIs do banco e preenche os cards
+
+function carregarKPIs() {
+
+    fetch(`/dashboardPrincipal/kpis/${idUsuario}`)
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (dados) {
+
+            let kpi = dados[0];
+
+            document.getElementById('kpiTotal').textContent =
+                Number(kpi.totalAlertas).toLocaleString('pt-BR');
+
+            document.getElementById('kpiCritico').textContent =
+                kpi.servidorMaisAlertas || 'Nenhum';
+
+            document.getElementById('kpiUltima').textContent =
+                kpi.ultimaOcorrencia || '--:--';
+
+
+            // Status geral com a bolinha de cor
+
+            let status = kpi.statusGeral;
+            let texto = 'Sem dados';
+            let classe = '';
+
+            if (status == 'critico') {
+                texto = 'Crítico';
+                classe = 'critico';
+            } else if (status == 'alerta') {
+                texto = 'Alerta';
+                classe = 'alerta';
+            } else if (status == 'normal') {
+                texto = 'Normal';
+                classe = 'normal';
+            }
+
+            if (classe != '') {
+                document.getElementById('kpiStatus').innerHTML =
+                    `<i class="${classe}" aria-hidden="true"></i>${texto}`;
+            } else {
+                document.getElementById('kpiStatus').textContent = texto;
+            }
+
+            atualizarHorario();
+        })
+        .catch(function (erro) {
+            console.log('Erro ao buscar KPIs:', erro);
+        });
+}
+
+
+// Busca os alertas por servidor do banco e atualiza o gráfico
 
 function atualizarGrafico(periodo) {
 
-    let dados;
+    periodoAtual = periodo;
+
     let texto;
 
     if (periodo == 'hoje') {
-
-        dados = dadosHoje;
         texto = 'de hoje';
-
     } else if (periodo == '7d') {
-
-        dados = dados7Dias;
         texto = 'dos últimos 7 dias';
-
     } else {
-
-        dados = dados30Dias;
         texto = 'dos últimos 30 dias';
-
     }
-
-
-    // Separa os alertas de cada servidor
-
-    let alerta1 = dados[0][0];
-    let critico1 = dados[0][1];
-
-    let alerta2 = dados[1][0];
-    let critico2 = dados[1][1];
-
-
-    // Soma os alertas
-
-    let total1 = alerta1 + critico1;
-    let total2 = alerta2 + critico2;
-
-
-    // Identifica o servidor com mais alertas
-
-    let nome1 = servidores[0];
-    let nome2 = servidores[1];
-
-    if (total2 > total1) {
-
-        let aux = total1;
-        total1 = total2;
-        total2 = aux;
-
-        aux = nome1;
-        nome1 = nome2;
-        nome2 = aux;
-
-        aux = alerta1;
-        alerta1 = alerta2;
-        alerta2 = aux;
-
-        aux = critico1;
-        critico1 = critico2;
-        critico2 = aux;
-
-    }
-
-
-    // Calcula o total de alertas
-
-    let totalGeral = total1 + total2;
-    let porcentagem = 0;
-
-    if (totalGeral > 0) {
-        porcentagem = Math.round((total1 / totalGeral) * 100);
-    }
-
-
-    // Atualiza o gráfico
-
-    grafico.data.labels = [nome1, nome2];
-
-    grafico.data.datasets[0].data = [alerta1, alerta2];
-    grafico.data.datasets[1].data = [critico1, critico2];
-
-    grafico.update();
-
-
-    // Atualiza as informações da tela
-
-    document.getElementById('subtituloGrafico').textContent =
-        nome1 + ' concentra ' + porcentagem + '% dos alertas ' + texto;
-
-    document.getElementById('kpiTotal').textContent =
-        totalGeral.toLocaleString('pt-BR');
-
-    document.getElementById('kpiCritico').textContent = nome1;
 
 
     // Atualiza o botão selecionado
@@ -352,43 +323,95 @@ function atualizarGrafico(periodo) {
     for (let i = 0; i < botoes.length; i++) {
 
         if (botoes[i].getAttribute('data-p') == periodo) {
-
             botoes[i].setAttribute('aria-pressed', 'true');
-
         } else {
-
             botoes[i].setAttribute('aria-pressed', 'false');
-
         }
 
     }
 
+
+    fetch(`/dashboardPrincipal/alertas-servidor/${idUsuario}/${periodo}`)
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (dados) {
+
+            let nomes = [];
+            let alertas = [];
+            let criticos = [];
+            let totalGeral = 0;
+
+            for (let i = 0; i < dados.length; i++) {
+
+                nomes.push(dados[i].servidor);
+                alertas.push(Number(dados[i].alertas));
+                criticos.push(Number(dados[i].criticos));
+
+                totalGeral += Number(dados[i].alertas) + Number(dados[i].criticos);
+
+            }
+
+            grafico.data.labels = nomes;
+            grafico.data.datasets[0].data = alertas;
+            grafico.data.datasets[1].data = criticos;
+            grafico.update();
+
+
+            
+            if (totalGeral > 0) {
+
+                let totalPrimeiro = alertas[0] + criticos[0];
+                let porcentagem = Math.round((totalPrimeiro / totalGeral) * 100);
+
+                document.getElementById('subtituloGrafico').textContent =
+                    nomes[0] + ' concentra ' + porcentagem + '% dos alertas ' + texto;
+
+            } else {
+
+                document.getElementById('subtituloGrafico').textContent =
+                    'Nenhum alerta ' + texto;
+
+            }
+        })
+        .catch(function (erro) {
+            console.log('Erro ao buscar alertas por servidor:', erro);
+        });
 }
 
 
 // Ação dos botões
 
-let botoes = document.querySelectorAll('.periodos button');
+let botoesPeriodo = document.querySelectorAll('.periodos button');
 
-for (let i = 0; i < botoes.length; i++) {
+for (let i = 0; i < botoesPeriodo.length; i++) {
 
-    botoes[i].addEventListener('click', function() {
+    botoesPeriodo[i].addEventListener('click', function () {
 
-        let periodo = botoes[i].getAttribute('data-p');
-
-        atualizarGrafico(periodo);
+        atualizarGrafico(botoesPeriodo[i].getAttribute('data-p'));
 
     });
 
 }
 
 
-// Mostra os dados de hoje ao abrir a página
+if (idUsuario == undefined) {
 
-atualizarGrafico('hoje');
+    console.log('Usuário não está logado (sessionStorage.ID_USUARIO vazio)');
+
+} else {
+
+    carregarKPIs();
+    atualizarGrafico('hoje');
+
+    setInterval(function () {
+        carregarKPIs();
+        atualizarGrafico(periodoAtual);
+    }, 5000);
+
+}
 
 </script>
-
 </body>
 </html>
     
