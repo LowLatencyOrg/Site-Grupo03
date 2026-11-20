@@ -10,17 +10,39 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
-  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+
   <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboards.css" />
 </head>
 
 <body onload="buscarServidores()">
+
+      <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="../index.html" class="logo">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+
+            <div class="botoes-edicao">
+                <a href="editar-componente.html" class="botao-nav">Editar componente</a>
+            </div>
+
+            <div class="botoes-nav">
+                <a href="dashboard/dashboard-principal.html" class="botao-nav">
+                    Voltar a dashboard
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
 
   <div class="cadastro-maquina">
     <div class="parte-cadastro"></div>
     <div class="parte-cadastro">
         <div class="card-cadastro">
-        <a href="dashboard/dashboard-principal.html" class="voltar-inicio">Voltar para a dashboard</a>
 
         <!-- Cabeçalho -->
         <div class="cabecalho-auth">
@@ -77,10 +99,6 @@
             <button type="button" class="botao-cadastrar" onclick="cadastrar()">Concluir Cadastro</button>
 
         </form>
-
-        <div class="rodape-auth">
-            Ainda não cadastrou um servidor? <a href="cadastro-maquina.html">Cadastrar servidor</a>
-        </div>
 
         <div id="cardErro" class="mensagem-alerta">
             <p id="mensagem_erro"></p>

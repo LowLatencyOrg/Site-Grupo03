@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Componente — lowlatency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+
+<body onload="buscarServidores()">
+
+  <div class="cadastro-maquina">
+    <div class="parte-cadastro"></div>
+    <div class="parte-cadastro">
+        <div class="card-cadastro">
+        <a href="dashboard/dashboard-principal.html" class="voltar-inicio">Voltar para a dashboard</a>
+
+        <!-- Cabeçalho -->
+        <div class="cabecalho-auth">
+            <h1 class="titulo-auth">Editar componente</h1>
+        </div>
+
+        <!-- Formulário de Cadastro -->
+        <form class="formulario-cadastro">
+
+            <div class="grupo-campo">
+              <label class="rotulo-campo">Servidor</label>
+              <input type="hidden" id="servidor_input" value="" />
+              <div class="select-diferente">
+                <div class="campo-empresa select" id="display_servidor">Selecione um servidor</div>
+                <ul class="opcoes" id="lista_servidores">
+                </ul>
+              </div>
+            </div>
+
+            <div class="grupo-campo">
+              <label class="rotulo-campo">Componente</label>
+              <input type="hidden" id="componente_input" value="1" />
+              <div class="select-diferente">
+                <div class="campo-empresa select">CPU</div>
+                <ul class="opcoes">
+                  <li data-value="1">CPU</li>
+                  <li data-value="2">RAM</li>
+                  <li data-value="3">Disco</li>
+                  <li data-value="4">Rede</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="grupo-campo">
+              <label class="rotulo-campo">Tipo de medida</label>
+              <input type="hidden" id="medida_input" value="" />
+              <div class="select-diferente">
+                <div class="campo-empresa select" id="display_medida">Selecione o componente primeiro</div>
+                <ul class="opcoes" id="lista_medidas">
+                </ul>
+              </div>
+            </div>
+
+            <div class="grupo-campo">
+            <label class="rotulo-campo">Valor alerta</label>
+            <input class="campo-nome" id="alerta_input" type="text"/>
+            </div>
+
+            <div class="grupo-campo">
+            <label class="rotulo-campo">Valor crítico</label>
+            <input class="campo-email" id="critico_input" type="email"/>
+            </div>
+
+            <button type="button" class="botao-cadastrar" onclick="cadastrar()">Concluir Cadastro</button>
+
+        </form>
+        <div class="rodape-auth">
+            Deseja editar algum servidor? <a href="editar-servidor.html">Editar servidor</a>
+        </div>
+
+        <div id="cardErro" class="mensagem-alerta">
+            <p id="mensagem_erro"></p>
+        </div>
+    </div>
+    </div>
+    <!-- Lado Esquerdo: Imagem de Telemetria -->
+    <div class="parte-cadastro"></div>
+
+    <!-- Lado Direito: Painel de Cadastro -->
+    
+  </div>
+</body>
+</html>
