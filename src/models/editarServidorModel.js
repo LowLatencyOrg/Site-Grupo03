@@ -15,29 +15,56 @@ function listarServidores(idEmpresa) {
 function buscarServidorPorId(idServidor) {
 
     var instrucaoSql = `
-        SELECT 
+        SELECT
             s.id_servidor,
             s.hostname,
-            s.sistema_operacional,
-            s.fk_status,
-            st.descricao AS status
+            s.fk_sistema_operacional,
+            s.fk_status
         FROM servidor s
-        JOIN status_servidor st
-            ON s.fk_status = st.id_status
         WHERE s.id_servidor = ${idServidor};
     `;
 
     return database.executar(instrucaoSql);
 }
 
-function buscarSO(id_sistema_operacional){
+function listarSO(id_sistema_operacional){
     var instrucaoSql = `
-        SELECT 
-        ;
+        SELECT
+        id_sistema_operacional, nome
+        FROM sistema_operacional;
     `;
+
+    return database.executar(instrucaoSql);
+}
+
+function listarStatus(){
+    var instrucaoSql = `
+        SELECT
+        id_status, descricao
+        FROM status_servidor;
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function editarServidor(idServidor, hostname, so, status) {
+
+    var instrucaoSql = `
+        UPDATE servidor
+        SET
+            hostname = '${hostname}',
+            fk_sistema_operacional = ${so},
+            fk_status = ${status}
+        WHERE id_servidor = ${idServidor};
+    `;
+
+    return database.executar(instrucaoSql);
 }
 
 module.exports = {
     listarServidores,
-    buscarServidorPorId
+    buscarServidorPorId,
+    listarSO,
+    listarStatus,
+    editarServidor
 }

@@ -11,4 +11,17 @@ router.get("/buscarServidor/:idServidor", function (req, res) {
     editarServidorController.buscarServidorPorId(req, res);
 });
 
+router.get("/listarSO/", function (req, res) {
+    editarServidorController.listarSO(req, res);
+});
+
+router.get("/listarStatus/", function (req, res) {
+    editarServidorController.listarStatus(req, res);
+});
+
+router.post("/editarServidor", function (req, res) {
+    editarServidorController.editarServidor(req, res);
+});
+
+
 module.exports = router;

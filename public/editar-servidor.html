@@ -54,11 +54,6 @@
             </div>
 
             <div class="grupo-campo">
-            <label class="rotulo-campo">MacAddress</label>
-            <input class="campo-email" id="macaddress_input" type="email"/>
-            </div>
-
-            <div class="grupo-campo">
                 <label class="rotulo-campo" for="display_so">
                     Sistema Operacional
                 </label>
@@ -79,14 +74,14 @@
 
                 <select
                     class="campo-empresa"
-                    id="display_servidor"
+                    id="display_status"
                     name="status"
                     required>
                     <option value="" disabled selected>Selecione...</option>
                 </select>
             </div>
 
-            <button type="button" class="botao-cadastrar" onclick="editar()">Concluir Edição</button>
+            <button type="button" class="botao-cadastrar" onclick="editarServidor()">Concluir Edição</button>
 
         </form>
 
@@ -157,8 +152,8 @@ function selecionarServidor() {
             .then(function (servidor) {
 
                 hostname_input.value = servidor[0].hostname;
-                so_input.value = servidor[0].sistema_operacional;
-                status_input.value = servidor[0].fk_status;
+                display_so.value = servidor[0].sistema_operacional;
+                display_status.value = servidor[0].fk_status;
 
             })
             .catch(function (erro) {
@@ -167,26 +162,114 @@ function selecionarServidor() {
     });
 }
 
-function selecionarSO(){
-    document.getElementById("display_so").addEventListener("change", function () {
-        var id_sistema_operacional = this.value;
+function listarSO() {
 
-        fetch(`/editar/buscarSO/${id_sistema_operacional}`)
-            .then(function (resposta) {
-                return resposta.json();
-            })
-            .then(function (so) {
+    fetch("/editar/listarSO")
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (sistemasOperacionais) {
 
-                hostname_input.value = so[0].hostname;
-                so_input.value = so[0].sistema_operacional;
-                status_input.value = so[0].fk_status;
+            var select = document.getElementById("display_so");
 
-            })
-            .catch(function (erro) {
-                console.log("Erro ao buscar servidor:", erro);
+            sistemasOperacionais.forEach(function (so) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = so.id_sistema_operacional;
+                opcao.textContent = so.nome;
+
+                select.appendChild(opcao);
             });
+        })
+        .catch(function (erro) {
+            console.log("Erro ao listar sistemas operacionais:", erro);
+        });
+}
 
-    });
+function listarStatus() {
+
+    fetch("/editar/listarStatus")
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (status_servidor) {
+
+            var select = document.getElementById("display_status");
+
+            status_servidor.forEach(function (status) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = status.id_status;
+                opcao.textContent = status.descricao;
+
+                select.appendChild(opcao);
+            });
+        })
+        .catch(function (erro) {
+            console.log("Erro ao listar os status:", erro);
+        });
+}
+
+function editarServidor() {
+
+    console.log("Entrei no editar");
+
+    var idServidor = display_servidor.value;
+    var hostnameVar = hostname_input.value;
+    var soVar = display_so.value;
+    var statusVar = display_status.value;
+
+    if (idServidor == "" || hostnameVar == "" || soVar == "" || statusVar == "") {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Preencha todos os campos para prosseguir!";
+
+        setTimeout(sumirMensagem, 5000);
+        return;
+    }
+
+    fetch("/editar/editarServidor", {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            idServidor: idServidor,
+            hostnameServer: hostnameVar,
+            soServer: soVar,
+            statusServer: statusVar
+
+        })
+    })
+
+        .then(function (resposta) {
+
+            if (resposta.ok) {
+                cardErro.style.display = "block";
+                mensagem_erro.innerHTML = "Servidor editado com sucesso! Você será redirecionado para a dashboard";
+
+                setTimeout(() => {
+                        window.location = "../dashboard/dashboard-principal.html";
+                    }, "2000");
+
+            } else {
+                throw new Error("Erro ao editar servidor!");
+            }
+
+        })
+
+        .catch(function (erro) {
+            console.log("Erro:", erro);
+            cardErro.style.display = "block";
+            cardErro.className = "mensagem-alerta erro";
+            mensagem_erro.innerHTML = "Não foi possível editar o servidor.";
+
+        });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -194,6 +277,10 @@ document.addEventListener("DOMContentLoaded", function () {
     listarServidores();
 
     selecionarServidor();
+
+    listarSO();
+
+    listarStatus(); 
 
 });
 </script>

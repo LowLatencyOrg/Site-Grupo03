@@ -408,7 +408,9 @@ a {
   color: var(--destaque);
 }
 
-#display_servidor {
+#display_servidor,
+#display_so,
+#display_status {
     color-scheme: dark;
     background-color: rgba(255, 255, 255, 0.04);
     color: #f1f5f9;
@@ -420,7 +422,9 @@ a {
     font-size: 14px;
 }
 
-#display_servidor option {
+#display_servidor option,
+#display_so option,
+#display_status option {
     background-color: #111a2d;
     color: #f1f5f9;
 }
