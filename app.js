@@ -22,6 +22,8 @@ var componentesRouter = require("./src/routes/componentes");
 var maquinasRouter = require("./src/routes/maquinas");
 var empresasRouter = require("./src/routes/empresas");
 var contatoRouter = require("./src/routes/contato");
+var dashboardPrincipalRouter = require("./src/routes/dashboardPrincipal");
+var dashboardMatchingRouter = require("./src/routes/dashboardMatching");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,6 +38,8 @@ app.use("/maquinas", maquinasRouter);
 app.use("/componentes", componentesRouter);
 app.use("/empresas", empresasRouter);
 app.use("/contato", contatoRouter);
+app.use("/dashboardPrincipal", dashboardPrincipalRouter);
+app.use("/dashboardMatching", dashboardMatchingRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
