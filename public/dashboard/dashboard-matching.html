@@ -123,7 +123,7 @@
 
                 <div class="grafico">
                     <canvas id="graficoMatching" role="img"
-                        aria-label="Gráfico da métrica escolhida nos últimos 30 minutos"></canvas>
+                        aria-label="Gráfico da métrica escolhida nos última hora"></canvas>
                 </div>
             </section>
 
@@ -132,89 +132,28 @@
 
     <script>
 
-// Atualização da data e horário
-
-let data = new Date();
-
-document.getElementById('ultimaAtualizacao').textContent =
-    data.toLocaleString('pt-BR', {
-        timeZone: 'America/Sao_Paulo',
-        day: '2-digit',
-        month: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    }) + ' (BRT)';
 
 
-// Horários das leituras (de 5 em 5 minutos)
+let parametros = new URLSearchParams(window.location.search);
+let idServidor = parametros.get('idServidor') || 1;
+let idUsuario = sessionStorage.ID_USUARIO;
 
-let rotulos = [
-    '10:25', '10:30', '10:35', '10:40', '10:45', '10:50',
-    '10:55', '11:00', '11:05', '11:10', '11:15', '11:20'
-];
-
-
-// Dados das leituras 
-
-let dadosCPU = [28, 35, 62, 88, 97, 74, 52, 41, 58, 66, 49, 59];
-let dadosRAM = [79, 80, 80, 81, 82, 81, 80, 80, 79, 80, 81, 80];
-let dadosSwap = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-let dadosSoftirq = [7, 10, 24, 37, 42, 28, 17, 12, 21, 26, 15, 22];
-
-let dadosRedeRecebida = [210, 260, 430, 610, 690, 520, 390, 320, 420, 470, 360, 430];
-let dadosRedeEnviada = [140, 175, 290, 410, 470, 350, 260, 215, 285, 320, 245, 300];
-
-let atualDisco = 28;
+let metricaAtual = 'cpu';
+let unidade = '%';
 
 
-// 1 = normal, 2 = alerta, 3 = crítico
-
-let nivelAtual = {
-    cpu: 2,
-    ram: 3,
-    swap: 1,
-    disco: 1,
-    softirq: 2
-};
-
-
-// Pega a leitura mais recente de uma lista
-
-function ultimo(lista) {
-
-    return lista[lista.length - 1];
-
-}
-
-let atual = {
-    cpu: ultimo(dadosCPU),
-    ram: ultimo(dadosRAM),
-    swap: ultimo(dadosSwap),
-    disco: atualDisco,
-    softirq: ultimo(dadosSoftirq)
-};
-
-
-// Nome de cada nível 
+let atual = {};
+let nivelAtual = {};
 
 let nomesNivel = ['Sem status', 'Normal', 'Atenção', 'Crítico'];
 
-function nivel(componente) {
 
-    if (nivelAtual[componente] == undefined) {
-        return 0;
-    }
-
-    return nivelAtual[componente];
-
-}
 
 function situacao(componente) {
 
-    let n = nivel(componente);
+    let n = nivelAtual[componente];
 
-    if (n == 0) {
+    if (n == undefined || n == null) {
         return 'sem status';
     }
 
@@ -222,25 +161,92 @@ function situacao(componente) {
 
 }
 
+// Mostra o número ou "--" quando ainda não tem leitura
+function formatar(valor, sufixo) {
 
-// Cards e KPIs
+    if (valor == undefined || valor == null) {
+        return '--';
+    }
 
-document.getElementById('kpiCPU').textContent = atual.cpu + '%';
-document.getElementById('kpiRAM').textContent = atual.ram + '%';
-document.getElementById('kpiSWAP').textContent = atual.swap + '%';
-document.getElementById('kpiDisco').textContent = atual.disco + '%';
+    return Number(valor).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + sufixo;
 
-document.getElementById('softirq').textContent = atual.softirq + '%';
+}
 
-let larguraSoftirq = Math.min(100, atual.softirq);
 
-document.getElementById('barraSoftirq').style.width = larguraSoftirq + '%';
+function nomeServidor(hostname) {
 
-document.getElementById('redeRecebida').textContent =
-    ultimo(dadosRedeRecebida).toLocaleString('pt-BR') + ' KB/s';
+    let partes = hostname.split('-');
 
-document.getElementById('redeEnviada').textContent =
-    'Dados enviados: ' + ultimo(dadosRedeEnviada).toLocaleString('pt-BR') + ' KB/s';
+    for (let i = 0; i < partes.length; i++) {
+        partes[i] = partes[i].charAt(0).toUpperCase() + partes[i].slice(1);
+    }
+
+    return partes.join(' ');
+
+}
+
+
+// fetch das KPIS
+
+function buscarKPIs() {
+
+    fetch(`/dashboardMatching/kpis/${idServidor}/${idUsuario}`)
+        .then(function (resposta) {
+
+            if (resposta.status == 200) {
+                return resposta.json();
+            }
+
+            return null;
+
+        })
+        .then(function (dados) {
+
+            if (dados == null) {
+                console.log('Nenhuma leitura encontrada para este servidor.');
+                return;
+            }
+
+            atual = {
+                cpu: dados.cpuUso,
+                ram: dados.ramUso,
+                swap: dados.swapUso,
+                disco: dados.discoUso,
+                softirq: dados.softirq,
+                redeRecebida: dados.redeRecebidos,
+                redeEnviada: dados.redeEnviados
+            };
+
+            nivelAtual = {
+                cpu: dados.cpuAlerta,
+                ram: dados.ramAlerta,
+                swap: dados.swapAlerta,
+                disco: dados.discoAlerta,
+                softirq: dados.softirqAlerta
+            };
+
+            document.querySelector('.pagina-topo h1').textContent = nomeServidor(dados.hostname);
+            document.getElementById('ultimaAtualizacao').textContent = dados.atualizadoEm + ' (BRT)';
+
+            document.getElementById('kpiCPU').textContent = formatar(atual.cpu, '%');
+            document.getElementById('kpiRAM').textContent = formatar(atual.ram, '%');
+            document.getElementById('kpiSWAP').textContent = formatar(atual.swap, '%');
+            document.getElementById('kpiDisco').textContent = formatar(atual.disco, '%');
+
+            document.getElementById('softirq').textContent = formatar(atual.softirq, '%');
+            document.getElementById('barraSoftirq').style.width = Math.min(100, Number(atual.softirq) || 0) + '%';
+
+            document.getElementById('redeRecebida').textContent = formatar(atual.redeRecebida, ' KB/s');
+            document.getElementById('redeEnviada').textContent = 'Dados enviados: ' + formatar(atual.redeEnviada, ' KB/s');
+
+            atualizarSubtitulo();
+
+        })
+        .catch(function (erro) {
+            console.log('Erro ao buscar os KPIs: ', erro);
+        });
+
+}
 
 
 // Monta as linhas do gráfico
@@ -261,10 +267,6 @@ function criarLinha(nome, valores, cor) {
 }
 
 
-
-let unidade = '%';
-
-
 // Configuração do gráfico
 
 Chart.defaults.font.family = "'Inter', sans-serif";
@@ -276,7 +278,7 @@ let grafico = new Chart(document.getElementById('graficoMatching'), {
     type: 'line',
 
     data: {
-        labels: rotulos,
+        labels: [],
         datasets: []
     },
 
@@ -339,103 +341,140 @@ let grafico = new Chart(document.getElementById('graficoMatching'), {
 });
 
 
-// Atualiza os dados do gráfico
+// Texto embaixo do título do gráfico 
+
+function atualizarSubtitulo() {
+
+    let texto;
+
+    if (metricaAtual == 'cpu') {
+
+        texto = 'CPU em ' + formatar(atual.cpu, '%') + ' (' + situacao('cpu') + ') · softirq em ' +
+                formatar(atual.softirq, '%') + ' (' + situacao('softirq') + ')';
+
+    } else if (metricaAtual == 'memoria') {
+
+        texto = 'RAM em ' + formatar(atual.ram, '%') + ' (' + situacao('ram') + ') · SWAP em ' +
+                formatar(atual.swap, '%') + ' (' + situacao('swap') + ')';
+
+    } else {
+
+        texto = 'Última leitura: ' + formatar(atual.redeRecebida, ' KB/s') + ' recebidos e ' +
+                formatar(atual.redeEnviada, ' KB/s') + ' enviados';
+
+    }
+
+    document.getElementById('subtituloGrafico').textContent = texto;
+
+}
+
 
 function atualizarGrafico(metrica) {
 
+    metricaAtual = metrica;
+
     let titulo;
-    let texto;
+    let nomes;
     let max;
     let passo;
-    let linhas = [];
-
 
     if (metrica == 'cpu') {
 
         titulo = 'Uso de CPU e softirq';
-        texto = 'CPU em ' + atual.cpu + '% (' + situacao('cpu') + ') · softirq em ' + atual.softirq + '% (' + situacao('softirq') + ')';
+        nomes = ['CPU', 'Softirq'];
         unidade = '%';
         max = 100;
         passo = 25;
-
-        linhas.push(criarLinha('CPU', dadosCPU, '#829bc2'));
-        linhas.push(criarLinha('Softirq', dadosSoftirq, '#a78bfa'));
-
 
     } else if (metrica == 'memoria') {
 
         titulo = 'Memória RAM e SWAP';
-        texto = 'RAM em ' + atual.ram + '% (' + situacao('ram') + ') · SWAP em ' + atual.swap + '% (' + situacao('swap') + ')';
+        nomes = ['RAM', 'SWAP'];
         unidade = '%';
         max = 100;
         passo = 25;
 
-        linhas.push(criarLinha('RAM', dadosRAM, '#829bc2'));
-        linhas.push(criarLinha('SWAP', dadosSwap, '#a78bfa'));
-
-
     } else {
 
         titulo = 'Tráfego de rede';
-        texto = 'Última leitura: ' + ultimo(dadosRedeRecebida).toLocaleString('pt-BR') + ' KB/s recebidos e ' +
-                ultimo(dadosRedeEnviada).toLocaleString('pt-BR') + ' KB/s enviados';
+        nomes = ['Dados recebidos', 'Dados enviados'];
         unidade = ' KB/s';
-        max = 800;
-        passo = 200;
-
-        linhas.push(criarLinha('Dados recebidos', dadosRedeRecebida, '#829bc2'));
-        linhas.push(criarLinha('Dados enviados', dadosRedeEnviada, '#a78bfa'));
-
+        max = undefined;   
+        passo = undefined;
 
     }
-
-
-    // Atualiza o gráfico
-
-    grafico.options.scales.y.max = max;
-    grafico.options.scales.y.ticks.stepSize = passo;
-
-    grafico.data.datasets = linhas;
-
-    grafico.update();
-
-
-    // Atualiza as informações da tela
 
     document.getElementById('tituloGrafico').textContent = titulo;
-    document.getElementById('subtituloGrafico').textContent = texto;
-
-
-    // Monta a legenda
-
-    let legenda = '';
-
-    for (let i = 0; i < linhas.length; i++) {
-
-        legenda += '<span><i style="background:' + linhas[i].borderColor + '"></i>' + linhas[i].label + '</span>';
-
-    }
-
-    document.getElementById('legendaGrafico').innerHTML = legenda;
-
+    atualizarSubtitulo();
 
     // Atualiza o botão selecionado
-
     let botoes = document.querySelectorAll('.periodos button');
 
     for (let i = 0; i < botoes.length; i++) {
 
         if (botoes[i].getAttribute('data-p') == metrica) {
-
             botoes[i].setAttribute('aria-pressed', 'true');
-
         } else {
-
             botoes[i].setAttribute('aria-pressed', 'false');
-
         }
 
     }
+
+    // fetch dos gráficos 
+ fetch(`/dashboardMatching/kpis/${idServidor}/${idUsuario}`)
+fetch(`/dashboardMatching/historico/${idServidor}/${idUsuario}/${metrica}`)
+        .then(function (resposta) {
+
+            if (resposta.status == 200) {
+                return resposta.json();
+            }
+
+            return [];
+
+        })
+        .then(function (dados) {
+
+            if (metrica != metricaAtual) {
+                return;
+            }
+
+            let rotulos = [];
+            let serie1 = [];
+            let serie2 = [];
+
+            for (let i = 0; i < dados.length; i++) {
+
+                rotulos.push(dados[i].horario);
+                serie1.push(dados[i].serie1 == null ? null : Number(dados[i].serie1));
+                serie2.push(dados[i].serie2 == null ? null : Number(dados[i].serie2));
+
+            }
+
+            let linhas = [
+                criarLinha(nomes[0], serie1, '#829bc2'),
+                criarLinha(nomes[1], serie2, '#a78bfa')
+            ];
+
+            grafico.options.scales.y.max = max;
+            grafico.options.scales.y.ticks.stepSize = passo;
+
+            grafico.data.labels = rotulos;
+            grafico.data.datasets = linhas;
+            grafico.update();
+
+            // Monta a legenda
+            let legenda = '';
+
+            for (let i = 0; i < linhas.length; i++) {
+                legenda += '<span><i style="background:' + linhas[i].borderColor + '"></i>' + linhas[i].label + '</span>';
+            }
+
+            document.getElementById('legendaGrafico').innerHTML = legenda;
+
+        })
+        .catch(function (erro) {
+            console.log('Erro ao buscar o histórico: ', erro);
+        });
 
 }
 
@@ -446,20 +485,32 @@ let botoes = document.querySelectorAll('.periodos button');
 
 for (let i = 0; i < botoes.length; i++) {
 
-    botoes[i].addEventListener('click', function() {
-
-        let metrica = botoes[i].getAttribute('data-p');
-
-        atualizarGrafico(metrica);
-
+    botoes[i].addEventListener('click', function () {
+        atualizarGrafico(botoes[i].getAttribute('data-p'));
     });
 
 }
 
 
-// Mostra a CPU ao abrir a página
 
-atualizarGrafico('cpu');
+
+if (idUsuario == undefined) {
+
+    window.location = '../login.html';
+
+} else {
+
+    buscarKPIs();
+    atualizarGrafico('cpu');
+
+    
+    setInterval(buscarKPIs, 5000);
+
+    setInterval(function () {
+        atualizarGrafico(metricaAtual);
+    }, 30000);
+
+}
 
     </script>
 
