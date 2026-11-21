@@ -410,7 +410,9 @@ a {
 
 #display_servidor,
 #display_so,
-#display_status {
+#display_status,
+#display_componente,
+#display_medida {
     color-scheme: dark;
     background-color: rgba(255, 255, 255, 0.04);
     color: #f1f5f9;
@@ -424,7 +426,9 @@ a {
 
 #display_servidor option,
 #display_so option,
-#display_status option {
+#display_status option,
+#display_componente option,
+#display_medida option {
     background-color: #111a2d;
     color: #f1f5f9;
 }

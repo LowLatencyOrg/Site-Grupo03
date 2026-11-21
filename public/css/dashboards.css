@@ -120,13 +120,6 @@ a {
     flex-shrink: 0;
 }
 
-.botoes-edicao {
-   display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-shrink: 0;
-}
-
 .botoes-nav {
     display: flex;
     align-items: center;
