@@ -81,6 +81,14 @@ a {
   width: 100%;
 }
 
+.navbar + .lado-formulario {
+  height: auto;
+  min-height: calc(100vh - 78px);
+  justify-content: flex-start;
+  padding: 28px 24px 40px;
+  overflow: visible;
+}
+
 /* Mantém os elementos internos com uma largura máxima legível */
 .cabecalho-auth,
 .formulario-login,

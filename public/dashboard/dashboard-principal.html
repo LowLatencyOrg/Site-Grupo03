@@ -22,28 +22,129 @@
 <body class="tela">
 
     <header class="navbar">
-        <div class="conteiner navbar-conteudo">
+    <div class="conteiner navbar-conteudo">
 
-            <a href="../index.html" class="logo">
-                <img src="../assets/icon/logobranca.png" class="logo-imagem" alt="">
-                <span>Low<span class="logo-destaque">Latency</span></span>
-            </a>
+        <a href="../index.html" class="logo">
+            <img src="../assets/icon/logobranca.png" class="logo-imagem" alt="">
+            <span>Low<span class="logo-destaque">Latency</span></span>
+        </a>
 
-            <div class="botoes-cadastro">
-                <a href="../cadastro-maquina.html" class="botao-nav">Cadastro de Servidor</a>
-                <a href="../cadastro-componente.html" class="botao-nav">Cadastro de Componente</a>
-                <a href="../cadastro.html" class="botao-nav">Cadastro de Usuários</a>
-            </div>
+        <nav class="botoes-dashboards" aria-label="Dashboards individuais">
+            <a href="" class="botao-nav">Individual 1</a>
+            <a href="" class="botao-nav">Individual 2</a>
+            <a href="" class="botao-nav">Individual 3</a>
+            <a href="" class="botao-nav">Individual 4</a>
+            <a href="" class="botao-nav">Individual 5</a>
+        </nav>  
 
-            <div class="botoes-nav">
-                <a href="../index.html" class="botao-nav">
-                    Voltar ao Início
-                    <span aria-hidden="true">↗</span>
-                </a>
-            </div>
+        <div class="menu-usuario">
+            <button type="button" class="botao-hamburguer" id="btnMenu"
+                aria-expanded="false" aria-controls="menuDropdown" aria-label="Abrir menu">
+                <span class="linha"></span>
+                <span class="linha"></span>
+                <span class="linha"></span>
+            </button>
 
+            <ul class="menu-opcoes" id="menuDropdown" role="menu">
+                <li class="menu-categoria">Cadastros</li>
+
+                <li>
+                    <a href="../cadastro-maquina.html" class="menu-item">
+                        <svg class="icone-menu icone-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="7" rx="2"></rect>
+                            <rect x="2" y="14" width="20" height="7" rx="2"></rect>
+                            <line x1="6" y1="6.5" x2="6.01" y2="6.5"></line>
+                            <line x1="6" y1="17.5" x2="6.01" y2="17.5"></line>
+                        </svg>
+                        <span>Cadastrar Servidor</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../cadastro-componente.html" class="menu-item">
+                        <svg class="icone-menu icone-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                        </svg>
+                        <span>Cadastrar Componente</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../cadastro.html" class="menu-item">
+                        <!-- Bonequinho verde com + -->
+                        <svg class="icone-menu icone-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                        <span>Cadastrar Usuário</span>
+                    </a>
+                </li>
+
+                <li class="menu-divisor" role="separator"></li>
+                <li class="menu-categoria">Gerenciamento</li>
+
+                <li>
+                    <a href="../editar-servidor.html" class="menu-item">
+                        <svg class="icone-menu icone-azul" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        <span>Editar Servidor</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../editar-componente.html" class="menu-item">
+                        <svg class="icone-menu icone-azul" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                        </svg>
+                        <span>Editar Componente</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../editar-usuario.html" class="menu-item">
+                        <svg class="icone-menu icone-azul" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Editar Usuário</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../index.html" class="menu-item">
+                        <svg class="icone-menu icone-neutro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span>Voltar ao Início</span>
+                    </a>
+                </li>
+
+                <li class="menu-divisor" role="separator"></li>
+
+                <li>
+                    <button type="button" class="menu-item item-sair" onclick="encerrarSessao()">
+                        <svg class="icone-menu icone-vermelho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Encerrar Sessão</span>
+                    </button>
+                </li>
+            </ul>
         </div>
-    </header>
+
+    </div>
+</header>
 
     <main class="dashboard">
         <div class="pagina-topo">
@@ -409,6 +510,37 @@ if (idUsuario == undefined) {
         atualizarGrafico(periodoAtual);
     }, 5000);
 
+}
+
+const btnMenu = document.getElementById('btnMenu');
+const menuDropdown = document.getElementById('menuDropdown');
+
+btnMenu.addEventListener('click', function (e) {
+    e.stopPropagation();
+    const aberto = menuDropdown.classList.toggle('open');
+    btnMenu.classList.toggle('open', aberto);
+    btnMenu.setAttribute('aria-expanded', aberto);
+});
+
+document.addEventListener('click', function (e) {
+    if (!e.target.closest('.menu-usuario')) {
+        menuDropdown.classList.remove('open');
+        btnMenu.classList.remove('open');
+        btnMenu.setAttribute('aria-expanded', 'false');
+    }
+});
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        menuDropdown.classList.remove('open');
+        btnMenu.classList.remove('open');
+        btnMenu.setAttribute('aria-expanded', 'false');
+    }
+});
+
+function encerrarSessao() {
+    sessionStorage.clear();
+    window.location.href = '../index.html';
 }
 
 </script>
