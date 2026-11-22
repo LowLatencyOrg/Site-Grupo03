@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Usuário— lowlatency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboards.css" />
+</head>
+
+<body>
+      <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="../index.html" class="logo">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+
+            <div class="botoes-nav">
+                <a href="dashboard/dashboard-principal.html" class="botao-nav">
+                    Voltar para Dashboard Principal
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <div class="lado-formulario">
+
+      <div class="cabecalho-auth">
+        <h1 class="titulo-auth">Editar profissional</h1>
+      </div>
+
+      <form class="formulario-cadastro">
+
+        <div class="grupo-campo">
+            <label class="rotulo-campo" for="display_usuario">
+                Selecionar profissional *
+            </label>
+
+            <select class="campo-cargo" id="display_usuario" required>
+                <option value="" disabled selected>Selecione o profissional</option>
+            </select>
+        </div>
+
+        <button type="button" class="botao-cadastrar" onclick="excluirUsuario()">Excluir</button>
+
+      </form>
+      <div id="cardErro" class="mensagem-alerta">
+        <p id="mensagem_erro"></p>
+      </div>
+    </div>
+</body>
+</html>
+<script>
+
+
+var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+function listarUsuarios() {
+
+    fetch(`/excluirUsuario/listarUsuarios/${idEmpresa}`)
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (usuarios) {
+
+            var select = document.getElementById("display_usuario");
+
+            select.innerHTML = `
+                <option value="" disabled selected>
+                    Selecione o profissional
+                </option>
+            `;
+
+            usuarios.forEach(function (usuario) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = usuario.id_usuario;
+                opcao.textContent = usuario.nome;
+
+                select.appendChild(opcao);
+            });
+
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            mostrarErro("Erro ao carregar os profissionais.");
+        });
+}
+
+
+function excluirUsuario() {
+
+    var idUsuario = document.getElementById("display_usuario").value;
+
+    if (!idUsuario) {
+        mostrarErro("Selecione um profissional para excluir.");
+        return;
+    }
+
+    fetch("/excluirUsuario/excluir", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            idUsuario: idUsuario,
+            idEmpresa: idEmpresa
+        })
+    })
+        .then(function (resposta) {
+
+            if (resposta.status === 404) {
+                mostrarErro("Usuário não encontrado ou já está inativo.");
+                return;
+            }
+
+            if (resposta.status === 400) {
+                mostrarErro("Dados inválidos.");
+                return;
+            }
+
+            if (!resposta.ok) {
+                mostrarErro("Erro ao excluir profissional.");
+                return;
+            }
+
+            mostrarErro("Profissional excluído com sucesso! Você será redirecionado para a dashboard");
+            setTimeout(() => {
+                        window.location = "../dashboard/dashboard-principal.html";
+                    }, "2000");
+
+            listarUsuarios();
+
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            mostrarErro("Não foi possível realizar a exclusão.");
+        });
+}
+
+
+function mostrarErro(mensagem) {
+
+    var cardErro = document.getElementById("cardErro");
+    var mensagemErro = document.getElementById("mensagem_erro");
+
+    mensagemErro.textContent = mensagem;
+    cardErro.style.display = "block";
+}
+
+
+window.onload = function () {
+    listarUsuarios();
+};
+
+</script>

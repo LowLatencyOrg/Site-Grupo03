@@ -29,6 +29,7 @@ var dashboardKajioRouter = require("./src/routes/dashboardKajio");
 var editarComponenteRouter = require("./src/routes/editarComponente");
 var editarUsuarioRouter = require("./src/routes/editarUsuario");
 var excluirServidorRouter = require("./src/routes/excluirServidor");
+var excluirUsuarioRouter = require("./src/routes/excluirUsuario");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -51,6 +52,7 @@ app.use("/dashboardKajio", dashboardKajioRouter);
 app.use("/editarComponente", editarComponenteRouter);
 app.use("/editarUsuario", editarUsuarioRouter);
 app.use("/excluirServidor", excluirServidorRouter);
+app.use("/excluirUsuario", excluirUsuarioRouter);
 
 
 app.listen(PORTA_APP, function () {
