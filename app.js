@@ -27,6 +27,7 @@ var editarServidorRouter = require("./src/routes/editarServidor");
 var dashboardMatchingRouter = require("./src/routes/dashboardMatching");
 var dashboardKajioRouter = require("./src/routes/dashboardKajio");
 var editarComponenteRouter = require("./src/routes/editarComponente");
+var editarUsuarioRouter = require("./src/routes/editarUsuario");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,6 +48,7 @@ app.use("/editar", editarServidorRouter);
 app.use("/dashboardMatching", dashboardMatchingRouter);
 app.use("/dashboardKajio", dashboardKajioRouter);
 app.use("/editarComponente", editarComponenteRouter);
+app.use("/editarUsuario", editarUsuarioRouter);
 
 
 app.listen(PORTA_APP, function () {

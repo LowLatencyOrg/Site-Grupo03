@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Usuário— lowlatency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboards.css" />
+</head>
+
+<body>
+      <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="../index.html" class="logo">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+
+            <div class="botoes-cadastro">
+                <a href="cadastro-maquina.html" class="botao-nav">Cadastro de Servidor</a>
+                <a href="cadastro-componente.html" class="botao-nav">Cadastro de Componente</a>
+                <a href="cadastro.html" class="botao-nav">Cadastro de Usuários</a>
+            </div>
+
+            <div class="botoes-nav">
+                <a href="dashboard/dashboard-principal.html" class="botao-nav">
+                    Voltar a dashboard
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <div class="lado-formulario">
+
+      <div class="cabecalho-auth">
+        <h1 class="titulo-auth">Editar profissional</h1>
+      </div>
+
+      <form class="formulario-cadastro">
+
+        <div class="grupo-campo">
+            <label class="rotulo-campo" for="display_usuario">
+                Selecionar profissional *
+            </label>
+
+            <select class="campo-cargo" id="display_usuario" required>
+                <option value="" disabled selected>Selecione o profissional</option>
+            </select>
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Nome completo *</label>
+          <input class="campo-nome" id="nome_input" type="text" placeholder="Ex: Roberto Silva" required />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Email corporativo *</label>
+          <input class="campo-email" id="email_input" type="email" placeholder="roberto@empresa.com.br" required />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Cargo *</label>
+          <select class="campo-cargo" id="cargo_input" required>
+            <option value="" disabled selected>Selecione o cargo do colaborador</option>
+            <option value="1">Gestor</option>
+            <option value="2">Analista de Infraestrutura</option>
+          </select>
+        </div>
+
+
+        <div class="grupo-campo">
+    <label class="rotulo-campo" for="senha_input">
+        Nova senha
+    </label>
+    <input
+        class="campo-senha"
+        id="senha_input"
+        type="password"
+        placeholder="Mínimo 6 caracteres"
+        minlength="6"
+    />
+</div>
+
+<div class="grupo-campo">
+    <label class="rotulo-campo" for="confirmacao_senha_input">
+        Confirmar nova senha
+    </label>
+    <input
+        class="campo-confirmar-senha"
+        id="confirmacao_senha_input"
+        type="password"
+        placeholder="Repita a nova senha"
+    />
+</div>
+
+        <button type="button" class="botao-cadastrar" onclick="editarUsuario()">Concluir Edição</button>
+
+      </form>
+      <div id="cardErro" class="mensagem-alerta">
+        <p id="mensagem_erro"></p>
+      </div>
+    </div>
+
+
+
+</body>
+
+</html>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    listarUsuarios();
+});
+
+
+function listarUsuarios() {
+
+    const idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+    fetch(`/editarUsuario/listarUsuarios/${idEmpresa}`)
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+                throw new Error("Erro ao listar usuários.");
+            }
+
+            return resposta.json();
+        })
+        .then(function (usuarios) {
+
+            const select = document.getElementById("display_usuario");
+
+            select.innerHTML = `
+                <option value="" disabled selected>
+                    Selecione o profissional
+                </option>
+            `;
+
+            usuarios.forEach(function (usuario) {
+
+                const opcao = document.createElement("option");
+
+                opcao.value = usuario.id_usuario;
+                opcao.textContent = usuario.nome;
+
+                select.appendChild(opcao);
+            });
+        })
+        .catch(function (erro) {
+            console.error("Erro ao listar usuários:", erro);
+        });
+}
+
+
+function editarUsuario() {
+
+    const idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+    const idUsuario = document.getElementById("display_usuario").value;
+    const nome = document.getElementById("nome_input").value.trim();
+    const email = document.getElementById("email_input").value.trim();
+    const cargo = document.getElementById("cargo_input").value;
+
+    const senha = document.getElementById("senha_input").value;
+    const confirmacaoSenha = document.getElementById("confirmacao_senha_input").value;
+
+    if (!idUsuario || !nome || !email || !cargo) {
+        mostrarMensagem("Preencha todos os campos obrigatórios!", "erro");
+        return;
+    }
+
+    if (senha !== "" && senha.length < 6) {
+        mostrarMensagem("A senha deve ter pelo menos 6 caracteres.", "erro");
+        return;
+    }
+
+    if (senha !== confirmacaoSenha) {
+        mostrarMensagem("As senhas não coincidem!", "erro");
+        return;
+    }
+
+    fetch("/editarUsuario/editar", {
+
+        method: "PUT",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            idEmpresa: idEmpresa,
+            idUsuario: idUsuario,
+            nome: nome,
+            email: email,
+            cargo: cargo,
+            senha: senha
+        })
+
+    })
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+                throw new Error("Não foi possível editar o usuário.");
+            }
+
+            return resposta.json();
+        })
+        .then(function () {
+
+            mostrarMensagem("Usuário atualizado com sucesso!", "sucesso");
+
+            document.querySelector(".formulario-cadastro").reset();
+
+        })
+        .catch(function (erro) {
+
+            console.error("Erro ao editar usuário:", erro);
+
+            mostrarMensagem("Erro ao atualizar o usuário.", "erro");
+        });
+}
+
+
+function mostrarMensagem(mensagem, tipo) {
+
+    const card = document.getElementById("cardErro");
+    const texto = document.getElementById("mensagem_erro");
+
+    card.style.display = "block";
+    card.className = "mensagem-alerta " + tipo;
+    texto.textContent = mensagem;
+}
+    
+</script>
