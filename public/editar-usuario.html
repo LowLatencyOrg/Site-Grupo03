@@ -24,15 +24,9 @@
                 <span>Low<span class="logo-destaque">Latency</span></span>
             </a>
 
-            <div class="botoes-cadastro">
-                <a href="cadastro-maquina.html" class="botao-nav">Cadastro de Servidor</a>
-                <a href="cadastro-componente.html" class="botao-nav">Cadastro de Componente</a>
-                <a href="cadastro.html" class="botao-nav">Cadastro de Usuários</a>
-            </div>
-
             <div class="botoes-nav">
                 <a href="dashboard/dashboard-principal.html" class="botao-nav">
-                    Voltar a dashboard
+                    Voltar para Dashboard Principal
                     <span aria-hidden="true">↗</span>
                 </a>
             </div>
@@ -56,16 +50,6 @@
             <select class="campo-cargo" id="display_usuario" required>
                 <option value="" disabled selected>Selecione o profissional</option>
             </select>
-        </div>
-
-        <div class="grupo-campo">
-          <label class="rotulo-campo">Nome completo *</label>
-          <input class="campo-nome" id="nome_input" type="text" placeholder="Ex: Roberto Silva" required />
-        </div>
-
-        <div class="grupo-campo">
-          <label class="rotulo-campo">Email corporativo *</label>
-          <input class="campo-email" id="email_input" type="email" placeholder="roberto@empresa.com.br" required />
         </div>
 
         <div class="grupo-campo">
@@ -166,14 +150,12 @@ function editarUsuario() {
     const idEmpresa = sessionStorage.getItem("FK_EMPRESA");
 
     const idUsuario = document.getElementById("display_usuario").value;
-    const nome = document.getElementById("nome_input").value.trim();
-    const email = document.getElementById("email_input").value.trim();
     const cargo = document.getElementById("cargo_input").value;
 
     const senha = document.getElementById("senha_input").value;
     const confirmacaoSenha = document.getElementById("confirmacao_senha_input").value;
 
-    if (!idUsuario || !nome || !email || !cargo) {
+    if (!idUsuario || !cargo) {
         mostrarMensagem("Preencha todos os campos obrigatórios!", "erro");
         return;
     }
@@ -199,8 +181,6 @@ function editarUsuario() {
         body: JSON.stringify({
             idEmpresa: idEmpresa,
             idUsuario: idUsuario,
-            nome: nome,
-            email: email,
             cargo: cargo,
             senha: senha
         })
@@ -216,7 +196,10 @@ function editarUsuario() {
         })
         .then(function () {
 
-            mostrarMensagem("Usuário atualizado com sucesso!", "sucesso");
+            mostrarMensagem("Usuário atualizado com sucesso! Você será redirecionado para a dashboard", "sucesso");
+            setTimeout(() => {
+                        window.location = "../dashboard/dashboard-principal.html";
+                    }, "2000");
 
             document.querySelector(".formulario-cadastro").reset();
 

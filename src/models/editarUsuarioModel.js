@@ -19,8 +19,6 @@ function listarUsuarios(idEmpresa) {
 function editarUsuario(
     idEmpresa,
     idUsuario,
-    nome,
-    email,
     cargo,
     senha
 ) {
@@ -28,8 +26,6 @@ function editarUsuario(
     var instrucaoSql = `
         UPDATE usuario
         SET
-            nome = '${nome}',
-            email = '${email}',
             fk_cargo = ${Number(cargo)}
             ${senha ? `, senha = '${senha}'` : ""}
         WHERE
