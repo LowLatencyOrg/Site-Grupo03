@@ -25,6 +25,7 @@ var contatoRouter = require("./src/routes/contato");
 var dashboardPrincipalRouter = require("./src/routes/dashboardPrincipal");
 var editarServidorRouter = require("./src/routes/editarServidor");
 var dashboardMatchingRouter = require("./src/routes/dashboardMatching");
+var dashboardKajioRouter = require("./src/routes/dashboardKajio");
 var editarComponenteRouter = require("./src/routes/editarComponente");
 
 app.use(express.json());
@@ -44,6 +45,7 @@ app.use("/contato", contatoRouter);
 app.use("/dashboardPrincipal", dashboardPrincipalRouter);
 app.use("/editar", editarServidorRouter);
 app.use("/dashboardMatching", dashboardMatchingRouter);
+app.use("/dashboardKajio", dashboardKajioRouter);
 app.use("/editarComponente", editarComponenteRouter);
 
 
