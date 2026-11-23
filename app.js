@@ -30,6 +30,7 @@ var editarComponenteRouter = require("./src/routes/editarComponente");
 var editarUsuarioRouter = require("./src/routes/editarUsuario");
 var excluirServidorRouter = require("./src/routes/excluirServidor");
 var excluirUsuarioRouter = require("./src/routes/excluirUsuario");
+var excluirComponenteRouter = require("./src/routes/excluirComponente");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -53,6 +54,7 @@ app.use("/editarComponente", editarComponenteRouter);
 app.use("/editarUsuario", editarUsuarioRouter);
 app.use("/excluirServidor", excluirServidorRouter);
 app.use("/excluirUsuario", excluirUsuarioRouter);
+app.use("/excluirComponente", excluirComponenteRouter);
 
 
 app.listen(PORTA_APP, function () {

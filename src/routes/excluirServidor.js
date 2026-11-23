@@ -11,7 +11,8 @@ router.get("/buscarServidor/:idServidor", function (req, res) {
     excluirServidorController.buscarServidorPorId(req, res);
 });
 
-router.put("/excluir", function (req, res) {
+router.delete("/excluir", function (req, res) {
     excluirServidorController.excluirServidor(req, res);
 });
+
 module.exports = router;
