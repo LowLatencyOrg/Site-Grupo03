@@ -18,8 +18,8 @@
 
     /* Semáforo: usado SOMENTE para status */
     --ok: #68dda8;
-    --atencao: #ffc222;
-    --critico: #f87171;
+    --alerta: #eab308;
+    --critico: #dc2626;
 
     /* Escala de tipografia */
     --fonte-titulo: 'Rajdhani', sans-serif;
@@ -357,7 +357,7 @@ a {
     border-radius: 10px;
 }
 
-.progresso.alerta  { background: var(--atencao); }
+.progresso.alerta  { background: var(--alerta); }
 .progresso.critico { background: var(--critico); }
 
 .escala {

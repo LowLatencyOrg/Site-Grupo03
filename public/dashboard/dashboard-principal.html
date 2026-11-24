@@ -15,136 +15,144 @@
 
     <link rel="stylesheet" href="../css/dashboards.css">
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 
 <body class="tela">
 
     <header class="navbar">
-    <div class="conteiner navbar-conteudo">
+        <div class="conteiner navbar-conteudo">
 
-        <a href="../index.html" class="logo">
-            <img src="../assets/icon/logobranca.png" class="logo-imagem" alt="">
-            <span>Low<span class="logo-destaque">Latency</span></span>
-        </a>
+            <a href="../index.html" class="logo">
+                <img src="../assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
 
-        <nav class="botoes-dashboards" aria-label="Dashboards individuais">
-            <a href="dash-kajio.html" class="botao-nav">Diagnóstico</a>
-            <a href="" class="botao-nav">Individual 2</a>
-            <a href="" class="botao-nav">Individual 3</a>
-            <a href="" class="botao-nav">Individual 4</a>
-            <a href="" class="botao-nav">Individual 5</a>
-        </nav>  
+            <nav class="botoes-dashboards" aria-label="Dashboards individuais">
+                <a href="dash-kajio.html" class="botao-nav">Diagnóstico</a>
+                <a href="" class="botao-nav">Individual 2</a>
+                <a href="" class="botao-nav">Individual 3</a>
+                <a href="" class="botao-nav">Individual 4</a>
+                <a href="" class="botao-nav">Individual 5</a>
+            </nav>
 
-        <div class="menu-usuario">
-            <button type="button" class="botao-hamburguer" id="btnMenu"
-                aria-expanded="false" aria-controls="menuDropdown" aria-label="Abrir menu">
-                <span class="linha"></span>
-                <span class="linha"></span>
-                <span class="linha"></span>
-            </button>
+            <div class="menu-usuario">
+                <button type="button" class="botao-hamburguer" id="btnMenu" aria-expanded="false"
+                    aria-controls="menuDropdown" aria-label="Abrir menu">
+                    <span class="linha"></span>
+                    <span class="linha"></span>
+                    <span class="linha"></span>
+                </button>
 
-            <ul class="menu-opcoes" id="menuDropdown" role="menu">
-                <li class="menu-categoria">Cadastros</li>
+                <ul class="menu-opcoes" id="menuDropdown" role="menu">
+                    <li class="menu-categoria">Cadastros</li>
 
-                <li>
-                    <a href="../cadastro-maquina.html" class="menu-item">
-                        <svg class="icone-menu icone-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="3" width="20" height="7" rx="2"></rect>
-                            <rect x="2" y="14" width="20" height="7" rx="2"></rect>
-                            <line x1="6" y1="6.5" x2="6.01" y2="6.5"></line>
-                            <line x1="6" y1="17.5" x2="6.01" y2="17.5"></line>
-                        </svg>
-                        <span>Cadastrar Servidor</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="../cadastro-maquina.html" class="menu-item">
+                            <svg class="icone-menu icone-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="3" width="20" height="7" rx="2"></rect>
+                                <rect x="2" y="14" width="20" height="7" rx="2"></rect>
+                                <line x1="6" y1="6.5" x2="6.01" y2="6.5"></line>
+                                <line x1="6" y1="17.5" x2="6.01" y2="17.5"></line>
+                            </svg>
+                            <span>Cadastrar Servidor</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="../cadastro-componente.html" class="menu-item">
-                        <svg class="icone-menu icone-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                            <rect x="9" y="9" width="6" height="6"></rect>
-                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
-                        </svg>
-                        <span>Cadastrar Componente</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="../cadastro-componente.html" class="menu-item">
+                            <svg class="icone-menu icone-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                <rect x="9" y="9" width="6" height="6"></rect>
+                                <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                            </svg>
+                            <span>Cadastrar Componente</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="../cadastro.html" class="menu-item">
-                        <!-- Bonequinho verde com + -->
-                        <svg class="icone-menu icone-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="8.5" cy="7" r="4"></circle>
-                            <line x1="20" y1="8" x2="20" y2="14"></line>
-                            <line x1="23" y1="11" x2="17" y2="11"></line>
-                        </svg>
-                        <span>Cadastrar Usuário</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="../cadastro.html" class="menu-item">
+                            <!-- Bonequinho verde com + -->
+                            <svg class="icone-menu icone-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <line x1="20" y1="8" x2="20" y2="14"></line>
+                                <line x1="23" y1="11" x2="17" y2="11"></line>
+                            </svg>
+                            <span>Cadastrar Usuário</span>
+                        </a>
+                    </li>
 
-                <li class="menu-divisor" role="separator"></li>
-                <li class="menu-categoria">Gerenciamento</li>
+                    <li class="menu-divisor" role="separator"></li>
+                    <li class="menu-categoria">Gerenciamento</li>
 
-                <li>
-                    <a href="../editar-servidor.html" class="menu-item">
-                        <svg class="icone-menu icone-azul" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-                        <span>Editar Servidor</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="../editar-servidor.html" class="menu-item">
+                            <svg class="icone-menu icone-azul" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            <span>Editar Servidor</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="../editar-componente.html" class="menu-item">
-                        <svg class="icone-menu icone-azul" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                            <rect x="9" y="9" width="6" height="6"></rect>
-                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
-                        </svg>
-                        <span>Editar Componente</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="../editar-componente.html" class="menu-item">
+                            <svg class="icone-menu icone-azul" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                <rect x="9" y="9" width="6" height="6"></rect>
+                                <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                            </svg>
+                            <span>Editar Componente</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="../editar-usuario.html" class="menu-item">
-                        <svg class="icone-menu icone-azul" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                        <span>Editar Usuário</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="../editar-usuario.html" class="menu-item">
+                            <svg class="icone-menu icone-azul" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span>Editar Usuário</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="../index.html" class="menu-item">
-                        <svg class="icone-menu icone-neutro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg>
-                        <span>Voltar ao Início</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="../index.html" class="menu-item">
+                            <svg class="icone-menu icone-neutro" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            <span>Voltar ao Início</span>
+                        </a>
+                    </li>
 
-                <li class="menu-divisor" role="separator"></li>
+                    <li class="menu-divisor" role="separator"></li>
 
-                <li>
-                    <button type="button" class="menu-item item-sair" onclick="encerrarSessao()">
-                        <svg class="icone-menu icone-vermelho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                            <polyline points="16 17 21 12 16 7"></polyline>
-                            <line x1="21" y1="12" x2="9" y2="12"></line>
-                        </svg>
-                        <span>Encerrar Sessão</span>
-                    </button>
-                </li>
-            </ul>
+                    <li>
+                        <button type="button" class="menu-item item-sair" onclick="encerrarSessao()">
+                            <svg class="icone-menu icone-vermelho" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            <span>Encerrar Sessão</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
         </div>
-
-    </div>
-</header>
+    </header>
 
     <main class="dashboard">
         <div class="pagina-topo">
@@ -155,7 +163,7 @@
             </div>
         </div>
 
-       
+
         <section class="kpis-detalhes" aria-label="Resumo">
             <div class="kpi">
                 <span>Total de alertas</span>
@@ -177,7 +185,7 @@
 
         <div class="conteudo">
 
-          
+
             <section class="kpis" aria-label="Servidores">
 
                 <a href="dashboard-matching.html" class="kpi-geral" data-valor="80">
@@ -219,8 +227,10 @@
                         <h2>Total de alertas por servidor</h2>
                         <p id="subtituloGrafico"></p>
                         <div class="legenda">
-                            <span><i style="background:#ffc222"></i>Alerta</span>
-                            <span><i style="background:#f87171"></i>Crítico</span>
+                            <div class="legenda">
+                                <span><i style="background:#eab308"></i>Alerta</span>
+                                <span><i style="background:#dc2626"></i>Crítico</span>
+                            </div>
                         </div>
                     </div>
 
@@ -243,312 +253,314 @@
     <script>
 
 
-let idUsuario = sessionStorage.ID_USUARIO;
+        let idUsuario = sessionStorage.ID_USUARIO;
 
-let periodoAtual = 'hoje';
-
-
-// Atualização da data e horário
-
-function atualizarHorario() {
-
-    let data = new Date();
-
-    document.getElementById('ultimaAtualizacao').textContent =
-        data.toLocaleString('pt-BR', {
-            timeZone: 'America/Sao_Paulo',
-            day: '2-digit',
-            month: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        }) + ' (BRT)';
-}
+        let periodoAtual = 'hoje';
 
 
-// Configuração do gráfico
+        // Atualização da data e horário
 
-Chart.defaults.font.family = "'Inter', sans-serif";
-Chart.defaults.color = '#94a3b8';
-Chart.defaults.animation = false;
+        function atualizarHorario() {
 
-let grafico = new Chart(document.getElementById('graficoAlertas'), {
+            let data = new Date();
 
-    type: 'bar',
-
-    data: {
-        labels: [],
-
-        datasets: [
-            {
-                label: 'Alerta',
-                data: [],
-                backgroundColor: '#ffc222',
-                borderRadius: 2,
-                maxBarThickness: 100,
-            },
-            {
-                label: 'Crítico',
-                data: [],
-                backgroundColor: '#f87171',
-                borderRadius: 2,
-                maxBarThickness: 100,
-            }
-        ]
-    },
-
-    options: {
-        maintainAspectRatio: false,
-
-        plugins: {
-            legend: {
-                display: false
-            },
-
-            tooltip: {
-                mode: 'index',
-                intersect: false,
-                backgroundColor: '#0b111e',
-                borderColor: '#394862',
-                borderWidth: 1,
-                padding: 10
-            }
-        },
-
-        scales: {
-            x: {
-                stacked: true,
-                grid: {
-                    display: false
-                },
-                border: {
-                    display: false
-                }
-            },
-
-            y: {
-                stacked: true,
-                beginAtZero: true,
-                grace: '12%',
-                border: {
-                    display: false
-                },
-                grid: {
-                    color: 'rgba(148,163,184,.08)'
-                },
-                ticks: {
-                    display: true
-                }
-            }
+            document.getElementById('ultimaAtualizacao').textContent =
+                data.toLocaleString('pt-BR', {
+                    timeZone: 'America/Sao_Paulo',
+                    day: '2-digit',
+                    month: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                }) + ' (BRT)';
         }
-    }
-
-});
 
 
-// Busca os KPIs do banco e preenche os cards
+        // Configuração do gráfico
 
-function carregarKPIs() {
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.animation = false;
 
-    fetch(`/dashboardPrincipal/kpis/${idUsuario}`)
-        .then(function (resposta) {
-            return resposta.json();
-        })
-        .then(function (dados) {
+        let grafico = new Chart(document.getElementById('graficoAlertas'), {
 
-            let kpi = dados[0];
+            type: 'bar',
 
-            document.getElementById('kpiTotal').textContent =
-                Number(kpi.totalAlertas).toLocaleString('pt-BR');
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Alerta',
+                        data: [],
+                        backgroundColor: '#eab308',
+                        borderRadius: 2,
+                        categoryPercentage: 0.4,
+                        barPercentage: 1.0
+                    },
+                    {
+                        label: 'Crítico',
+                        data: [],
+                        backgroundColor: '#dc2626',
+                        borderRadius: 2,
+                        categoryPercentage: 0.4,
+                        barPercentage: 1.0
+                    }
+                ]
+            },
 
-            document.getElementById('kpiCritico').textContent =
-                kpi.servidorMaisAlertas || 'Nenhum';
+            options: {
+                maintainAspectRatio: false,
 
-            document.getElementById('kpiUltima').textContent =
-                kpi.ultimaOcorrencia || '--:--';
+                plugins: {
+                    legend: {
+                        display: false
+                    },
 
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: '#0b111e',
+                        borderColor: '#394862',
+                        borderWidth: 1,
+                        padding: 10
+                    }
+                },
 
-            // Status geral com a bolinha de cor
+                scales: {
+                    x: {
+                        stacked: false,
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
 
-            let status = kpi.statusGeral;
-            let texto = 'Sem dados';
-            let classe = '';
-
-            if (status == 'critico') {
-                texto = 'Crítico';
-                classe = 'critico';
-            } else if (status == 'alerta') {
-                texto = 'Alerta';
-                classe = 'alerta';
-            } else if (status == 'normal') {
-                texto = 'Normal';
-                classe = 'normal';
+                    y: {
+                        stacked: false,
+                        beginAtZero: true,
+                        grace: '12%',
+                        border: {
+                            display: false
+                        },
+                        grid: {
+                            color: 'rgba(148,163,184,.08)'
+                        },
+                        ticks: {
+                            display: true
+                        }
+                    }
+                }
             }
 
-            if (classe != '') {
-                document.getElementById('kpiStatus').innerHTML =
-                    `<i class="${classe}" aria-hidden="true"></i>${texto}`;
-            } else {
-                document.getElementById('kpiStatus').textContent = texto;
-            }
-
-            atualizarHorario();
-        })
-        .catch(function (erro) {
-            console.log('Erro ao buscar KPIs:', erro);
         });
-}
 
 
-// Busca os alertas por servidor do banco e atualiza o gráfico
+        // Busca os KPIs do banco e preenche os cards
 
-function atualizarGrafico(periodo) {
+        function carregarKPIs() {
 
-    periodoAtual = periodo;
+            fetch(`/dashboardPrincipal/kpis/${idUsuario}`)
+                .then(function (resposta) {
+                    return resposta.json();
+                })
+                .then(function (dados) {
 
-    let texto;
+                    let kpi = dados[0];
 
-    if (periodo == 'hoje') {
-        texto = 'de hoje';
-    } else if (periodo == '7d') {
-        texto = 'dos últimos 7 dias';
-    } else {
-        texto = 'dos últimos 30 dias';
-    }
+                    document.getElementById('kpiTotal').textContent =
+                        Number(kpi.totalAlertas).toLocaleString('pt-BR');
+
+                    document.getElementById('kpiCritico').textContent =
+                        kpi.servidorMaisAlertas || 'Nenhum';
+
+                    document.getElementById('kpiUltima').textContent =
+                        kpi.ultimaOcorrencia || '--:--';
 
 
-    // Atualiza o botão selecionado
+                    // Status geral com a bolinha de cor
 
-    let botoes = document.querySelectorAll('.periodos button');
+                    let status = kpi.statusGeral;
+                    let texto = 'Sem dados';
+                    let classe = '';
 
-    for (let i = 0; i < botoes.length; i++) {
+                    if (status == 'critico') {
+                        texto = 'Crítico';
+                        classe = 'critico';
+                    } else if (status == 'alerta') {
+                        texto = 'Alerta';
+                        classe = 'alerta';
+                    } else if (status == 'normal') {
+                        texto = 'Normal';
+                        classe = 'normal';
+                    }
 
-        if (botoes[i].getAttribute('data-p') == periodo) {
-            botoes[i].setAttribute('aria-pressed', 'true');
+                    if (classe != '') {
+                        document.getElementById('kpiStatus').innerHTML =
+                            `<i class="${classe}" aria-hidden="true"></i>${texto}`;
+                    } else {
+                        document.getElementById('kpiStatus').textContent = texto;
+                    }
+
+                    atualizarHorario();
+                })
+                .catch(function (erro) {
+                    console.log('Erro ao buscar KPIs:', erro);
+                });
+        }
+
+
+        // Busca os alertas por servidor do banco e atualiza o gráfico
+
+        function atualizarGrafico(periodo) {
+
+            periodoAtual = periodo;
+
+            let texto;
+
+            if (periodo == 'hoje') {
+                texto = 'de hoje';
+            } else if (periodo == '7d') {
+                texto = 'dos últimos 7 dias';
+            } else {
+                texto = 'dos últimos 30 dias';
+            }
+
+
+            // Atualiza o botão selecionado
+
+            let botoes = document.querySelectorAll('.periodos button');
+
+            for (let i = 0; i < botoes.length; i++) {
+
+                if (botoes[i].getAttribute('data-p') == periodo) {
+                    botoes[i].setAttribute('aria-pressed', 'true');
+                } else {
+                    botoes[i].setAttribute('aria-pressed', 'false');
+                }
+
+            }
+
+
+            fetch(`/dashboardPrincipal/alertas-servidor/${idUsuario}/${periodo}`)
+                .then(function (resposta) {
+                    return resposta.json();
+                })
+                .then(function (dados) {
+
+                    let nomes = [];
+                    let alertas = [];
+                    let criticos = [];
+                    let totalGeral = 0;
+
+                    for (let i = 0; i < dados.length; i++) {
+
+                        nomes.push(dados[i].servidor);
+                        alertas.push(Number(dados[i].alertas));
+                        criticos.push(Number(dados[i].criticos));
+
+                        totalGeral += Number(dados[i].alertas) + Number(dados[i].criticos);
+
+                    }
+
+                    grafico.data.labels = nomes;
+                    grafico.data.datasets[0].data = alertas;
+                    grafico.data.datasets[1].data = criticos;
+                    grafico.update();
+
+
+
+                    if (totalGeral > 0) {
+
+                        let totalPrimeiro = alertas[0] + criticos[0];
+                        let porcentagem = Math.round((totalPrimeiro / totalGeral) * 100);
+
+                        document.getElementById('subtituloGrafico').textContent =
+                            nomes[0] + ' concentra ' + porcentagem + '% dos alertas ' + texto;
+
+                    } else {
+
+                        document.getElementById('subtituloGrafico').textContent =
+                            'Nenhum alerta ' + texto;
+
+                    }
+                })
+                .catch(function (erro) {
+                    console.log('Erro ao buscar alertas por servidor:', erro);
+                });
+        }
+
+
+        // Ação dos botões
+
+        let botoesPeriodo = document.querySelectorAll('.periodos button');
+
+        for (let i = 0; i < botoesPeriodo.length; i++) {
+
+            botoesPeriodo[i].addEventListener('click', function () {
+
+                atualizarGrafico(botoesPeriodo[i].getAttribute('data-p'));
+
+            });
+
+        }
+
+
+        if (idUsuario == undefined) {
+
+            console.log('Usuário não está logado (sessionStorage.ID_USUARIO vazio)');
+
         } else {
-            botoes[i].setAttribute('aria-pressed', 'false');
+
+            carregarKPIs();
+            atualizarGrafico('hoje');
+
+            setInterval(function () {
+                carregarKPIs();
+                atualizarGrafico(periodoAtual);
+            }, 5000);
+
         }
 
-    }
+        const btnMenu = document.getElementById('btnMenu');
+        const menuDropdown = document.getElementById('menuDropdown');
 
-
-    fetch(`/dashboardPrincipal/alertas-servidor/${idUsuario}/${periodo}`)
-        .then(function (resposta) {
-            return resposta.json();
-        })
-        .then(function (dados) {
-
-            let nomes = [];
-            let alertas = [];
-            let criticos = [];
-            let totalGeral = 0;
-
-            for (let i = 0; i < dados.length; i++) {
-
-                nomes.push(dados[i].servidor);
-                alertas.push(Number(dados[i].alertas));
-                criticos.push(Number(dados[i].criticos));
-
-                totalGeral += Number(dados[i].alertas) + Number(dados[i].criticos);
-
-            }
-
-            grafico.data.labels = nomes;
-            grafico.data.datasets[0].data = alertas;
-            grafico.data.datasets[1].data = criticos;
-            grafico.update();
-
-
-            
-            if (totalGeral > 0) {
-
-                let totalPrimeiro = alertas[0] + criticos[0];
-                let porcentagem = Math.round((totalPrimeiro / totalGeral) * 100);
-
-                document.getElementById('subtituloGrafico').textContent =
-                    nomes[0] + ' concentra ' + porcentagem + '% dos alertas ' + texto;
-
-            } else {
-
-                document.getElementById('subtituloGrafico').textContent =
-                    'Nenhum alerta ' + texto;
-
-            }
-        })
-        .catch(function (erro) {
-            console.log('Erro ao buscar alertas por servidor:', erro);
+        btnMenu.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const aberto = menuDropdown.classList.toggle('open');
+            btnMenu.classList.toggle('open', aberto);
+            btnMenu.setAttribute('aria-expanded', aberto);
         });
-}
 
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.menu-usuario')) {
+                menuDropdown.classList.remove('open');
+                btnMenu.classList.remove('open');
+                btnMenu.setAttribute('aria-expanded', 'false');
+            }
+        });
 
-// Ação dos botões
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                menuDropdown.classList.remove('open');
+                btnMenu.classList.remove('open');
+                btnMenu.setAttribute('aria-expanded', 'false');
+            }
+        });
 
-let botoesPeriodo = document.querySelectorAll('.periodos button');
+        function encerrarSessao() {
+            sessionStorage.clear();
+            window.location.href = '../index.html';
+        }
 
-for (let i = 0; i < botoesPeriodo.length; i++) {
-
-    botoesPeriodo[i].addEventListener('click', function () {
-
-        atualizarGrafico(botoesPeriodo[i].getAttribute('data-p'));
-
-    });
-
-}
-
-
-if (idUsuario == undefined) {
-
-    console.log('Usuário não está logado (sessionStorage.ID_USUARIO vazio)');
-
-} else {
-
-    carregarKPIs();
-    atualizarGrafico('hoje');
-
-    setInterval(function () {
-        carregarKPIs();
-        atualizarGrafico(periodoAtual);
-    }, 5000);
-
-}
-
-const btnMenu = document.getElementById('btnMenu');
-const menuDropdown = document.getElementById('menuDropdown');
-
-btnMenu.addEventListener('click', function (e) {
-    e.stopPropagation();
-    const aberto = menuDropdown.classList.toggle('open');
-    btnMenu.classList.toggle('open', aberto);
-    btnMenu.setAttribute('aria-expanded', aberto);
-});
-
-document.addEventListener('click', function (e) {
-    if (!e.target.closest('.menu-usuario')) {
-        menuDropdown.classList.remove('open');
-        btnMenu.classList.remove('open');
-        btnMenu.setAttribute('aria-expanded', 'false');
-    }
-});
-
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-        menuDropdown.classList.remove('open');
-        btnMenu.classList.remove('open');
-        btnMenu.setAttribute('aria-expanded', 'false');
-    }
-});
-
-function encerrarSessao() {
-    sessionStorage.clear();
-    window.location.href = '../index.html';
-}
-
-</script>
+    </script>
 </body>
-</html>
-    
 
-    <!-- b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+</html>
+
+
+<!-- b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
     let proximaAtualizacao;
 
