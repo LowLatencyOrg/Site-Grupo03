@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LowLatency | Diagnóstico Individual</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/dashboards.css">
+    <link rel="stylesheet" href="../css/dash-kajio.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+            <a href="../index.html" class="logo">
+                <img src="../assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+
+            <nav class="botoes-dashboards" aria-label="Dashboards individuais">
+                <a href="dash-kajio.html" class="botao-nav">Diagnóstico</a>
+                <a href="" class="botao-nav">Individual 2</a>
+                <a href="" class="botao-nav">Individual 3</a>
+                <a href="" class="botao-nav">Individual 4</a>
+                <a href="" class="botao-nav">Individual 5</a>
+            </nav>
+
+            <div class="botoes-nav">
+                <a href="dashboard-principal.html" class="botao-nav">
+                    Voltar para Dashboard Principal
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-kajio" id="dashboardKajio">
+        <section class="kajio-topo">
+            <div class="kajio-controle-servidor">
+                <label for="selectServidor">Servidor monitorado</label>
+                <select id="selectServidor" aria-label="Selecionar servidor">
+                    <option value="">Carregando servidores...</option>
+                </select>
+            </div>
+
+            <div class="kajio-identificacao">
+                <h1>Diagnóstico do servidor</h1>
+                <p>Última leitura: <time id="ultimaAtualizacao">--</time></p>
+            </div>
+        </section>
+
+        <section class="kajio-grid">
+            <div class="kajio-componentes">
+                <article class="diagnostico-card" data-card="cpu">
+                    <div class="metric-tabs" id="tabs-cpu"></div>
+                    <div class="metric-content" id="content-cpu"></div>
+                </article>
+
+                <article class="diagnostico-card" data-card="ram">
+                    <div class="metric-tabs" id="tabs-ram"></div>
+                    <div class="metric-content" id="content-ram"></div>
+                </article>
+
+                <article class="diagnostico-card" data-card="disco">
+                    <div class="metric-tabs" id="tabs-disco"></div>
+                    <div class="metric-content" id="content-disco"></div>
+                </article>
+
+                <article class="diagnostico-card" data-card="rede">
+                    <div class="metric-tabs" id="tabs-rede"></div>
+                    <div class="metric-content" id="content-rede"></div>
+                </article>
+            </div>
+
+            <aside class="kajio-lateral">
+                <section class="lateral-card" aria-label="Ranking de processos">
+                    <h2>Processos que mais consomem recursos</h2>
+                    <div id="rankingProcessos" class="estado-vazio">Carregando...</div>
+                </section>
+
+                <section class="lateral-card" aria-label="Processos zumbis">
+                    <h2>Quantidade de processos zumbis</h2>
+                    <div id="processosZumbis" class="kpi-lateral-conteudo">
+                        <div class="estado-vazio">Carregando...</div>
+                    </div>
+                </section>
+
+                <section class="lateral-card" aria-label="Componente com mais problemas no dia">
+                    <h2>Componente que mais apresentou problemas hoje/h2>
+                    <div id="componenteProblemas" class="componente-problema">
+                        <span>Carregando...</span>
+                    </div>
+                </section>
+            </aside>
+        </section>
+    </main>
+
+<script>
+const idUsuario = sessionStorage.ID_USUARIO;
+let idServidorAtual = null;
+let leiturasAtuais = [];
+let rankingAtual = [];
+let componenteProblemaAtual = null;
+let graficos = {};
+let sequenciaCarregamento = 0;
+
+const ESTADOS = {
+    1: { classe: 'normal', texto: 'Normal' },
+    2: { classe: 'alerta', texto: 'Alerta' },
+    3: { classe: 'critico', texto: 'Crítico' }
+};
+
+const CONFIG_CARDS = {
+    cpu: {
+        titulo: 'CPU',
+        metricas: [
+            { chave: 'uso', aba: 'Uso %', rotulo: 'Uso em %', tipo: 'regua', localizar: d => d.includes('uso') && !d.includes('swap') },
+            { chave: 'iowait', aba: 'I/O Wait', rotulo: 'I/O wait', tipo: 'grafico', localizar: d => d.includes('iowait') || d.includes('i/o wait') },
+            { chave: 'softirq', aba: 'SoftIRQ', rotulo: 'SoftIRQ', tipo: 'grafico', localizar: d => d.includes('softirq') || d.includes('interrup') }
+        ]
+    },
+    ram: {
+        titulo: 'RAM',
+        metricas: [
+            { chave: 'uso', aba: 'Uso %', rotulo: 'Uso em %', tipo: 'regua', localizar: d => d.includes('uso') && !d.includes('swap') },
+            { chave: 'swap', aba: 'Uso SWAP %', rotulo: 'Uso SWAP %', tipo: 'regua', localizar: d => d.includes('swap') }
+        ]
+    },
+    disco: {
+        titulo: 'Disco',
+        metricas: [
+            { chave: 'uso', aba: 'Uso %', rotulo: 'Uso em %', tipo: 'regua', localizar: d => d.includes('uso') },
+            { chave: 'iops', aba: 'IOPS', rotulo: 'IOPS', tipo: 'grafico', localizar: d => d.includes('iops') }
+        ]
+    },
+    rede: {
+        titulo: 'Rede',
+        metricas: [
+            { chave: 'enviados', aba: 'Enviados', rotulo: 'Pacotes enviados', tipo: 'regua', localizar: d => d.includes('enviad') },
+            { chave: 'recebidos', aba: 'Recebidos', rotulo: 'Pacotes recebidos', tipo: 'regua', localizar: d => d.includes('recebid') },
+            { chave: 'perdidos', aba: 'Perdidos', rotulo: 'Pacotes perdidos', tipo: 'regua', localizar: d => d.includes('perdid') },
+            { chave: 'erros', aba: 'Erros', rotulo: 'Pacotes com erro', tipo: 'regua', localizar: d => d.includes('erro') }
+        ]
+    }
+};
+
+function normalizar(texto) {
+    return String(texto || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+}
+
+function escaparHtml(valor) {
+    return String(valor ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function numero(valor) {
+    if (valor === null || valor === undefined || valor === '') return null;
+    const convertido = Number(valor);
+    return Number.isFinite(convertido) ? convertido : null;
+}
+
+function formatarValor(leitura, inteiro = false) {
+    if (!leitura || numero(leitura.valor) === null) return '--';
+    const valor = numero(leitura.valor);
+    const unidade = leitura.unidade || '';
+    const casas = inteiro ? 0 : 2;
+    const numeroFormatado = valor.toLocaleString('pt-BR', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: casas
+    });
+
+    if (normalizar(unidade) === '%' || normalizar(leitura.metrica).includes('uso')) {
+        return `${numeroFormatado}%`;
+    }
+
+    return unidade ? `${numeroFormatado} ${unidade}` : numeroFormatado;
+}
+
+function leituraDoComponente(componente, localizador) {
+    const nomeComponente = normalizar(componente);
+    return leiturasAtuais.find(leitura =>
+        normalizar(leitura.componente) === nomeComponente &&
+        localizador(normalizar(leitura.metrica))
+    ) || null;
+}
+
+function leituraZumbi() {
+    return leiturasAtuais.find(leitura => normalizar(leitura.metrica).includes('zumbi')) || null;
+}
+
+function statusDaLeitura(leitura) {
+    return ESTADOS[Number(leitura?.fk_alerta)] || ESTADOS[1];
+}
+
+function tagStatus(leitura) {
+    if (!leitura || Number(leitura.fk_alerta) === 1) return '';
+    const estado = statusDaLeitura(leitura);
+    return `<span class="tag-status ${estado.classe}">${estado.texto}</span>`;
+}
+
+function metricasConfiguradas(card) {
+    const config = CONFIG_CARDS[card];
+    return config.metricas.map(item => ({
+        ...item,
+        leitura: leituraDoComponente(card, item.localizar)
+    }));
+}
+
+function renderizarCard(card) {
+    const config = CONFIG_CARDS[card];
+    const tabs = document.getElementById(`tabs-${card}`);
+    const metricas = metricasConfiguradas(card);
+
+    tabs.innerHTML = `
+        <button class="ativo" data-card="${card}" data-aba="geral">Geral</button>
+        ${metricas.map(item => `<button data-card="${card}" data-aba="${item.chave}">${item.aba}</button>`).join('')}
+    `;
+
+    tabs.querySelectorAll('button').forEach(botao => {
+        botao.addEventListener('click', function () {
+            tabs.querySelectorAll('button').forEach(b => b.classList.remove('ativo'));
+            this.classList.add('ativo');
+            abrirAba(card, this.dataset.aba);
+        });
+    });
+
+    renderizarGeral(card, metricas, config.titulo);
+}
+
+function renderizarGeral(card, metricas, titulo) {
+    const content = document.getElementById(`content-${card}`);
+    const linhas = metricas.map(item => {
+        const inteiro = card === 'rede';
+        return `
+            <div class="linha-metrica">
+                <div class="linha-metrica-info">
+                    <span>${escaparHtml(item.rotulo)}</span>
+                    <b>${formatarValor(item.leitura, inteiro)}</b>
+                </div>
+                ${tagStatus(item.leitura)}
+            </div>
+        `;
+    }).join('');
+
+    content.innerHTML = `
+        <div class="card-geral">
+            <h2>Geral ${escaparHtml(titulo)}</h2>
+            <div class="lista-metricas">
+                ${linhas || '<div class="estado-vazio">Nenhuma métrica encontrada.</div>'}
+            </div>
+        </div>
+    `;
+}
+
+function abrirAba(card, chave) {
+    const config = CONFIG_CARDS[card];
+    const metricas = metricasConfiguradas(card);
+
+    if (chave === 'geral') {
+        renderizarGeral(card, metricas, config.titulo);
+        return;
+    }
+
+    const item = metricas.find(metrica => metrica.chave === chave);
+    if (!item) return;
+
+    if (item.tipo === 'grafico') {
+        renderizarGrafico(card, item);
+    } else {
+        renderizarRegua(card, item.rotulo, item.leitura, card === 'rede');
+    }
+}
+
+function calcularEscala(leitura, percentual) {
+    const valor = Math.max(0, numero(leitura?.valor) || 0);
+    const alerta = Math.max(0, numero(leitura?.limite_alerta) || 0);
+    const critico = Math.max(alerta, numero(leitura?.limite_critico) || alerta);
+
+    let maximo;
+    if (percentual) {
+        maximo = Math.max(100, valor, critico);
+    } else {
+        maximo = Math.max(1, valor, critico) * 1.2;
+    }
+
+    return { valor, alerta, critico, maximo };
+}
+
+function posicaoRegua(valor, maximo) {
+    if (!maximo) return 0;
+    return Math.min(100, Math.max(0, (valor / maximo) * 100));
+}
+
+function formatarNumeroRegua(valor, percentual, unidade) {
+    const formatado = Number(valor || 0).toLocaleString('pt-BR', { maximumFractionDigits: percentual ? 1 : 0 });
+    if (percentual) return `${formatado}%`;
+    return unidade ? `${formatado} ${unidade}` : formatado;
+}
+
+function htmlRegua(leitura, percentual) {
+    if (!leitura) {
+        return '<div class="estado-vazio">Nenhuma leitura encontrada para esta métrica.</div>';
+    }
+
+    const escala = calcularEscala(leitura, percentual);
+    const pAlerta = posicaoRegua(escala.alerta, escala.maximo);
+    const pCritico = posicaoRegua(escala.critico, escala.maximo);
+    const pValor = posicaoRegua(escala.valor, escala.maximo);
+    const unidade = percentual ? '%' : (leitura.unidade || '');
+
+    const gradiente = `linear-gradient(to right,
+        var(--ok) 0%, var(--ok) ${pAlerta}%,
+        var(--atencao) ${pAlerta}%, var(--atencao) ${pCritico}%,
+        var(--critico) ${pCritico}%, var(--critico) 100%)`;
+
+    return `
+        <div class="regua-wrapper">
+            <div class="regua" style="background:${gradiente}">
+                <span class="regua-marcador" style="left:${pValor}%" title="Valor atual"></span>
+            </div>
+            <div class="regua-legendas">
+                <span style="left:0%">0</span>
+                <span class="alerta" style="left:${pAlerta}%">Alerta ${formatarNumeroRegua(escala.alerta, percentual, unidade)}</span>
+                <span class="critico" style="left:${pCritico}%">Crítico ${formatarNumeroRegua(escala.critico, percentual, unidade)}</span>
+                <span style="left:100%">${formatarNumeroRegua(escala.maximo, percentual, unidade)}</span>
+            </div>
+        </div>
+    `;
+}
+
+function renderizarRegua(card, titulo, leitura, inteiro) {
+    const content = document.getElementById(`content-${card}`);
+    const percentual = normalizar(leitura?.unidade) === '%' || (normalizar(leitura?.metrica).includes('uso') && card !== 'rede');
+    const estado = statusDaLeitura(leitura);
+
+    content.innerHTML = `
+        <div class="metric-view">
+            <div class="metric-view-topo">
+                <h2>${escaparHtml(titulo)}</h2>
+                ${tagStatus(leitura)}
+            </div>
+            <div class="valor-destaque ${estado.classe}">${formatarValor(leitura, inteiro)}</div>
+            ${htmlRegua(leitura, percentual)}
+        </div>
+    `;
+}
+
+async function renderizarGrafico(card, item) {
+    const content = document.getElementById(`content-${card}`);
+
+    if (!item.leitura) {
+        content.innerHTML = '<div class="estado-vazio">Nenhuma leitura encontrada para esta métrica.</div>';
+        return;
+    }
+
+    content.innerHTML = `
+        <div class="metric-view">
+            <div class="metric-view-topo">
+                <h2>${escaparHtml(item.rotulo)} — últimas 5 leituras</h2>
+                ${tagStatus(item.leitura)}
+            </div>
+            <div class="grafico-mini"><canvas id="grafico-${card}"></canvas></div>
+        </div>
+    `;
+
+    try {
+        const resposta = await fetch(`/dashboardKajio/historico/${idServidorAtual}/${idUsuario}/${item.leitura.fk_componente}/${item.leitura.fk_metrica}`);
+        if (!resposta.ok) throw new Error('Não foi possível buscar o histórico.');
+        const historico = await resposta.json();
+        criarGrafico(card, item, historico);
+    } catch (erro) {
+        content.innerHTML = `<div class="estado-erro">${escaparHtml(erro.message)}</div>`;
+    }
+}
+
+function criarGrafico(card, item, historico) {
+    if (graficos[card]) {
+        graficos[card].destroy();
+    }
+
+    const limiteAlerta = numero(item.leitura.limite_alerta);
+    const limiteCritico = numero(item.leitura.limite_critico);
+    const labels = historico.map(itemHistorico => itemHistorico.horario);
+    const valores = historico.map(itemHistorico => numero(itemHistorico.valor));
+
+    const datasets = [{
+        label: item.rotulo,
+        data: valores,
+        borderColor: '#68dda8',
+        backgroundColor: '#68dda8',
+        borderWidth: 2,
+        tension: .25,
+        pointRadius: 4,
+        pointHoverRadius: 5
+    }];
+
+    if (limiteAlerta !== null) {
+        datasets.push({
+            label: 'Limite de alerta',
+            data: labels.map(() => limiteAlerta),
+            borderColor: '#ffc222',
+            backgroundColor: '#ffc222',
+            borderWidth: 1.5,
+            borderDash: [6, 5],
+            pointRadius: 0,
+            tension: 0
+        });
+    }
+
+    if (limiteCritico !== null) {
+        datasets.push({
+            label: 'Limite crítico',
+            data: labels.map(() => limiteCritico),
+            borderColor: '#f87171',
+            backgroundColor: '#f87171',
+            borderWidth: 1.5,
+            borderDash: [6, 5],
+            pointRadius: 0,
+            tension: 0
+        });
+    }
+
+    const pluginRotulos = {
+        id: `rotulos-${card}`,
+        afterDatasetsDraw(chart) {
+            const ctx = chart.ctx;
+            const meta = chart.getDatasetMeta(0);
+            ctx.save();
+            ctx.fillStyle = '#f1f5f9';
+            ctx.font = "600 10px 'Inter', sans-serif";
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+
+            meta.data.forEach((ponto, indice) => {
+                const valor = numero(valores[indice]);
+                if (valor === null) return;
+                ctx.fillText(valor.toLocaleString('pt-BR', { maximumFractionDigits: 2 }), ponto.x, ponto.y - 8);
+            });
+            ctx.restore();
+        }
+    };
+
+    graficos[card] = new Chart(document.getElementById(`grafico-${card}`), {
+        type: 'line',
+        data: { labels, datasets },
+        plugins: [pluginRotulos],
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: { color: '#94a3b8', boxWidth: 12, boxHeight: 2, font: { size: 10 } }
+                },
+                tooltip: {
+                    backgroundColor: '#0b111e',
+                    borderColor: '#394862',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#94a3b8', font: { size: 10 } },
+                    grid: { display: false },
+                    border: { color: '#1e293b' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#94a3b8', font: { size: 10 } },
+                    grid: { color: 'rgba(148, 163, 184, .10)' },
+                    border: { display: false }
+                }
+            }
+        }
+    });
+}
+
+function renderizarRanking() {
+    const container = document.getElementById('rankingProcessos');
+
+    if (!rankingAtual.length) {
+        container.className = 'estado-vazio';
+        container.textContent = 'Nenhum processo disponível para este servidor.';
+        return;
+    }
+
+    container.className = '';
+    container.innerHTML = `
+        <table class="ranking-tabela">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>PID</th>
+                    <th>Usuário</th>
+                    <th>CPU</th>
+                    <th>RAM</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${rankingAtual.map((processo, indice) => `
+                    <tr>
+                        <td>${escaparHtml(processo.posicao || indice + 1)}</td>
+                        <td>${escaparHtml(processo.pid)}</td>
+                        <td>${escaparHtml(processo.usuario)}</td>
+                        <td>${numero(processo.cpu)?.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) ?? '--'}%</td>
+                        <td>${numero(processo.ram)?.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) ?? '--'}%</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+function renderizarZumbis() {
+    const container = document.getElementById('processosZumbis');
+    const leitura = leituraZumbi();
+
+    if (!leitura) {
+        container.innerHTML = '<div class="estado-vazio">Métrica de processos zumbis não encontrada.</div>';
+        return;
+    }
+
+    const estado = statusDaLeitura(leitura);
+    container.innerHTML = `
+        <div class="kpi-lateral-valor ${estado.classe === 'normal' ? '' : estado.classe}">${formatarValor(leitura, true)}</div>
+        ${htmlRegua(leitura, false)}
+    `;
+}
+
+function renderizarComponenteProblemas() {
+    const container = document.getElementById('componenteProblemas');
+
+    if (!componenteProblemaAtual) {
+        container.innerHTML = '<strong>Nenhum</strong><span>Não houve leituras em alerta ou crítico hoje.</span>';
+        return;
+    }
+
+    const alertas = Number(componenteProblemaAtual.alertas || 0);
+    const criticos = Number(componenteProblemaAtual.criticos || 0);
+    const total = Number(componenteProblemaAtual.total_problemas || 0);
+
+    container.innerHTML = `
+        <strong>${escaparHtml(componenteProblemaAtual.componente)}</strong>
+        <span>${total} ocorrências no dia · ${alertas} alerta(s) · ${criticos} crítico(s)</span>
+    `;
+}
+
+function atualizarTela() {
+    ['cpu', 'ram', 'disco', 'rede'].forEach(card => {
+        const tabs = document.getElementById(`tabs-${card}`);
+
+        // Identifica a aba que o usuário está visualizando
+        const abaAtiva =
+            tabs.querySelector('button.ativo')?.dataset.aba || 'geral';
+
+        // Atualiza os dados e recria as abas
+        renderizarCard(card);
+
+        // Restaura a aba selecionada
+        const botaoAtivo = Array.from(
+            tabs.querySelectorAll('button')
+        ).find(botao => botao.dataset.aba === abaAtiva);
+
+        if (botaoAtivo && abaAtiva !== 'geral') {
+            tabs.querySelector('button.ativo')
+                ?.classList.remove('ativo');
+
+            botaoAtivo.classList.add('ativo');
+
+            // Atualiza a régua ou o gráfico da aba
+            abrirAba(card, abaAtiva);
+        }
+    });
+
+    renderizarRanking();
+    renderizarZumbis();
+    renderizarComponenteProblemas();
+
+    document.getElementById('ultimaAtualizacao').textContent =
+        leiturasAtuais[0]?.dia_hora || '--';
+}
+
+async function carregarDadosServidor(idServidor) {
+    idServidorAtual = Number(idServidor);
+
+    const servidorSolicitado = idServidorAtual;
+    const minhaSequencia = ++sequenciaCarregamento;
+
+    const dashboard = document.getElementById('dashboardKajio');
+    dashboard.classList.add('carregando');
+
+    try {
+        const resposta = await fetch(
+            `/dashboardKajio/dados/${servidorSolicitado}/${idUsuario}`
+        );
+
+        if (!resposta.ok) {
+            throw new Error('Não foi possível carregar os dados deste servidor.');
+        }
+
+        const dados = await resposta.json();
+
+        // Ignora respostas de requisições antigas
+        if (minhaSequencia !== sequenciaCarregamento) return;
+
+        leiturasAtuais = dados.leituras || [];
+        rankingAtual = dados.rankingProcessos || [];
+        componenteProblemaAtual = dados.componenteProblemas || null;
+
+        // Destrói os gráficos anteriores
+        Object.values(graficos).forEach(grafico => grafico.destroy());
+        graficos = {};
+
+        atualizarTela();
+
+    } catch (erro) {
+        if (minhaSequencia !== sequenciaCarregamento) return;
+
+        console.error('Erro ao atualizar dashboard:', erro);
+
+        // Mantém os últimos valores exibidos em caso de falha
+    } finally {
+        if (minhaSequencia === sequenciaCarregamento) {
+            dashboard.classList.remove('carregando');
+        }
+    }
+}
+
+async function carregarServidores() {
+    const select = document.getElementById('selectServidor');
+
+    if (!idUsuario) {
+        select.innerHTML = '<option value="">Usuário não identificado</option>';
+        return;
+    }
+
+    try {
+        const resposta = await fetch(`/dashboardKajio/servidores/${idUsuario}`);
+        if (!resposta.ok) throw new Error('Não foi possível listar os servidores.');
+
+        const servidores = await resposta.json();
+        if (!servidores.length) {
+            select.innerHTML = '<option value="">Nenhum servidor cadastrado</option>';
+            return;
+        }
+
+        select.innerHTML = servidores.map(servidor =>
+            `<option value="${servidor.id_servidor}">${escaparHtml(servidor.hostname)}</option>`
+        ).join('');
+
+        select.value = String(servidores[0].id_servidor);
+        await carregarDadosServidor(servidores[0].id_servidor);
+    } catch (erro) {
+        select.innerHTML = `<option value="">${escaparHtml(erro.message)}</option>`;
+    }
+}
+
+document.getElementById('selectServidor').addEventListener('change', function () {
+    if (this.value) carregarDadosServidor(this.value);
+});
+
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = '#94a3b8';
+
+carregarServidores();
+setInterval(() => {
+    if (idServidorAtual !== null &&
+        !document.getElementById('dashboardKajio')
+            .classList.contains('carregando')) {
+
+        carregarDadosServidor(idServidorAtual);
+    }
+}, 5000);
+</script>
+</body>
+</html>

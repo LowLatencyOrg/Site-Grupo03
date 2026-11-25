@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Servidor — lowlatency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboards.css" />
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="../index.html" class="logo">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+            <div class="botoes-editar">
+                <a href="excluir-servidor.html" class="botao-nav">
+                    Excluir servidor
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+            <div class="botoes-nav">
+                <a href="dashboard/dashboard-principal.html" class="botao-nav">
+                    Voltar para Dashboard Principal
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+  <div class="cadastro-maquina">
+    <div class="parte-cadastro"></div>
+    <div class="parte-cadastro">
+        <div class="card-cadastro">
+        <div class="links-topo">
+</div>
+
+        <!-- Cabeçalho -->
+        <div class="cabecalho-auth">
+            <h1 class="titulo-auth">Editar servidor</h1>
+        </div>
+
+        <!-- Formulário de Cadastro -->
+        <form class="formulario-cadastro">
+
+            <div class="grupo-campo">
+                <label class="rotulo-campo" for="display_servidor">
+                    Servidor
+                </label>
+
+                <select
+                    class="campo-empresa"
+                    id="display_servidor"
+                    name="servidor"
+                    required>
+                    <option value="" disabled selected>Selecione...</option>
+                </select>
+            </div>
+
+            <div class="grupo-campo">
+            <label class="rotulo-campo">Hostname</label>
+            <input class="campo-nome" id="hostname_input" type="text"/>
+            </div>
+
+            <div class="grupo-campo">
+                <label class="rotulo-campo" for="display_so">
+                    Sistema Operacional
+                </label>
+
+                <select
+                    class="campo-empresa"
+                    id="display_so"
+                    name="so"
+                    required>
+                    <option value="" disabled selected>Selecione...</option>
+                </select>
+            </div>
+
+            <div class="grupo-campo">
+                <label class="rotulo-campo" for="display_servidor">
+                    Status
+                </label>
+
+                <select
+                    class="campo-empresa"
+                    id="display_status"
+                    name="status"
+                    required>
+                    <option value="" disabled selected>Selecione...</option>
+                </select>
+            </div>
+
+            <button type="button" class="botao-cadastrar" onclick="editarServidor()">Concluir Edição</button>
+
+        </form>
+
+        <div id="cardErro" class="mensagem-alerta">
+            <p id="mensagem_erro"></p>
+        </div>
+    </div>
+    </div>
+    <!-- Lado Esquerdo: Imagem de Telemetria -->
+    <div class="parte-cadastro"></div>
+
+    <!-- Lado Direito: Painel de Cadastro -->
+    
+  </div>
+
+  
+
+</body>
+</html>
+<script>
+
+function listarServidores() {
+
+    var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+    console.log("Conteúdo do sessionStorage:", sessionStorage.getItem("FK_EMPRESA"));
+
+    fetch(`/editar/listarServidores/${idEmpresa}`)
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (servidores) {
+
+            var select = document.getElementById("display_servidor");
+
+            servidores.forEach(function (servidor) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = servidor.id_servidor;
+                opcao.textContent = servidor.hostname;
+
+                select.appendChild(opcao);
+            });
+        })
+        .catch(function (erro) {
+            console.log("Erro ao listar servidores:", erro);
+        });
+}
+
+function selecionarServidor() {
+
+    document.getElementById("display_servidor").addEventListener("change", function () {
+
+        var idServidor = this.value;
+
+        fetch(`/editar/buscarServidor/${idServidor}`)
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (servidor) {
+
+                hostname_input.value = servidor[0].hostname;
+                display_so.value = servidor[0].sistema_operacional;
+                display_status.value = servidor[0].fk_status;
+
+            })
+            .catch(function (erro) {
+                console.log("Erro ao buscar servidor:", erro);
+            });
+    });
+}
+
+function listarSO() {
+
+    fetch("/editar/listarSO")
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (sistemasOperacionais) {
+
+            var select = document.getElementById("display_so");
+
+            sistemasOperacionais.forEach(function (so) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = so.id_sistema_operacional;
+                opcao.textContent = so.nome;
+
+                select.appendChild(opcao);
+            });
+        })
+        .catch(function (erro) {
+            console.log("Erro ao listar sistemas operacionais:", erro);
+        });
+}
+
+function listarStatus() {
+
+    fetch("/editar/listarStatus")
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (status_servidor) {
+
+            var select = document.getElementById("display_status");
+
+            status_servidor.forEach(function (status) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = status.id_status;
+                opcao.textContent = status.descricao;
+
+                select.appendChild(opcao);
+            });
+        })
+        .catch(function (erro) {
+            console.log("Erro ao listar os status:", erro);
+        });
+}
+
+function editarServidor() {
+
+    console.log("Entrei no editar");
+
+    var idServidor = display_servidor.value;
+    var hostnameVar = hostname_input.value;
+    var soVar = display_so.value;
+    var statusVar = display_status.value;
+
+    if (idServidor == "" || hostnameVar == "" || soVar == "" || statusVar == "") {
+        cardErro.style.display = "block";
+        cardErro.className = "mensagem-alerta erro";
+        mensagem_erro.innerHTML = "Preencha todos os campos para prosseguir!";
+
+        setTimeout(sumirMensagem, 5000);
+        return;
+    }
+
+    fetch("/editar/editarServidor", {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            idServidor: idServidor,
+            hostnameServer: hostnameVar,
+            soServer: soVar,
+            statusServer: statusVar
+
+        })
+    })
+
+        .then(function (resposta) {
+
+            if (resposta.ok) {
+                cardErro.style.display = "block";
+                mensagem_erro.innerHTML = "Servidor editado com sucesso! Você será redirecionado para a dashboard";
+
+                setTimeout(() => {
+                        window.location = "../dashboard/dashboard-principal.html";
+                    }, "2000");
+
+            } else {
+                throw new Error("Erro ao editar servidor!");
+            }
+
+        })
+
+        .catch(function (erro) {
+            console.log("Erro:", erro);
+            cardErro.style.display = "block";
+            cardErro.className = "mensagem-alerta erro";
+            mensagem_erro.innerHTML = "Não foi possível editar o servidor.";
+
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    listarServidores();
+
+    selecionarServidor();
+
+    listarSO();
+
+    listarStatus(); 
+
+});
+</script>

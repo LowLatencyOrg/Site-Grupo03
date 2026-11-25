@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Servidor — lowlatency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboards.css" />
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="../index.html" class="logo">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+            <div class="botoes-nav">
+                <a href="dashboard/dashboard-principal.html" class="botao-nav">
+                    Voltar para Dashboard Principal
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+  <div class="cadastro-maquina">
+    <div class="parte-cadastro"></div>
+    <div class="parte-cadastro">
+        <div class="card-cadastro">
+        <div class="links-topo">
+</div>
+
+        <!-- Cabeçalho -->
+        <div class="cabecalho-auth">
+            <h1 class="titulo-auth">Excluir servidor</h1>
+        </div>
+
+        <!-- Formulário de Cadastro -->
+        <form class="formulario-cadastro">
+
+            <div class="grupo-campo">
+                <label class="rotulo-campo" for="display_servidor">
+                    Servidor
+                </label>
+
+                <select
+                    class="campo-empresa"
+                    id="display_servidor"
+                    name="servidor"
+                    required>
+                    <option value="" disabled selected>Selecione...</option>
+                </select>
+            </div>
+
+            <button type="button" class="botao-cadastrar" onclick="excluirServidor()">Excluir</button>
+
+        </form>
+
+        <div id="cardErro" class="mensagem-alerta" style="display: none;">
+            <p id="mensagem_erro"></p>
+        </div>
+    </div>
+    </div>
+    <!-- Lado Esquerdo: Imagem de Telemetria -->
+    <div class="parte-cadastro"></div>
+
+    <!-- Lado Direito: Painel de Cadastro -->
+    
+  </div>
+
+  
+
+</body>
+</html>
+<script>
+
+function listarServidores() {
+
+    var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+    console.log("Conteúdo do sessionStorage:", sessionStorage.getItem("FK_EMPRESA"));
+
+    fetch(`/excluirServidor/listarServidores/${idEmpresa}`)
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (servidores) {
+
+            var select = document.getElementById("display_servidor");
+
+            servidores.forEach(function (servidor) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = servidor.id_servidor;
+                opcao.textContent = servidor.hostname;
+
+                select.appendChild(opcao);
+            });
+        })
+        .catch(function (erro) {
+            console.log("Erro ao listar servidores:", erro);
+        });
+}
+
+function selecionarServidor() {
+
+    document.getElementById("display_servidor").addEventListener("change", function () {
+
+        var idServidor = this.value;
+
+        fetch(`/excluirServidor/buscarServidor/${idServidor}`)
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (servidor) {
+
+                hostname_input.value = servidor[0].hostname;
+
+            })
+            .catch(function (erro) {
+                console.log("Erro ao buscar servidor:", erro);
+            });
+
+            var select = document.getElementById("display_servidor");
+
+         
+    });
+}
+
+function excluirServidor() {
+
+    var idServidor = document.getElementById("display_servidor").value;
+    var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+    if (!idServidor) {
+        mostrarMensagem("Selecione um servidor!", "erro");
+        return;
+    }
+
+    var confirmacao = confirm(
+        "Tem certeza que deseja excluir permanentemente este servidor? Todos os dados relacionados também serão apagados."
+    );
+
+    if (!confirmacao) {
+        return;
+    }
+
+    fetch("/excluirServidor/excluir", {
+
+        method: "DELETE",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            idServidor: idServidor,
+            idEmpresa: idEmpresa
+        })
+
+    })
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+                throw new Error("Não foi possível excluir o servidor.");
+            }
+
+            return resposta.json();
+
+        })
+        .then(function () {
+
+            mostrarMensagem(
+                "Servidor excluído permanentemente com sucesso!",
+                "sucesso"
+            );
+
+            setTimeout(function () {
+                window.location = "../dashboard/dashboard-principal.html";
+            }, 2000);
+
+        })
+        .catch(function (erro) {
+
+            console.log("Erro ao excluir servidor:", erro);
+
+            mostrarMensagem("Erro ao excluir o servidor.", "erro");
+
+        });
+}
+
+function mostrarMensagem(mensagem, tipo) {
+
+    var card = document.getElementById("cardErro");
+    var texto = document.getElementById("mensagem_erro");
+
+    card.style.display = "block";
+    card.className = "mensagem-alerta " + tipo;
+    texto.textContent = mensagem;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    listarServidores();
+
+});
+</script>

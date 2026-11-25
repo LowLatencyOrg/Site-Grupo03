@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Componente — lowlatency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboards.css" />
+</head>
+
+<body>
+  <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="../index.html" class="logo">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+
+            <div class="botoes-nav">
+                <a href="dashboard/dashboard-principal.html" class="botao-nav">
+                    Voltar para Dashboard Principal
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+  <div class="cadastro-maquina">
+    <div class="parte-cadastro"></div>
+    <div class="parte-cadastro">
+        <div class="card-cadastro">
+
+        <!-- Cabeçalho -->
+        <div class="cabecalho-auth">
+            <h1 class="titulo-auth">Excluir componente</h1>
+        </div>
+
+        <!-- Formulário de Cadastro -->
+        <form class="formulario-cadastro">
+
+            <!-- Servidor -->
+<div class="grupo-campo">
+    <label class="rotulo-campo" for="display_servidor">Servidor</label>
+
+    <select class="campo-empresa" id="display_servidor" required>
+        <option value="" disabled selected>Selecione...</option>
+    </select>
+</div>
+
+<div class="grupo-campo">
+    <label class="rotulo-campo" for="display_componente">Componente</label>
+
+    <select class="campo-empresa" id="display_componente" required disabled>
+        <option value="" disabled selected>Selecione...</option>
+    </select>
+</div>
+
+<div class="grupo-campo">
+    <label class="rotulo-campo" for="display_medida">Tipo de medida</label>
+
+    <select class="campo-empresa" id="display_medida" required disabled>
+        <option value="" disabled selected>Selecione...</option>
+    </select>
+</div>
+
+<button type="button" class="botao-cadastrar" onclick="excluirComponente()">Excluir</button>
+
+        </form>
+
+        <div id="cardErro" class="mensagem-alerta">
+            <p id="mensagem_erro"></p>
+        </div>
+    </div>
+    </div>
+    <!-- Lado Esquerdo: Imagem de Telemetria -->
+    <div class="parte-cadastro"></div>
+
+    <!-- Lado Direito: Painel de Cadastro -->
+    
+  </div>
+</body>
+</html>
+<script>
+
+
+function listarServidores() {
+
+    var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+    console.log("Conteúdo do sessionStorage:", idEmpresa);
+
+    fetch(`/excluirComponente/listarServidores`)
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+                throw new Error("Erro ao listar servidores.");
+            }
+
+            return resposta.json();
+        })
+        .then(function (servidores) {
+
+            var select = document.getElementById("display_servidor");
+
+            select.innerHTML = '<option value="">Selecione um servidor</option>';
+
+            servidores.forEach(function (servidor) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = servidor.id_servidor;
+                opcao.textContent = servidor.hostname;
+
+                select.appendChild(opcao);
+            });
+        })
+        .catch(function (erro) {
+
+            console.log("Erro ao listar servidores:", erro);
+
+            mostrarMensagem("Erro ao listar servidores.", "erro");
+        });
+}
+
+function listarComponentes() {
+
+    var idServidor = document.getElementById("display_servidor").value;
+
+    var select = document.getElementById("display_componente");
+    var selectMetrica = document.getElementById("display_medida");
+
+    select.innerHTML = '<option value="">Selecione um componente</option>';
+    selectMetrica.innerHTML = '<option value="">Selecione uma métrica</option>';
+
+    select.disabled = true;
+    selectMetrica.disabled = true;
+
+    if (!idServidor) {
+        return;
+    }
+
+    fetch(`/excluirComponente/listarComponentes/${idServidor}`)
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+                throw new Error("Erro ao listar componentes.");
+            }
+
+            return resposta.json();
+        })
+        .then(function (componentes) {
+
+            componentes.forEach(function (componente) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = componente.id_componente;
+                opcao.textContent = componente.nome;
+
+                select.appendChild(opcao);
+            });
+
+            select.disabled = componentes.length === 0;
+
+            if (componentes.length === 0) {
+                mostrarMensagem("Nenhum componente ativo encontrado para este servidor.", "erro");
+            }
+        })
+        .catch(function (erro) {
+
+            console.log("Erro ao listar componentes:", erro);
+
+            mostrarMensagem("Erro ao listar componentes.", "erro");
+        });
+}
+
+function listarMetricas() {
+
+    var idServidor = document.getElementById("display_servidor").value;
+    var idComponente = document.getElementById("display_componente").value;
+
+    var select = document.getElementById("display_medida");
+
+    select.innerHTML = '<option value="">Selecione uma métrica</option>';
+    select.disabled = true;
+
+    if (!idServidor || !idComponente) {
+        return;
+    }
+
+    fetch(`/excluirComponente/listarMetricas/${idServidor}/${idComponente}`)
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+                throw new Error("Erro ao listar métricas.");
+            }
+
+            return resposta.json();
+        })
+        .then(function (metricas) {
+
+            metricas.forEach(function (metrica) {
+
+                var opcao = document.createElement("option");
+
+                opcao.value = metrica.id_metrica;
+                opcao.textContent = metrica.descricao;
+
+                select.appendChild(opcao);
+            });
+
+            select.disabled = metricas.length === 0;
+
+            if (metricas.length === 0) {
+                mostrarMensagem("Nenhuma métrica ativa encontrada para este componente.", "erro");
+            }
+        })
+        .catch(function (erro) {
+
+            console.log("Erro ao listar métricas:", erro);
+
+            mostrarMensagem("Erro ao listar métricas.", "erro");
+        });
+}
+
+function excluirComponente() {
+
+    var idServidor = document.getElementById("display_servidor").value;
+    var idComponente = document.getElementById("display_componente").value;
+    var idMetrica = document.getElementById("display_medida").value;
+
+    if (!idServidor || !idComponente || !idMetrica) {
+        mostrarMensagem("Selecione um servidor, componente e métrica!", "erro");
+        return;
+    }
+
+    var confirmacao = confirm("Tem certeza que deseja excluir este componente?");
+
+    if (!confirmacao) {
+        return;
+    }
+
+    fetch("/excluirComponente/excluir", {
+
+        method: "PUT",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            idServidor: idServidor,
+            idComponente: idComponente,
+            idMetrica: idMetrica
+        })
+
+    })
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+                throw new Error("Não foi possível excluir o componente.");
+            }
+
+            return resposta.json();
+
+        })
+        .then(function () {
+
+            mostrarMensagem("Componente excluído com sucesso! Você será redirecionado para a dashboard", "sucesso");
+            setTimeout(() => {
+                        window.location = "../dashboard/dashboard-principal.html";
+                    }, "2000");
+
+            document.getElementById("display_componente").value = "";
+            document.getElementById("display_medida").value = "";
+
+            listarComponentes();
+
+        })
+        .catch(function (erro) {
+
+            console.log("Erro ao excluir componente:", erro);
+
+            mostrarMensagem("Erro ao excluir o componente.", "erro");
+
+        });
+}
+
+function mostrarMensagem(mensagem, tipo) {
+
+    var card = document.getElementById("cardErro");
+    var texto = document.getElementById("mensagem_erro");
+
+    card.style.display = "block";
+    card.className = "mensagem-alerta " + tipo;
+    texto.textContent = mensagem;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    listarServidores();
+
+    document.getElementById("display_servidor")
+        .addEventListener("change", listarComponentes);
+
+    document.getElementById("display_componente")
+        .addEventListener("change", listarMetricas);
+
+});
+
+</script>

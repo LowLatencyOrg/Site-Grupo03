@@ -1,0 +1,443 @@
+.dashboard-kajio {
+    width: 100%;
+    max-width: 1540px;
+    margin: 0 auto;
+    padding: 20px 24px 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.kajio-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 18px;
+}
+
+.kajio-controle-servidor {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 280px;
+}
+
+.kajio-controle-servidor label {
+    color: var(--texto-secundario);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#selectServidor {
+    width: 100%;
+    padding: 10px 12px;
+    background: #0b111e;
+    color: var(--texto);
+    border: 1px solid var(--borda-forte);
+    border-radius: 8px;
+    font: 500 13px var(--fonte-corpo);
+    cursor: pointer;
+}
+
+#selectServidor:focus {
+    border-color: var(--destaque);
+}
+
+.kajio-identificacao {
+    text-align: right;
+}
+
+.kajio-identificacao h1 {
+    font: 700 30px/1.1 var(--fonte-titulo);
+}
+
+.kajio-identificacao p {
+    margin-top: 5px;
+    color: var(--texto-secundario);
+    font-size: 12px;
+}
+
+.kajio-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.kajio-componentes {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.kajio-lateral {
+    display: grid;
+    grid-template-rows: 1.35fr 0.9fr 0.9fr;
+    gap: 16px;
+}
+
+.diagnostico-card,
+.lateral-card {
+    min-width: 0;
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    overflow: hidden;
+}
+
+.diagnostico-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 355px;
+}
+
+.metric-tabs {
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--borda);
+    scrollbar-width: thin;
+}
+
+.metric-tabs button {
+    flex: 0 0 auto;
+    min-width: 78px;
+    padding: 10px 13px;
+    border: 0;
+    border-right: 1px solid var(--borda);
+    background: #0d1526;
+    color: var(--texto-secundario);
+    font: 600 12px var(--fonte-corpo);
+    cursor: pointer;
+    transition: background .18s ease, color .18s ease;
+}
+
+.metric-tabs button:hover {
+    color: var(--texto);
+    background: #121d31;
+}
+
+.metric-tabs button.ativo {
+    color: var(--texto);
+    background: var(--primaria);
+}
+
+.metric-content {
+    flex: 1;
+    min-height: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-geral h2,
+.metric-view h2,
+.lateral-card h2 {
+    color: var(--texto);
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.card-geral h2 {
+    margin-bottom: 15px;
+}
+
+.lista-metricas {
+    display: grid;
+    gap: 11px;
+}
+
+.linha-metrica {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    background: #0d1526;
+    border: 1px solid transparent;
+    border-radius: 8px;
+}
+
+.linha-metrica-info {
+    min-width: 0;
+}
+
+.linha-metrica-info span {
+    display: block;
+    color: var(--texto-secundario);
+    font-size: 11px;
+}
+
+.linha-metrica-info b {
+    display: block;
+    margin-top: 2px;
+    color: var(--texto);
+    font-size: 15px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.tag-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.tag-status.alerta {
+    color: var(--atencao);
+    background: rgba(255, 194, 34, .11);
+    border: 1px solid rgba(255, 194, 34, .2);
+}
+
+.tag-status.critico {
+    color: var(--critico);
+    background: rgba(248, 113, 113, .11);
+    border: 1px solid rgba(248, 113, 113, .2);
+}
+
+.metric-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.metric-view-topo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.valor-destaque {
+    margin: auto 0;
+    text-align: center;
+    font: 700 52px/1 var(--fonte-titulo);
+    color: var(--texto);
+    font-variant-numeric: tabular-nums;
+}
+
+.valor-destaque.alerta { color: var(--atencao); }
+.valor-destaque.critico { color: var(--critico); }
+
+.regua-wrapper {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.regua {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--borda);
+}
+
+.regua-marcador {
+    position: absolute;
+    top: 50%;
+    width: 4px;
+    height: 22px;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px rgba(9, 13, 22, .7);
+}
+
+.regua-legendas {
+    position: relative;
+    height: 34px;
+    margin-top: 6px;
+    color: var(--texto-secundario);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+}
+
+.regua-legendas span {
+    position: absolute;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.regua-legendas span:first-child {
+    left: 0 !important;
+    transform: none;
+}
+
+.regua-legendas span:last-child {
+    transform: translateX(-100%);
+}
+
+.regua-legendas .alerta { color: var(--atencao); }
+.regua-legendas .critico { color: var(--critico); }
+
+.grafico-mini {
+    position: relative;
+    flex: 1;
+    min-height: 235px;
+    margin-top: 12px;
+}
+
+.grafico-mini canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.lateral-card {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.lateral-card h2 {
+    margin-bottom: 14px;
+}
+
+.ranking-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.ranking-tabela th {
+    padding: 0 7px 8px;
+    color: var(--texto-secundario);
+    font-weight: 500;
+    text-align: left;
+}
+
+.ranking-tabela td {
+    padding: 9px 7px;
+    border-top: 1px solid var(--borda);
+    color: var(--texto);
+    font-variant-numeric: tabular-nums;
+}
+
+.ranking-tabela th:first-child,
+.ranking-tabela td:first-child {
+    width: 28px;
+    text-align: center;
+}
+
+.ranking-tabela th:nth-last-child(-n+2),
+.ranking-tabela td:nth-last-child(-n+2) {
+    text-align: right;
+}
+
+.kpi-lateral-conteudo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi-lateral-valor {
+    margin: auto 0;
+    text-align: center;
+    font: 700 48px/1 var(--fonte-titulo);
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi-lateral-subtexto {
+    margin-top: 8px;
+    color: var(--texto-secundario);
+    text-align: center;
+    font-size: 11px;
+}
+
+.componente-problema {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.componente-problema strong {
+    font: 700 38px/1 var(--fonte-titulo);
+    text-transform: uppercase;
+}
+
+.componente-problema span {
+    margin-top: 9px;
+    color: var(--texto-secundario);
+    font-size: 11px;
+}
+
+.estado-vazio,
+.estado-erro {
+    flex: 1;
+    min-height: 110px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    color: var(--texto-secundario);
+    font-size: 12px;
+}
+
+.estado-erro { color: var(--critico); }
+
+.carregando {
+    pointer-events: none;
+}
+
+@media (max-width: 1180px) {
+    .kajio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kajio-lateral {
+        grid-template-columns: 1.5fr 1fr 1fr;
+        grid-template-rows: none;
+    }
+}
+
+@media (max-width: 860px) {
+    .kajio-topo {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .kajio-identificacao {
+        text-align: left;
+    }
+
+    .kajio-componentes,
+    .kajio-lateral {
+        grid-template-columns: 1fr;
+    }
+
+    .diagnostico-card {
+        min-height: 330px;
+    }
+}
+
+@media (max-width: 560px) {
+    .dashboard-kajio {
+        padding: 16px 12px 28px;
+    }
+
+    .kajio-controle-servidor {
+        min-width: 0;
+    }
+
+    .metric-content,
+    .lateral-card {
+        padding: 15px;
+    }
+
+    .valor-destaque {
+        font-size: 44px;
+    }
+}
+
+.kpi-lateral-valor.alerta { color: var(--atencao); }
+.kpi-lateral-valor.critico { color: var(--critico); }

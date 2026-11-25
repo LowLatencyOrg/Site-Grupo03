@@ -23,11 +23,19 @@ var maquinasRouter = require("./src/routes/maquinas");
 var empresasRouter = require("./src/routes/empresas");
 var contatoRouter = require("./src/routes/contato");
 var dashboardPrincipalRouter = require("./src/routes/dashboardPrincipal");
+var editarServidorRouter = require("./src/routes/editarServidor");
 var dashboardMatchingRouter = require("./src/routes/dashboardMatching");
+var dashboardKajioRouter = require("./src/routes/dashboardKajio");
+var editarComponenteRouter = require("./src/routes/editarComponente");
+var editarUsuarioRouter = require("./src/routes/editarUsuario");
+var excluirServidorRouter = require("./src/routes/excluirServidor");
+var excluirUsuarioRouter = require("./src/routes/excluirUsuario");
+var excluirComponenteRouter = require("./src/routes/excluirComponente");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
 
 app.use(cors());
 
@@ -39,7 +47,15 @@ app.use("/componentes", componentesRouter);
 app.use("/empresas", empresasRouter);
 app.use("/contato", contatoRouter);
 app.use("/dashboardPrincipal", dashboardPrincipalRouter);
+app.use("/editar", editarServidorRouter);
 app.use("/dashboardMatching", dashboardMatchingRouter);
+app.use("/dashboardKajio", dashboardKajioRouter);
+app.use("/editarComponente", editarComponenteRouter);
+app.use("/editarUsuario", editarUsuarioRouter);
+app.use("/excluirServidor", excluirServidorRouter);
+app.use("/excluirUsuario", excluirUsuarioRouter);
+app.use("/excluirComponente", excluirComponenteRouter);
+
 
 app.listen(PORTA_APP, function () {
     console.log(`

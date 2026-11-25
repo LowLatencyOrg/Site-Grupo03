@@ -43,6 +43,27 @@ body {
     backdrop-filter: blur(14px);
 }
 
+.navbar-conteudo {
+    width: 100%;
+    max-width: 100%;
+    min-height: 78px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.botoes-dashboards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+}
+
 .logo {
     display: inline-flex;
     align-items: center;

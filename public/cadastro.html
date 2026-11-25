@@ -12,19 +12,34 @@
     rel="stylesheet" />
   <link rel="icon" href="assets/icon/LowLatency-logo.png" />
   <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboards.css" />
 </head>
 
 <body>
+      <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="../index.html" class="logo">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+
+            <div class="botoes-nav">
+                <a href="dashboard/dashboard-principal.html" class="botao-nav">
+                    Voltar para Dashboard Principal
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
 
     <div class="lado-formulario">
-      <a href="dashboard/dashboard-principal.html" class="voltar-inicio">Voltar para a dashboard</a>
-
       <div class="cabecalho-auth">
         <h1 class="titulo-auth">Cadastre um novo profissional</h1>
       </div>
 
       <form class="formulario-cadastro">
-
         <div class="grupo-campo">
           <label class="rotulo-campo">Nome completo *</label>
           <input class="campo-nome" id="nome_input" type="text" placeholder="Ex: Roberto Silva" required />
@@ -49,7 +64,6 @@
           </select>
         </div>
 
-
         <div class="grupo-campo">
           <label class="rotulo-campo">Senha de acesso *</label>
           <input class="campo-senha" id="senha_input" type="password" placeholder="Mínimo 6 caracteres" required />
@@ -57,12 +71,10 @@
 
         <div class="grupo-campo">
           <label class="rotulo-campo">Confirmar senha *</label>
-          <input class="campo-confirmar-senha" id="confirmacao_senha_input" type="password" placeholder="Repita a senha"
-            required />
+          <input class="campo-confirmar-senha" id="confirmacao_senha_input" type="password" placeholder="Repita a senha" required />
         </div>
 
         <button type="button" class="botao-cadastrar" onclick="cadastrar()">Concluir Cadastro</button>
-
       </form>
 
       <div class="rodape-auth">

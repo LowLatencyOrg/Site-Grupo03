@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Componente — lowlatency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/icon/LowLatency-logo.png" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboards.css" />
+</head>
+
+<body onload="listarServidores()">
+  <header class="navbar">
+        <div class="conteiner navbar-conteudo">
+
+            <a href="../index.html" class="logo">
+                <img src="assets/icon/logobranca.png" class="logo-imagem" alt="">
+                <span>Low<span class="logo-destaque">Latency</span></span>
+            </a>
+
+            <div class="botoes-nav">
+                <a href="excluir-componente.html" class="botao-nav">
+                    Excluir componente
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+            <div class="botoes-nav">
+                <a href="dashboard/dashboard-principal.html" class="botao-nav">
+                    Voltar para Dashboard Principal
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+  <div class="cadastro-maquina">
+    <div class="parte-cadastro"></div>
+    <div class="parte-cadastro">
+        <div class="card-cadastro">
+
+        <!-- Cabeçalho -->
+        <div class="cabecalho-auth">
+            <h1 class="titulo-auth">Editar componente</h1>
+        </div>
+
+        <!-- Formulário de Cadastro -->
+        <form class="formulario-cadastro">
+
+            <!-- Servidor -->
+<div class="grupo-campo">
+    <label class="rotulo-campo" for="display_servidor">Servidor</label>
+
+    <select class="campo-empresa" id="display_servidor" required>
+        <option value="" disabled selected>Selecione...</option>
+    </select>
+</div>
+
+<div class="grupo-campo">
+    <label class="rotulo-campo" for="display_componente">Componente</label>
+
+    <select class="campo-empresa" id="display_componente" required>
+        <option value="" disabled selected>Selecione...</option>
+        <option value="1">CPU</option>
+        <option value="2">RAM</option>
+        <option value="3">Disco</option>
+        <option value="4">Rede</option>
+    </select>
+</div>
+
+<div class="grupo-campo">
+    <label class="rotulo-campo" for="display_medida">Tipo de medida</label>
+
+    <select class="campo-empresa" id="display_medida" required>
+        <option value="" disabled selected>Selecione...</option>
+    </select>
+</div>
+
+<div class="grupo-campo">
+  <label class="rotulo-campo" for="alerta_input">
+      Valor alerta
+  </label>
+  <input
+      class="campo-nome"
+      id="alerta_input"
+      type="number"
+      step="0.01"
+      min="0"
+      required
+  />
+</div>
+
+<div class="grupo-campo">
+    <label class="rotulo-campo" for="critico_input">
+        Valor crítico
+    </label>
+    <input
+        class="campo-email"
+        id="critico_input"
+        type="number"
+        step="0.01"
+        min="0"
+        required
+    />
+</div>
+
+<button type="button" class="botao-cadastrar" onclick="editarComponente()">Concluir Edição</button>
+
+        </form>
+
+        <div id="cardErro" class="mensagem-alerta">
+            <p id="mensagem_erro"></p>
+        </div>
+    </div>
+    </div>
+    <!-- Lado Esquerdo: Imagem de Telemetria -->
+    <div class="parte-cadastro"></div>
+
+    <!-- Lado Direito: Painel de Cadastro -->
+    
+  </div>
+</body>
+</html>
+<script>
+
+const medidasPorComponente = {
+    "1": [
+        { valor: "1", texto: "Uso (%)" },
+        { valor: "2", texto: "Interrupções do Software (%)" },
+        { valor: "3", texto: "IOWait" }
+    ],
+    "2": [
+        { valor: "1", texto: "Uso (%)" },
+        { valor: "4", texto: "Uso da Swap (%)" }
+    ],
+    "3": [
+        { valor: "1", texto: "Uso (%)" },
+        { valor: "5", texto: "Leitura e Gravação (MB/s)" }
+    ],
+    "4": [
+        { valor: "6", texto: "Pacotes Enviados (KB)" },
+        { valor: "7", texto: "Pacotes Recebidos (KB)" }
+    ]
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    listarServidores();
+
+    document.getElementById("display_componente")
+        .addEventListener("change", function () {
+            preencherMedidas(this.value);
+        });
+
+    document.getElementById("display_servidor")
+        .addEventListener("change", buscarLimites);
+
+    document.getElementById("display_medida")
+        .addEventListener("change", buscarLimites);
+});
+
+
+function listarServidores() {
+
+    const idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+    fetch(`/editarComponente/listarServidores/${idEmpresa}`)
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+                throw new Error("Erro ao listar servidores.");
+            }
+
+            return resposta.json();
+        })
+        .then(function (servidores) {
+
+            const select = document.getElementById("display_servidor");
+
+            select.innerHTML = '<option value="" disabled selected>Selecione...</option>';
+
+            servidores.forEach(function (servidor) {
+
+                const opcao = document.createElement("option");
+
+                opcao.value = servidor.id_servidor;
+                opcao.textContent = servidor.hostname;
+
+                select.appendChild(opcao);
+            });
+        })
+        .catch(function (erro) {
+            console.error("Erro ao listar servidores:", erro);
+        });
+}
+
+
+function preencherMedidas(idComponente) {
+
+    const select = document.getElementById("display_medida");
+
+    select.innerHTML = '<option value="" disabled selected>Selecione...</option>';
+
+    document.getElementById("alerta_input").value = "";
+    document.getElementById("critico_input").value = "";
+
+    const medidas = medidasPorComponente[idComponente];
+
+    if (!medidas) {
+        return;
+    }
+
+    medidas.forEach(function (medida) {
+
+        const opcao = document.createElement("option");
+
+        opcao.value = medida.valor;
+        opcao.textContent = medida.texto;
+
+        select.appendChild(opcao);
+    });
+}
+
+
+function buscarLimites() {
+
+    const idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+    const idServidor = document.getElementById("display_servidor").value;
+    const idComponente = document.getElementById("display_componente").value;
+    const idMetrica = document.getElementById("display_medida").value;
+
+    if (!idEmpresa || !idServidor || !idComponente || !idMetrica) {
+        return;
+    }
+
+    fetch(`/editarComponente/buscarLimites/${idEmpresa}/${idServidor}/${idComponente}/${idMetrica}`)
+        .then(function (resposta) {
+
+            if (resposta.status === 404) {
+                document.getElementById("alerta_input").value = "";
+                document.getElementById("critico_input").value = "";
+
+                mostrarMensagem("Não existem limites cadastrados para essa seleção.", "erro");
+                return null;
+            }
+
+            if (!resposta.ok) {
+                throw new Error("Erro ao buscar limites.");
+            }
+
+            return resposta.json();
+        })
+        .then(function (dados) {
+
+            if (!dados) {
+                return;
+            }
+
+            document.getElementById("alerta_input").value =
+                dados.valor_alerta ?? "";
+
+            document.getElementById("critico_input").value =
+                dados.valor_critico ?? "";
+
+            document.getElementById("cardErro").style.display = "none";
+        })
+        .catch(function (erro) {
+            console.error("Erro ao buscar limites:", erro);
+        });
+}
+
+
+function editarComponente() {
+
+    const idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+    const idServidor = document.getElementById("display_servidor").value;
+    const idComponente = document.getElementById("display_componente").value;
+    const idMetrica = document.getElementById("display_medida").value;
+
+    const valorAlerta = document.getElementById("alerta_input").value;
+    const valorCritico = document.getElementById("critico_input").value;
+
+    if (
+        !idEmpresa ||
+        !idServidor ||
+        !idComponente ||
+        !idMetrica ||
+        valorAlerta === "" ||
+        valorCritico === ""
+    ) {
+        mostrarMensagem("Preencha todos os campos!", "erro");
+        return;
+    }
+
+    if (
+        Number(valorAlerta) < 0 ||
+        Number(valorCritico) <= Number(valorAlerta)
+    ) {
+        mostrarMensagem(
+            "O valor crítico deve ser maior que o valor de alerta.",
+            "erro"
+        );
+        return;
+    }
+
+    fetch("/editarComponente/editarLimites", {
+
+        method: "PUT",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            idEmpresa: idEmpresa,
+            idServidor: idServidor,
+            idComponente: idComponente,
+            idMetrica: idMetrica,
+            valorAlerta: valorAlerta,
+            valorCritico: valorCritico
+        })
+
+    })
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+                throw new Error("Não foi possível atualizar os limites.");
+            }
+
+            return resposta.json();
+        })
+        .then(function () {
+
+            mostrarMensagem("Componente atualizado com sucesso! Você será redirecionado para a dashboard.", "sucesso");
+          
+            setTimeout(() => {
+                        window.location = "../dashboard/dashboard-principal.html";
+                    }, "2000");
+
+        })
+        .catch(function (erro) {
+
+            console.error("Erro ao editar componente:", erro);
+
+            mostrarMensagem("Erro ao atualizar o componente.", "erro");
+        });
+}
+
+
+// Mensagens
+function mostrarMensagem(mensagem, tipo) {
+
+    const card = document.getElementById("cardErro");
+    const texto = document.getElementById("mensagem_erro");
+
+    card.style.display = "block";
+    card.className = "mensagem-alerta " + tipo;
+    texto.textContent = mensagem;
+}
+</script>

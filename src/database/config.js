@@ -33,6 +33,87 @@ function executar(instrucao) {
     });
 }
 
+function executarTransacao(callback) {
+
+    var conexao = mysql.createConnection(mySqlConfig);
+
+    return new Promise(function (resolve, reject) {
+
+        conexao.connect(function (erroConexao) {
+
+            if (erroConexao) {
+                conexao.end();
+                reject(erroConexao);
+                return;
+            }
+
+            conexao.beginTransaction(function (erroTransacao) {
+
+                if (erroTransacao) {
+                    conexao.end();
+                    reject(erroTransacao);
+                    return;
+                }
+
+                function consultar(instrucao) {
+
+                    return new Promise(function (resolveConsulta, rejectConsulta) {
+
+                        conexao.query(instrucao, function (erro, resultado) {
+
+                            if (erro) {
+                                rejectConsulta(erro);
+                            } else {
+                                resolveConsulta(resultado);
+                            }
+
+                        });
+
+                    });
+                }
+
+                Promise.resolve()
+                    .then(function () {
+                        return callback(consultar);
+                    })
+                    .then(function (resultado) {
+
+                        conexao.commit(function (erroCommit) {
+
+                            if (erroCommit) {
+
+                                conexao.rollback(function () {
+                                    conexao.end();
+                                    reject(erroCommit);
+                                });
+
+                            } else {
+
+                                conexao.end();
+                                resolve(resultado);
+
+                            }
+
+                        });
+
+                    })
+                    .catch(function (erro) {
+
+                        conexao.rollback(function () {
+                            conexao.end();
+                            reject(erro);
+                        });
+
+                    });
+
+            });
+
+        });
+
+    });
+}
+
 module.exports = {
-    executar
+    executar,
+    executarTransacao
 };

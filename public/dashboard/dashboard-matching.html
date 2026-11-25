@@ -28,11 +28,13 @@
                 <span>Low<span class="logo-destaque">Latency</span></span>
             </a>
 
-            <div class="botoes-cadastro">
-                <a href="../cadastro-maquina.html" class="botao-nav">Cadastro de Máquina</a>
-                <a href="../cadastro-componente.html" class="botao-nav">Cadastro de Componente</a>
-                <a href="../cadastro.html" class="botao-nav">Cadastro de Usuários</a>
-            </div>
+            <nav class="botoes-dashboards" aria-label="Dashboards individuais">
+                <a href="dash-kajio.html" class="botao-nav">Diagnóstico</a>
+                <a href="" class="botao-nav">Individual 2</a>
+                <a href="" class="botao-nav">Individual 3</a>
+                <a href="" class="botao-nav">Individual 4</a>
+                <a href="" class="botao-nav">Individual 5</a>
+            </nav> 
 
             <div class="botoes-nav">
                 <a href="dashboard-principal.html" class="botao-nav">
@@ -421,7 +423,7 @@ function atualizarGrafico(metrica) {
     }
 
     // fetch dos gráficos 
- fetch(`/dashboardMatching/kpis/${idServidor}/${idUsuario}`)
+ 
 fetch(`/dashboardMatching/historico/${idServidor}/${idUsuario}/${metrica}`)
         .then(function (resposta) {
 
