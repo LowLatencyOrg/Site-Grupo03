@@ -1006,3 +1006,193 @@ body.tela {
 .icone-azul     { color: var(--azul-claro); }
 .icone-neutro   { color: var(--texto-secundario); }
 .icone-vermelho { color: var(--critico); }
+
+/* ==========================================================
+   Modal de Chamado Jira
+   ========================================================== */
+
+.topo-acoes {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.btn-abrir-chamado {
+    padding: 8px 14px;
+    background: rgba(104, 221, 168, 0.12);
+    border: 1px solid var(--destaque);
+    border-radius: 8px;
+    color: var(--destaque);
+    font-family: var(--fonte-corpo);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-abrir-chamado:hover {
+    background: var(--destaque);
+    color: var(--fundo);
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(9, 13, 22, 0.82);
+    backdrop-filter: blur(6px);
+}
+
+.modal-overlay.aberto {
+    display: flex;
+}
+
+.modal-card {
+    width: 100%;
+    max-width: 480px;
+    background: var(--card);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--raio);
+    padding: 22px 24px;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65);
+}
+
+.modal-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--borda);
+}
+
+.modal-cabecalho h2 {
+    font-family: var(--fonte-titulo);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--texto);
+}
+
+.modal-fechar {
+    background: none;
+    border: none;
+    color: var(--texto-secundario);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.modal-fechar:hover {
+    color: var(--texto);
+}
+
+.form-jira {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form-linha {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-grupo label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--texto-secundario);
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: #0b111e;
+    border: 1px solid var(--borda-forte);
+    border-radius: 8px;
+    color: var(--texto);
+    font-family: var(--fonte-corpo);
+    font-size: 13px;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus {
+    outline: none;
+    border-color: var(--destaque);
+}
+
+.form-grupo textarea {
+    resize: vertical;
+}
+
+.feedback-jira {
+    min-height: 18px;
+    font-size: 13px;
+}
+
+.feedback-jira.sucesso {
+    color: var(--ok);
+}
+
+.feedback-jira.sucesso a {
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.feedback-jira.erro-msg {
+    color: var(--critico);
+}
+
+.modal-rodape {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.btn-secundario,
+.btn-primario {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-family: var(--fonte-corpo);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-secundario {
+    background: transparent;
+    border: 1px solid var(--borda-forte);
+    color: var(--texto-secundario);
+}
+
+.btn-secundario:hover {
+    color: var(--texto);
+    border-color: var(--texto-secundario);
+}
+
+.btn-primario {
+    background: var(--destaque);
+    border: 1px solid var(--destaque);
+    color: var(--fundo);
+}
+
+.btn-primario:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

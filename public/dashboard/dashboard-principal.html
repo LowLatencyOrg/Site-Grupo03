@@ -157,9 +157,14 @@
     <main class="dashboard">
         <div class="pagina-topo">
             <h1>Visão geral do sistema</h1>
-            <div class="atualizacao">
-                <i aria-hidden="true"></i>
-                <span>Atualizado em <time id="ultimaAtualizacao">--</time></span>
+            <div class="topo-acoes">
+                <div class="atualizacao">
+                    <i aria-hidden="true"></i>
+                    <span>Atualizado em <time id="ultimaAtualizacao">--</time></span>
+                </div>
+                <button type="button" class="btn-abrir-chamado" id="btnAbrirJira">
+                    Abrir Chamado
+                </button>
             </div>
         </div>
 
@@ -249,6 +254,62 @@
 
         </div>
     </main>
+    <div class="modal-overlay" id="modalJira" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="tituloModalJira">
+            <div class="modal-cabecalho">
+                <h2 id="tituloModalJira">Abrir Chamado no Jira</h2>
+                <button type="button" class="modal-fechar" id="btnFecharJira" aria-label="Fechar modal">&times;</button>
+            </div>
+
+            <form id="form-chamado-jira" class="form-jira">
+                <div class="form-grupo">
+                    <label for="jira-servidor">Servidor</label>
+                    <select id="jira-servidor" required>
+                        <option value="Matching Engine">Matching Engine</option>
+                        <option value="Market Data">Market Data</option>
+                    </select>
+                </div>
+
+                <div class="form-linha">
+                    <div class="form-grupo">
+                        <label for="jira-componente">Componente</label>
+                        <select id="jira-componente" required>
+                            <option value="CPU">CPU</option>
+                            <option value="RAM">RAM</option>
+                            <option value="Rede">Rede</option>
+                            <option value="Disco">Disco</option>
+                        </select>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="jira-severidade">Severidade</label>
+                        <select id="jira-severidade" required>
+                            <option value="Critica">Crítica</option>
+                            <option value="Alta">Alerta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grupo">
+                    <label for="jira-titulo">Resumo do Incidente</label>
+                    <input type="text" id="jira-titulo" placeholder="Ex: Uso de RAM acima de 80%" required>
+                </div>
+
+                <div class="form-grupo">
+                    <label for="jira-descricao">Diagnóstico / Telemetria</label>
+                    <textarea id="jira-descricao" rows="3" placeholder="Descreva os valores observados ou a projeção..."></textarea>
+                </div>
+
+                <p id="feedback-jira" class="feedback-jira" aria-live="polite"></p>
+
+                <div class="modal-rodape">
+                    <button type="button" class="btn-secundario" id="btnCancelarJira">Cancelar</button>
+                    <button type="submit" class="btn-primario" id="btn-enviar-jira">Registrar Chamado</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <script>
 
@@ -553,6 +614,84 @@
             sessionStorage.clear();
             window.location.href = '../index.html';
         }
+
+        const modalJira = document.getElementById('modalJira');
+        const btnAbrirJira = document.getElementById('btnAbrirJira');
+        const btnFecharJira = document.getElementById('btnFecharJira');
+        const btnCancelarJira = document.getElementById('btnCancelarJira');
+        const formJira = document.getElementById('form-chamado-jira');
+        const feedbackJira = document.getElementById('feedback-jira');
+
+        function abrirModalJira() {
+            feedbackJira.textContent = '';
+            feedbackJira.className = 'feedback-jira';
+            modalJira.classList.add('aberto');
+            modalJira.setAttribute('aria-hidden', 'false');
+        }
+
+        function fecharModalJira() {
+            modalJira.classList.remove('aberto');
+            modalJira.setAttribute('aria-hidden', 'true');
+        }
+
+        btnAbrirJira.addEventListener('click', abrirModalJira);
+        btnFecharJira.addEventListener('click', fecharModalJira);
+        btnCancelarJira.addEventListener('click', fecharModalJira);
+
+        modalJira.addEventListener('click', function (e) {
+            if (e.target === modalJira) {
+                fecharModalJira();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modalJira.classList.contains('aberto')) {
+                fecharModalJira();
+            }
+        });
+
+        formJira.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const btnEnviar = document.getElementById('btn-enviar-jira');
+            const payload = {
+                servidor: document.getElementById('jira-servidor').value,
+                componente: document.getElementById('jira-componente').value,
+                severidade: document.getElementById('jira-severidade').value,
+                titulo: document.getElementById('jira-titulo').value.trim(),
+                descricao: document.getElementById('jira-descricao').value.trim()
+            };
+
+            btnEnviar.disabled = true;
+            btnEnviar.textContent = 'Enviando...';
+            feedbackJira.textContent = '';
+            feedbackJira.className = 'feedback-jira';
+
+            try {
+                const resposta = await fetch('/api/jira/chamados', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const dados = await resposta.json();
+
+                if (!resposta.ok) {
+                    const detalhe = dados.detalhes ? ` (${JSON.stringify(dados.detalhes)})` : '';
+                    throw new Error((dados.erro || 'Erro ao criar chamado.') + detalhe);
+                }
+
+                feedbackJira.classList.add('sucesso');
+                feedbackJira.innerHTML = `Chamado registrado: <a href="${dados.url}" target="_blank" rel="noopener">${dados.chave}</a>`;
+                formJira.reset();
+            } catch (erro) {
+                feedbackJira.classList.add('erro-msg');
+                feedbackJira.textContent = `Falha: ${erro.message}`;
+            } finally {
+                btnEnviar.disabled = false;
+                btnEnviar.textContent = 'Registrar Chamado';
+            }
+        });
 
     </script>
 </body>

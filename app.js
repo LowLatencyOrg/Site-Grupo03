@@ -7,6 +7,7 @@ var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
 
 require("dotenv").config({ path: caminho_env });
 
+
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
@@ -31,6 +32,8 @@ var editarUsuarioRouter = require("./src/routes/editarUsuario");
 var excluirServidorRouter = require("./src/routes/excluirServidor");
 var excluirUsuarioRouter = require("./src/routes/excluirUsuario");
 var excluirComponenteRouter = require("./src/routes/excluirComponente");
+var jiraRouter = require("./src/routes/jira");
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -55,6 +58,7 @@ app.use("/editarUsuario", editarUsuarioRouter);
 app.use("/excluirServidor", excluirServidorRouter);
 app.use("/excluirUsuario", excluirUsuarioRouter);
 app.use("/excluirComponente", excluirComponenteRouter);
+app.use("/api/jira", jiraRouter);
 
 
 app.listen(PORTA_APP, function () {
